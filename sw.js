@@ -5,8 +5,8 @@
  * vom Server (Updates sind sofort sichtbar). Nur ohne Internet wird die
  * gespeicherte Kopie genutzt. VERSION nur erhöhen, wenn sich die Liste DATEIEN ändert.
  */
-const VERSION = "v11";
-const CACHE = "oberschul-helfer-" + VERSION;
+const VERSION = "v12";
+const CACHE = "schulwechsel-helfer-" + VERSION;
 
 const DATEIEN = [
     "./",
@@ -26,7 +26,10 @@ const DATEIEN = [
     "js/merkliste.js",
     "js/kalender.js",
     "js/i18n.js",
+    "js/i18n-laender.js",
+    "js/laender.js",
     "js/app.js",
+    "js/land.js",
     "js/assistent-daten.js",
     "js/assistent.js",
     "data/schulen.js",
@@ -43,7 +46,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
     event.waitUntil(
         caches.keys().then((namen) =>
-            Promise.all(namen.filter((n) => n.startsWith("oberschul-helfer-") && n !== CACHE)
+            Promise.all(namen.filter((n) => n.startsWith("schulwechsel-helfer-") && n !== CACHE)
                 .map((n) => caches.delete(n)))
         )
     );

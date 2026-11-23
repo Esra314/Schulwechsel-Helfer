@@ -1,7 +1,7 @@
 {
-  "name": "Oberschul-Helfer Berlin",
-  "short_name": "Oberschul-Helfer",
-  "description": "Von der Grundschule zur Oberschule: Notensumme und Durchschnitt aus Klasse 5 und 6 berechnen, Gymnasium, ISS und Gemeinschaftsschule in der Nähe finden.",
+  "name": "Schulwechsel-Helfer",
+  "short_name": "Schulwechsel",
+  "description": "Von der Grundschule zur weiterführenden Schule: Noten eintragen, Durchschnitt berechnen und die Regeln deines Bundeslands verstehen.",
   "lang": "de",
   "dir": "ltr",
   "start_url": "./",

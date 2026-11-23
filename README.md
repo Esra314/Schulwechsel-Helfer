@@ -1,10 +1,16 @@
-# Oberschul-Helfer Berlin
+# Schulwechsel-Helfer
 
-**Von der Grundschule zur Oberschule**
+**Von der Grundschule zur weiterführenden Schule**
 
-Unverbindlicher Rechner für die Förderprognose beim Übergang von der Grundschule in Klasse 7 in Berlin.
-Eltern tragen die Noten aus den Zeugnissen 5/2 und 6/1 ein und sehen, welche Schularten möglich sind:
-Gymnasium, Integrierte Sekundarschule (ISS) und Gemeinschaftsschule.
+Unverbindlicher Rechner und Wegweiser für den Übergang von der Grundschule an die weiterführende Schule.
+Eltern wählen ihr Bundesland, tragen die Noten aus dem Zeugnis ein und sehen, welche Schularten möglich sind
+und wie es weitergeht.
+
+Bundesländer: Berlin (mit Schulsuche, Karte, Merkliste und Frage-Assistent), Brandenburg, Bayern, Sachsen
+und Thüringen. Weitere folgen. Die Regeln je Land stehen mit Quellen in `js/laender.js`, die Texte in
+`js/i18n-laender.js`. Das Land steht in der Adresse, z. B. `?land=by`.
+
+Hervorgegangen aus dem Oberschul-Helfer Berlin.
 
 ## Funktionen
 
@@ -134,7 +140,7 @@ Vor jeder Anmelderunde (Herbst) neu laden: Die Schulen tragen ihre Termine laufe
 Repository → Settings → Pages → Source: „Deploy from branch“, Branch `main`, Ordner `/ (root)`.
 Vorher in `impressum.html` und `datenschutz.html` die gelb markierten Platzhalter ausfüllen.
 
-Die Adresse `https://esra314.github.io/Oberschul-Helfer-Berlin/` steht in `index.html`
+Die Adresse `https://esra314.github.io/Schulwechsel-Helfer/` steht in `index.html`
 (canonical, hreflang, og:url, og:image), `sitemap.xml` und `robots.txt`. Bei einer eigenen Domain dort anpassen.
 Danach die `sitemap.xml` in der Google Search Console einreichen.
 

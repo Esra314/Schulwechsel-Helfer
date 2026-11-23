@@ -30,7 +30,7 @@ def holen(url, tiefe=0):
         url = "https://" + url[7:]
     try:
         r = subprocess.run(["curl", "-sL", "--max-time", "25", "--max-filesize", "3000000", "-A",
-                            "Mozilla/5.0 (compatible; Oberschul-Helfer-Berlin; Schulinfo)",
+                            "Mozilla/5.0 (compatible; Schulwechsel-Helfer; Schulinfo)",
                             "-w", "\n__URL__%{url_effective}__CODE__%{http_code}__TYPE__%{content_type}", url],
                            capture_output=True, timeout=40)
         roh = r.stdout.decode("utf-8", "replace")

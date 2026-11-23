@@ -3,4 +3,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://esra314.github.io/Oberschul-Helfer-Berlin/sitemap.xml
+Sitemap: https://esra314.github.io/Schulwechsel-Helfer/sitemap.xml

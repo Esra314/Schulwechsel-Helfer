@@ -161,6 +161,8 @@
         if (!fehlerBox.classList.contains("verborgen")) {
             pruefeUndBerechne(false);
         }
+        // Bundesland-Teil (js/land.js) neu beschriften
+        document.dispatchEvent(new CustomEvent("app:sprache", { detail: { code: code } }));
     }
 
     function baueSprachauswahl() {
@@ -338,13 +340,13 @@
 
     var AMTLICH_URL = "https://www.berlin.de/sen/bildung/schule/bildungswege/uebergang-weiterfuehrende-schule/wechsel-zur-7-klasse/";
 
-    function amtlicherTermin(termin) {
+    function amtlicherTermin(termin, link) {
         return {
             titel: t(termin.text),
             datum: termin.von,
             bis: termin.bis,
             beschreibung: t("cal_official"),
-            link: AMTLICH_URL
+            link: typeof link === "string" ? link : AMTLICH_URL
         };
     }
 
@@ -1382,6 +1384,20 @@
     }
 
     window.addEventListener("hashchange", function () { ansichtAusAdresse(true); });
+
+    // Für den Bundesland-Teil (js/land.js)
+    window.App = {
+        t: t,
+        sprache: function () { return aktuelleSprache; },
+        zahl: zahl,
+        bisDreiStellen: bisDreiStellen,
+        datum: datum,
+        datumBereich: datumBereich,
+        amtlicherTermin: amtlicherTermin,
+        kalenderKnopf: kalenderKnopf,
+        kalenderWahl: kalenderWahl,
+        element: element
+    };
 
     baueTabelle();
     baueSprachauswahl();

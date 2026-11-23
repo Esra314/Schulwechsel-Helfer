@@ -9,11 +9,12 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const I18n = require("../js/i18n.js");
+const LaenderTexte = require("../js/i18n-laender.js").TEXTE;
 
 const GRENZE = require("../js/rechner.js").GRENZE_NOTENSUMME;
 
 function deutsch(schluessel) {
-    const text = I18n.TEXTE.de[schluessel];
+    const text = I18n.TEXTE.de[schluessel] !== undefined ? I18n.TEXTE.de[schluessel] : LaenderTexte.de[schluessel];
     if (text === undefined) throw new Error("Unbekannter Text: " + schluessel);
     return text.replace(/\{grenze\}/g, String(GRENZE));
 }

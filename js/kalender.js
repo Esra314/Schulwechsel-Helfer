@@ -103,7 +103,7 @@
     function ereignis(termin, jetzt) {
         var zeilen = ["BEGIN:VEVENT"];
         var schluessel = [termin.titel, termin.datum, termin.von || "", termin.ort || ""].join("|");
-        zeilen.push("UID:" + hash(schluessel) + "-" + nurZiffern(termin.datum) + "@oberschul-helfer-berlin");
+        zeilen.push("UID:" + hash(schluessel) + "-" + nurZiffern(termin.datum) + "@schulwechsel-helfer");
         zeilen.push("DTSTAMP:" + zeitstempel(jetzt));
         if (uhrzeitGueltig(termin.von)) {
             var ende = uhrzeitGueltig(termin.ende) && termin.ende > termin.von ? termin.ende : plusStunden(termin.von, 2);
@@ -131,7 +131,7 @@
         var zeilen = [
             "BEGIN:VCALENDAR",
             "VERSION:2.0",
-            "PRODID:-//Oberschul-Helfer Berlin//DE",
+            "PRODID:-//Schulwechsel-Helfer//DE",
             "CALSCALE:GREGORIAN",
             "METHOD:PUBLISH"
         ];

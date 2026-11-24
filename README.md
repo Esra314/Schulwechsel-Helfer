@@ -147,6 +147,22 @@ Die Website-Termine sind automatisch erkannt. Nach jedem Lauf die Liste kurz dur
 
 Vor jeder Anmelderunde (Herbst) neu laden: Die Schulen tragen ihre Termine laufend nach.
 
+### Aufnahme in Klasse 7 (`data/aufnahme.js`)
+
+Plätze, Anmeldungen im Erstwunsch und – wo amtlich veröffentlicht – die Durchschnittsnote,
+bis zu der aufgenommen wurde, je Schule und Schuljahr. Quellen stehen in
+`quellen/aufnahme-quellen.json` (Antworten des Senats auf Schriftliche Anfragen im
+Abgeordnetenhaus, Angaben der Bezirksämter, jeweils mit Link und Wortlaut).
+
+Jedes Jahr (meist Juni/Juli) neue Quellen ergänzen, alte Jahre stehen lassen (Archiv):
+
+```
+python3 scripts/aufnahme_laden.py roh/aufnahme/
+```
+
+Eine Zahl wird nur übernommen, wenn Haupt- und Prüfquelle übereinstimmen. Sonst steht die
+Schule unter `offen` und die App zeigt „wird noch geprüft“. Braucht `curl` und `pdftotext`.
+
 ## Neue Sprache hinzufügen
 
 1. In `js/i18n.js` die Sprache in `SPRACHEN` eintragen.

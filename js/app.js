@@ -932,6 +932,72 @@
         return box;
     }
 
+    var aufnahmeDaten = window.AUFNAHME || null;
+
+    function grenzText(g) {
+        var text = t(window.Aufnahme.grenzSchluessel(g), { wert: g.w });
+        if (g.plus) text += " (" + t("adm_plus") + ")";
+        return text;
+    }
+
+    function baueAufnahme(s) {
+        var jahre = window.Aufnahme.jahre(aufnahmeDaten, s.id);
+        if (!jahre.length) return null;
+        var box = element("div", "aufnahme");
+        var genutzt = [];
+        var mitNachfrage = false;
+        jahre.forEach(function (j) {
+            var zeile = element("div", "aufnahme-jahr");
+            var kopf = element("div", "aufnahme-kopf");
+            kopf.appendChild(element("strong", "aufnahme-jahreszahl", j.jahr));
+            if (j.offen) {
+                zeile.appendChild(kopf);
+                zeile.appendChild(element("p", "leise", t("adm_open")));
+                box.appendChild(zeile);
+                return;
+            }
+            if (j.erstwuensche !== undefined) {
+                kopf.appendChild(chip(j.genugPlatz ? "✅ " + t("adm_room") : "👥 " + t("adm_more"),
+                    j.genugPlatz ? "chip-platz" : "chip-nachfrage"));
+                if (!j.genugPlatz) mitNachfrage = true;
+            }
+            zeile.appendChild(kopf);
+            if (j.plaetze !== undefined) {
+                zeile.appendChild(element("p", "aufnahme-zahlen", j.erstwuensche !== undefined
+                    ? t("adm_counts", { plaetze: j.plaetze, erst: j.erstwuensche })
+                    : t("adm_places_only", { plaetze: j.plaetze })));
+            }
+            j.grenzen.forEach(function (g) {
+                var p = element("p", "aufnahme-grenze");
+                p.appendChild(document.createTextNode("🎯 "));
+                if (g.teil) {
+                    var teil = element("span", "", g.teil + ": ");
+                    teil.lang = "de";
+                    p.appendChild(teil);
+                }
+                p.appendChild(document.createTextNode(grenzText(g)));
+                zeile.appendChild(p);
+            });
+            j.quellen.forEach(function (q) { if (genutzt.indexOf(q) < 0) genutzt.push(q); });
+            box.appendChild(zeile);
+        });
+        if (s.a === "gms") box.appendChild(element("p", "leise aufnahme-hinweis", t("adm_gms")));
+        box.appendChild(element("p", "aufnahme-tipp", "💡 " + t(mitNachfrage ? "adm_tip" : "adm_tip_short")));
+        var quelle = element("p", "quelle-zeile");
+        quelle.appendChild(document.createTextNode("ⓘ " + t("adm_source", { datum: datum(aufnahmeDaten.stand) }) + " "));
+        genutzt.forEach(function (q, i) {
+            var info = aufnahmeDaten.quellen[q];
+            if (!info) return;
+            if (i) quelle.appendChild(document.createTextNode(" · "));
+            var a = neuerLink(info.u, info.k);
+            a.title = info.t;
+            a.lang = "de";
+            quelle.appendChild(a);
+        });
+        box.appendChild(quelle);
+        return box;
+    }
+
     function baueDetails(s) {
         var info = schulinfos[s.id] || {};
         var quelle = info.w || {};
@@ -1004,6 +1070,10 @@
             terminBox = mitWebsite(t("dates_none_short"), s);
         }
         details.appendChild(abschnitt("📅", "f_tdot", terminBox));
+
+        // 3b. Aufnahme in Klasse 7: Plätze, Erstwünsche, Aufnahme-Noten (Jahr für Jahr)
+        var aufnahmeBox = baueAufnahme(s);
+        if (aufnahmeBox) details.appendChild(abschnitt("📊", "adm_title", aufnahmeBox));
 
         // 4. Mehr: Besonderheiten, AGs, Mittagessen (gekürzt)
         if (info.bm) details.appendChild(abschnitt("✨", "sv_notes", kurzText(info.bm)));

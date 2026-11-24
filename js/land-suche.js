@@ -26,13 +26,31 @@
         var e = normal(eingabe);
         if (!e) return { fehler: "ls_err_empty" };
         if (/^\d{5}$/.test(e)) {
-            return daten.plz[e] ? { mitte: daten.plz[e] } : { fehler: "ls_err_unknown" };
+            if (daten.plz[e]) return { mitte: daten.plz[e] };
+            // Postleitzahl ohne Schule (z. B. 80331 in der Münchner Innenstadt):
+            // ungefähre Mitte aus den bekannten Postleitzahlen mit gleichem Anfang
+            var naehe = ungefaehreMitte(daten.plz, e);
+            return naehe ? { mitte: naehe, ungefaehr: true } : { fehler: "ls_err_unknown" };
         }
         if (/^\d+$/.test(e)) return { fehler: "ls_err_unknown" };
         if (daten.orte[e]) return { mitte: daten.orte[e] };
         // Erster Ort, der so beginnt, z. B. "forst" → "forst (lausitz)"
         var namen = Object.keys(daten.orte).filter(function (o) { return o.indexOf(e) === 0; }).sort();
         return namen.length ? { mitte: daten.orte[namen[0]], ort: namen[0] } : { fehler: "ls_err_unknown" };
+    }
+
+    // Mittelpunkt der bekannten Postleitzahlen mit denselben ersten 4 (sonst 3) Ziffern
+    function ungefaehreMitte(plz, eingabe) {
+        for (var stellen = 4; stellen >= 3; stellen--) {
+            var anfang = eingabe.slice(0, stellen);
+            var treffer = Object.keys(plz).filter(function (p) { return p.indexOf(anfang) === 0; });
+            if (treffer.length) {
+                var lat = 0, lon = 0;
+                treffer.forEach(function (p) { lat += plz[p][0]; lon += plz[p][1]; });
+                return [lat / treffer.length, lon / treffer.length];
+            }
+        }
+        return null;
     }
 
     // Ganztag in der Sekundarstufe I laut "Besonderheiten" der Landesdaten
@@ -46,10 +64,12 @@
      */
     function suche(daten, optionen) {
         var mitte = optionen.mitte;
+        var ungefaehr = false;
         if (!mitte) {
             var m = findeMitte(daten, optionen.eingabe);
             if (m.fehler) return { ok: false, fehler: m.fehler };
             mitte = m.mitte;
+            ungefaehr = !!m.ungefaehr;
         }
         var arten = optionen.arten || [];
         var schulen = daten.schulen
@@ -64,7 +84,7 @@
             })
             .filter(function (s) { return s.km <= optionen.radiusKm; })
             .sort(function (a, b) { return a.km - b.km; });
-        return { ok: true, mitte: mitte, schulen: schulen };
+        return { ok: true, mitte: mitte, schulen: schulen, ungefaehr: ungefaehr };
     }
 
     var logik = { entfernungKm: entfernungKm, findeMitte: findeMitte, suche: suche, hatGanztag: hatGanztag };
@@ -318,7 +338,7 @@
         form.addEventListener("change", function (e) {
             if (e.target === input) return;
             lies();
-            if (st.ergebnis && st.ergebnis.ok) rechne(st.ergebnis.mitte, false);
+            if (st.ergebnis && st.ergebnis.ok) rechne(st.ergebnis.mitte, false, st.ergebnis.ungefaehr);
         });
     }
 
@@ -358,8 +378,12 @@
         if (schluessel) document.getElementById("lsErgebnis").classList.add("verborgen");
     }
 
-    function rechne(mitte, scrollen) {
+    function rechne(mitte, scrollen, ungefaehr) {
         var st = z();
+        if (!st.arten || st.arten.length === 0) {
+            zeigeFehler("err_no_type");
+            return;
+        }
         var r = suche(daten(), {
             eingabe: st.eingabe, mitte: mitte, arten: st.arten, privat: st.privat, radiusKm: st.radius,
             sprache: st.sprache, ganztag: st.ganztag
@@ -369,6 +393,7 @@
             zeigeFehler(r.fehler);
             return;
         }
+        if (ungefaehr) r.ungefaehr = true;
         st.ergebnis = r;
         st.sichtbar = PRO_SEITE;
         zeigeFehler(null);
@@ -387,6 +412,7 @@
         erg.appendChild(el("p", "treffer-anzahl", r.schulen.length
             ? t("near_count", { anzahl: r.schulen.length, km: st.radius })
             : t("near_none")));
+        if (r.ungefaehr) erg.appendChild(el("p", "klein hinweis-orange", t("ls_approx")));
         erg.appendChild(el("p", "klein hinweis-blau", t("open_day_hint")));
 
         // Karte erst nach Zustimmung (OpenStreetMap bekommt die IP-Adresse)

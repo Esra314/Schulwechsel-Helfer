@@ -498,6 +498,8 @@
         var l = e.sprache;
         var land = landModus();
         LINKS.official.href = land ? land.amtlich : OFFIZIELL;
+        // In den anderen Ländern nicht "Senatsverwaltung" (Berlin), sondern "Informationen des Landes"
+        LINKS.official.text = land ? "li_official" : "official_link";
         if (land && e.art === "thema" && landAntwort(e.thema, l, land)) {
             var la = landAntwort(e.thema, l, land);
             botNachricht(la.a, l, [

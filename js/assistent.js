@@ -16,6 +16,9 @@
 
     var SPRACHEN = ["de", "en", "tr", "ar", "uk", "ru"];
 
+    // Kleine deutsche Alltagswörter: Daran erkennen wir eine deutsche Frage
+    var DEUTSCHE_WOERTER = / (wie|was|wann|wo|wer|warum|wieso|welche[rsnm]?|ist|sind|gibt|kann|darf|muss|mein[e]?|meinem|ich|wir|und|oder|mit|fur|bei|zum|zur|nicht|kein[e]?|bitte) /;
+
     // ---------- Suche ----------
 
     // Kleinschreibung, ohne Akzente und Satzzeichen; "+" und "-" bleiben (2+, 3-, 2-3).
@@ -134,6 +137,7 @@
 
         // Sprache der Antwort: die Seitensprache, außer die Frage passt klar besser zu einer anderen
         var sprache = seitenSprache;
+        var themaSprache = null;
         var roh = String(frage || "").toLowerCase();
         if (/[؀-ۿ]/.test(roh)) {
             sprache = "ar";
@@ -142,12 +146,21 @@
                 : proSprache.ru.gesamt > proSprache.uk.gesamt ? "ru"
                 : (/[іїєґ]/.test(roh) ? "uk" : "ru");
         } else {
+            // Die Frage passt am besten zu dieser Sprache (für die Wahl des Themas)
+            var beste = sprache;
             SPRACHEN.forEach(function (l) {
-                if (proSprache[l].gesamt > proSprache[sprache].gesamt) sprache = l;
+                if (proSprache[l].gesamt > proSprache[beste].gesamt) beste = l;
             });
+            // Deutsche Fachwörter (Probeunterricht, Durchschnitt, Ganztag …) kommen in allen
+            // Sprachen vor. Auf Deutsch antworten wir nur, wenn die Frage wirklich deutsch ist.
+            if (beste !== "de" || sprache === "de" || DEUTSCHE_WOERTER.test(" " + normalisiere(frage) + " ")) {
+                sprache = beste;
+            } else {
+                themaSprache = "de";
+            }
         }
 
-        var p = proSprache[sprache];
+        var p = proSprache[themaSprache || sprache];
         // "Hallo, wie geht's?" -> lieber "wie geht's" beantworten als nur grüßen
         var treffer = p.st.filter(function (x) { return x.p > 0; });
         var gruss = treffer.some(function (x) { return x.id === "gruss"; });

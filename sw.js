@@ -5,7 +5,7 @@
  * vom Server (Updates sind sofort sichtbar). Nur ohne Internet wird die
  * gespeicherte Kopie genutzt. VERSION nur erhöhen, wenn sich die Liste DATEIEN ändert.
  */
-const VERSION = "v13";
+const VERSION = "v14";
 const CACHE = "schulwechsel-helfer-" + VERSION;
 
 const DATEIEN = [

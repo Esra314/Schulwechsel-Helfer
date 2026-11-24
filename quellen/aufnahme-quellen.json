@@ -1,0 +1,317 @@
+{
+  "_hinweis": "Amtliche Quellen zur Aufnahme in Jahrgangsstufe 7 (Berlin). Jedes Jahr neue Einträge ergänzen, alte NICHT löschen (Archiv). Danach: python3 scripts/aufnahme_laden.py",
+  "geprueft": "2026-11-24",
+  "quellen": {
+    "drs-19-23179": {
+      "titel": "Abgeordnetenhaus Berlin, Drucksache 19/23179 (Schriftliche Anfrage), Antwort vom 18.07.2025",
+      "kurz": "Abgeordnetenhaus, Drs. 19/23179",
+      "url": "https://pardok.parlament-berlin.de/starweb/adis/citat/VT/19/SchrAnfr/S19-23179.pdf"
+    },
+    "drs-19-26469": {
+      "titel": "Abgeordnetenhaus Berlin, Drucksache 19/26469 (Schriftliche Anfrage), Antwort vom 09.07.2026",
+      "kurz": "Abgeordnetenhaus, Drs. 19/26469",
+      "url": "https://pardok.parlament-berlin.de/starweb/adis/citat/VT/19/SchrAnfr/S19-26469.pdf"
+    },
+    "drs-19-26317": {
+      "titel": "Abgeordnetenhaus Berlin, Drucksache 19/26317 (Schriftliche Anfrage), Antwort vom 25.06.2026",
+      "kurz": "Abgeordnetenhaus, Drs. 19/26317",
+      "url": "https://pardok.parlament-berlin.de/starweb/adis/citat/VT/19/SchrAnfr/S19-26317.pdf"
+    },
+    "drs-19-26504": {
+      "titel": "Abgeordnetenhaus Berlin, Drucksache 19/26504 (Schriftliche Anfrage), Antwort vom 14.07.2026",
+      "kurz": "Abgeordnetenhaus, Drs. 19/26504",
+      "url": "https://pardok.parlament-berlin.de/starweb/adis/citat/VT/19/SchrAnfr/S19-26504.pdf"
+    },
+    "drs-19-26526": {
+      "titel": "Abgeordnetenhaus Berlin, Drucksache 19/26526 (Schriftliche Anfrage), Antwort vom 17.07.2026",
+      "kurz": "Abgeordnetenhaus, Drs. 19/26526",
+      "url": "https://pardok.parlament-berlin.de/starweb/adis/citat/VT/19/SchrAnfr/S19-26526.pdf"
+    },
+    "drs-19-26430": {
+      "titel": "Abgeordnetenhaus Berlin, Drucksache 19/26430 (Schriftliche Anfrage), Antwort vom 08.07.2026",
+      "kurz": "Abgeordnetenhaus, Drs. 19/26430",
+      "url": "https://pardok.parlament-berlin.de/starweb/adis/citat/VT/19/SchrAnfr/S19-26430.pdf"
+    },
+    "ba-pankow-2026-01-29": {
+      "titel": "Bezirksamt Pankow, Schulaufsicht und Schul- und Sportamt: Informationsveranstaltung Übergang, 29.01.2026 (Tabelle „Einrichtung 7. Klassen – Durchschnittsnote“ 2025/26)",
+      "kurz": "Bezirksamt Pankow, 29.01.2026",
+      "url": "https://www.berlin.de/ba-pankow/politik-und-verwaltung/aemter/schul-und-sportamt/dokumente/260129_praesentation-uebergang-scha_schula_final.pdf"
+    }
+  },
+  "_tabellen_hinweis": "Tabellen 'Kapazität Regelschulplätze' und 'Anmeldungen im Erstwunsch' je Schule. Eine Zahl wird nur übernommen, wenn Haupt- und Prüfquelle übereinstimmen.",
+  "tabellen": {
+    "2025/26": {
+      "haupt": "drs-19-23179",
+      "pruef": "drs-19-26469"
+    },
+    "2026/27": {
+      "haupt": "drs-19-26317",
+      "pruef": "drs-19-26504"
+    }
+  },
+  "_korrekturen_hinweis": "Wo sich Haupt- und Prüfquelle widersprechen und eine Quelle erkennbar fehlerhaft ist: Zahlen aus 'quelle' übernehmen und in der App auf die abweichende Quelle hinweisen (Entscheidung eak, 2026-11-24).",
+  "korrekturen": [
+    {
+      "j": "2025/26",
+      "ids": [
+        "09Y04",
+        "09Y05",
+        "09Y06",
+        "09Y10",
+        "09Y11",
+        "09Y12"
+      ],
+      "quelle": "drs-19-23179",
+      "abweichend": "drs-19-26469",
+      "grund": "In Drs. 19/26469 steht bei allen Gymnasien in Treptow-Köpenick (09Y03–09Y12) dieselbe Zahl 125 Erstwünsche – offensichtlich ein Übertragungsfehler; Drs. 19/23179 nennt je Schule eigene Werte."
+    },
+    {
+      "j": "2026/27",
+      "ids": [
+        "10Y01",
+        "10Y02",
+        "10Y03",
+        "10Y08",
+        "10Y11",
+        "10Y12"
+      ],
+      "quelle": "drs-19-26504",
+      "abweichend": "drs-19-26317",
+      "grund": "In Drs. 19/26317 sind die Zeilen der Gymnasien in Marzahn-Hellersdorf um eine Zeile verschoben (10Y01 zeigt die Vorjahreswerte, die übrigen die Werte der Nachbarschule); Drs. 19/26504 passt zu den Kapazitäten der Vorjahre."
+    }
+  ],
+  "_grenzen_hinweis": "Durchschnittsnote (bzw. Noten-/Punktsumme), bis zu der im Kriterienkontingent aufgenommen wurde. art: note | notensumme | punktsumme | los. plus: Teilweise auch mit der nächsten Note aufgenommen. zitat: Wortlaut aus der Quelle.",
+  "grenzen": [
+    {
+      "id": "03K01",
+      "j": "2025/26",
+      "w": "1,6",
+      "art": "note",
+      "plus": true,
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Kurt-Schwitters-Schule (inkl. SESB) 182 238 1,6*"
+    },
+    {
+      "id": "03K02",
+      "j": "2025/26",
+      "w": "1,8",
+      "art": "note",
+      "plus": true,
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Kurt-Tucholsky-Schule 156 226 1,8*"
+    },
+    {
+      "id": "03K03",
+      "j": "2025/26",
+      "w": "2,4",
+      "art": "note",
+      "plus": true,
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Konrad-Duden-Schule 156 186 2,4*"
+    },
+    {
+      "id": "03K05",
+      "j": "2025/26",
+      "w": "1,4",
+      "art": "note",
+      "plus": true,
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Heinz-Brandt-Schule 104 315 1,4*"
+    },
+    {
+      "id": "03K06",
+      "j": "2025/26",
+      "w": "2,4",
+      "art": "note",
+      "plus": true,
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Reinhold-Burger-Schule 104 137 2,4*"
+    },
+    {
+      "id": "03K08",
+      "j": "2025/26",
+      "w": "2,4",
+      "art": "note",
+      "plus": true,
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Hagenbeck-Schule 104 148 2,4*"
+    },
+    {
+      "id": "03K09",
+      "j": "2025/26",
+      "w": "2,8",
+      "art": "note",
+      "plus": true,
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Janusz-Korczak-Schule 104 110 2,8*"
+    },
+    {
+      "id": "03Y03",
+      "j": "2025/26",
+      "w": "5",
+      "art": "notensumme",
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Käthe-Kollwitz-Gymnasium 64 95 Notensumme 5"
+    },
+    {
+      "id": "03Y04",
+      "j": "2025/26",
+      "w": "1,0",
+      "art": "los",
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Heinrich-Schliemann-Gymnasium 96 208 Losverfahren bei 1,0"
+    },
+    {
+      "id": "03Y08",
+      "j": "2025/26",
+      "w": "1,1",
+      "art": "note",
+      "plus": true,
+      "teil": "1. Fremdsprache Englisch",
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Carl-von-Ossietzky-Gymnasium 128 145 1,1*"
+    },
+    {
+      "id": "03Y10",
+      "j": "2025/26",
+      "w": "10",
+      "art": "punktsumme",
+      "plus": true,
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Rosa-Luxemburg-Gymnasium 64 102 Punktsumme 10*"
+    },
+    {
+      "id": "03Y13",
+      "j": "2025/26",
+      "w": "1,2",
+      "art": "note",
+      "plus": true,
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Felix-Mendelssohn-Bartholdy-Gymnasium 224 273 1,2*"
+    },
+    {
+      "id": "03Y14",
+      "j": "2025/26",
+      "w": "1,2",
+      "art": "note",
+      "plus": true,
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Primo-Levi-Gymnasium 128 186 1,2*"
+    },
+    {
+      "id": "03Y15",
+      "j": "2025/26",
+      "w": "1,4",
+      "art": "note",
+      "plus": true,
+      "q": "ba-pankow-2026-01-29",
+      "zitat": "Max-Delbrück-Gymnasium 160 199 1,4*"
+    },
+    {
+      "id": "06K03",
+      "j": "2026/27",
+      "w": "3,0",
+      "art": "note",
+      "q": "drs-19-26526",
+      "zitat": "Kopernikus-Schule: Durchschnittsnote 3,0"
+    },
+    {
+      "id": "06K08",
+      "j": "2026/27",
+      "w": "2,4",
+      "art": "note",
+      "q": "drs-19-26526",
+      "zitat": "Max-von-Laue-Schule: Durchschnittsnote 2,4"
+    },
+    {
+      "id": "06Y03",
+      "j": "2026/27",
+      "w": "1,4",
+      "art": "note",
+      "q": "drs-19-26526",
+      "zitat": "Arndt-Gymnasium: Durchschnittsnote 1,4"
+    },
+    {
+      "id": "06Y09",
+      "j": "2026/27",
+      "w": "1,4",
+      "art": "note",
+      "q": "drs-19-26526",
+      "zitat": "Fichtenberg-Oberschule: Durchschnittsnote 1,4"
+    },
+    {
+      "id": "06Y11",
+      "j": "2026/27",
+      "w": "1,2",
+      "art": "note",
+      "teil": "1. Fremdsprache Französisch",
+      "q": "drs-19-26526",
+      "zitat": "Goethe-Gymnasium Lichterfelde: 1. Fremdsprache Französisch: Durchschnittsnote 1,2"
+    },
+    {
+      "id": "06Y11",
+      "j": "2026/27",
+      "w": "1,3",
+      "art": "note",
+      "teil": "1. Fremdsprache Englisch",
+      "q": "drs-19-26526",
+      "zitat": "1. Fremdsprache Englisch: Durchschnittsnote 1,3"
+    },
+    {
+      "id": "11K01",
+      "j": "2026/27",
+      "w": "2,2",
+      "art": "note",
+      "q": "drs-19-26430",
+      "zitat": "11K01 2,2"
+    },
+    {
+      "id": "11K02",
+      "j": "2026/27",
+      "w": "2,3",
+      "art": "note",
+      "q": "drs-19-26430",
+      "zitat": "11K02 2,3"
+    },
+    {
+      "id": "11K05",
+      "j": "2026/27",
+      "w": "2,2",
+      "art": "note",
+      "q": "drs-19-26430",
+      "zitat": "11K05 2,2"
+    },
+    {
+      "id": "11K06",
+      "j": "2026/27",
+      "w": "2,7",
+      "art": "note",
+      "q": "drs-19-26430",
+      "zitat": "11K06 2,7"
+    },
+    {
+      "id": "11K15",
+      "j": "2026/27",
+      "w": "2,3",
+      "art": "note",
+      "q": "drs-19-26430",
+      "zitat": "11K15 2,3"
+    },
+    {
+      "id": "11K16",
+      "j": "2026/27",
+      "w": "2,4",
+      "art": "note",
+      "q": "drs-19-26430",
+      "zitat": "11K16 2,4"
+    },
+    {
+      "id": "11K17",
+      "j": "2026/27",
+      "w": "2,0",
+      "art": "note",
+      "q": "drs-19-26430",
+      "zitat": "11K17 2,0"
+    }
+  ]
+}

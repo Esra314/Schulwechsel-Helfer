@@ -3274,3 +3274,72 @@ button.land-option.bald .land-marke { background: #f1f1f4; color: #4b5563; }
 @media print {
     .land-knopf, .land-dialog { display: none !important; }
 }
+
+/* ---------- Aufnahme in Klasse 7 (Plätze, Erstwünsche, Noten) ---------- */
+.aufnahme {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.aufnahme-jahr {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #f7fbfe;
+    border: 1px solid #dcebf5;
+}
+
+.aufnahme-kopf {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.aufnahme-jahreszahl {
+    font-size: 0.95rem;
+    color: var(--f2-dunkel);
+}
+
+.detail-abschnitt .aufnahme-zahlen {
+    margin-top: 4px;
+    font-weight: 600;
+}
+
+.detail-abschnitt .aufnahme-grenze {
+    margin-top: 4px;
+    font-size: 0.88rem;
+}
+
+.chip.chip-platz {
+    background: var(--gruen-hell);
+    border-color: #cfe9d8;
+    color: var(--gruen);
+    font-weight: 600;
+}
+
+.chip.chip-nachfrage {
+    background: #f3eaf9;
+    border-color: #e2d4f6;
+    color: #714790;
+    font-weight: 600;
+}
+
+.detail-abschnitt .aufnahme-tipp {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #fff8ec;
+}
+
+.aufnahme .quelle-zeile {
+    margin-top: 0;
+}
+
+.detail-abschnitt .aufnahme-gym {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--blau-hell);
+}

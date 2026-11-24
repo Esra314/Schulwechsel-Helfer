@@ -5,7 +5,7 @@
  * vom Server (Updates sind sofort sichtbar). Nur ohne Internet wird die
  * gespeicherte Kopie genutzt. VERSION nur erhöhen, wenn sich die Liste DATEIEN ändert.
  */
-const VERSION = "v12";
+const VERSION = "v13";
 const CACHE = "schulwechsel-helfer-" + VERSION;
 
 const DATEIEN = [
@@ -29,11 +29,14 @@ const DATEIEN = [
     "js/i18n-laender.js",
     "js/laender.js",
     "js/app.js",
+    "js/land-suche.js",
     "js/land.js",
     "js/assistent-daten.js",
     "js/assistent.js",
     "data/schulen.js",
     "data/schulinfos.js",
+    "data/schulen-bb.js",
+    "data/schulen-by.js",
     "vendor/leaflet/leaflet.js",
     "vendor/leaflet/leaflet.css"
 ];

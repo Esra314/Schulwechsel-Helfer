@@ -3137,8 +3137,7 @@ button.kalender-option:hover {
 /* Berlin nutzt die festen Bereiche, die anderen Länder die Bereiche aus js/land.js */
 html[data-land]:not([data-land="BE"]) .nur-be,
 html:not([data-land]) .nur-land,
-html[data-land="BE"] .nur-land,
-html[data-land]:not([data-land="BE"]) #hilfe {
+html[data-land="BE"] .nur-land {
     display: none !important;
 }
 

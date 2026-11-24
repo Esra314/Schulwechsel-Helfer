@@ -130,6 +130,7 @@ export function baueBB(gml, stand) {
             t: o.telefonnummer || "",
             e: o.dienst_email || "",
             sp: liste(o.fremdsprachen),
+            spj: ((o.fremdsprachen_timestmp || "").match(/\d{4}\/\d{4}/) || [""])[0],
             bm: liste(o.besonderheiten),
             lat: o.lat,
             lon: o.lon

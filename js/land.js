@@ -193,7 +193,6 @@
         tabelle.appendChild(rumpf);
         fs.appendChild(tabelle);
 
-        fs.appendChild(el("p", "klein", t("tendency_hint")));
         form.appendChild(fs);
 
         var fehler = el("div", "fehler-box verborgen");
@@ -379,6 +378,22 @@
             }
             liste.appendChild(li);
         });
+        var kal = document.getElementById("landKalender");
+        if (kal) {
+            kal.textContent = "";
+            var mitDatum = (l.termine || []).filter(function (x) { return !x.wann; });
+            kal.hidden = mitDatum.length === 0;
+            if (mitDatum.length) {
+                var alle = el("button", "kalender-gross", t("cal_all"));
+                alle.type = "button";
+                alle.addEventListener("click", function () {
+                    App.kalenderWahl(mitDatum.map(function (x) { return App.amtlicherTermin(x, l.amtlich); }),
+                        "termine-" + aktuell.toLowerCase(), alle);
+                });
+                kal.appendChild(alle);
+                kal.appendChild(el("p", "klein", t("cal_note")));
+            }
+        }
         var hinweis = document.getElementById("landTerminQuelle");
         if (!hinweis) return;
         hinweis.textContent = "";

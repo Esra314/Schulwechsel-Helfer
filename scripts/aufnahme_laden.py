@@ -40,22 +40,35 @@ def main():
         bekannt = set(re.findall(r'"id":"(\w+)"', f.read()))
 
     schulen, offen = {}, {}
+    korrektur = {}
+    for k in cfg.get("korrekturen", []):
+        for bsn in k["ids"]:
+            korrektur[(k["j"], bsn)] = k
     for jahr, t in sorted(cfg["tabellen"].items()):
         haupt = tabelle(text_aus_pdf(cfg["quellen"][t["haupt"]]["url"], ordner))
         pruef = tabelle(text_aus_pdf(cfg["quellen"][t["pruef"]]["url"], ordner))
+        nach_quelle = {t["haupt"]: haupt, t["pruef"]: pruef}
         if len(haupt) < 150:
             sys.exit("%s: zu wenige Zeilen erkannt (%d) – Tabellenformat prüfen" % (jahr, len(haupt)))
         for bsn, (plaetze, erstwunsch) in haupt.items():
             if bsn not in bekannt:
                 print("nicht in data/schulen.js:", jahr, bsn)
                 continue
+            quelle, abweichend = t["haupt"], None
             if pruef.get(bsn) != (plaetze, erstwunsch):
-                offen.setdefault(bsn, []).append(jahr)
-                print("widersprüchlich:", jahr, bsn, (plaetze, erstwunsch), pruef.get(bsn))
-                continue
+                k = korrektur.get((jahr, bsn))
+                if not k:
+                    offen.setdefault(bsn, []).append(jahr)
+                    print("widersprüchlich:", jahr, bsn, (plaetze, erstwunsch), pruef.get(bsn))
+                    continue
+                quelle, abweichend = k["quelle"], k["abweichend"]
+                plaetze, erstwunsch = nach_quelle[quelle][bsn]
+                print("korrigiert:", jahr, bsn, "nach", quelle, (plaetze, erstwunsch))
             if not plaetze:
                 continue  # keine Regelplätze in Klasse 7 (z. B. nur ab Klasse 5)
-            eintrag = {"q": t["haupt"]}
+            eintrag = {"q": quelle}
+            if abweichend:
+                eintrag["a"] = abweichend
             eintrag["p"] = plaetze
             if erstwunsch is not None:
                 eintrag["e"] = erstwunsch

@@ -967,6 +967,10 @@
                     ? t("adm_counts", { plaetze: j.plaetze, erst: j.erstwuensche })
                     : t("adm_places_only", { plaetze: j.plaetze })));
             }
+            if (j.abweichend && aufnahmeDaten.quellen[j.abweichend]) {
+                zeile.appendChild(element("p", "leise aufnahme-abweichend",
+                    "ⓘ " + t("adm_differs", { quelle: aufnahmeDaten.quellen[j.abweichend].k })));
+            }
             j.grenzen.forEach(function (g) {
                 var p = element("p", "aufnahme-grenze");
                 p.appendChild(document.createTextNode("🎯 "));

@@ -25,6 +25,10 @@
                 }
             }
             if (e.q) zeile.quellen.push(e.q);
+            if (e.a && !zeile.offen) {
+                zeile.abweichend = e.a;
+                zeile.quellen.push(e.a);
+            }
             zeile.grenzen.forEach(function (g) {
                 if (zeile.quellen.indexOf(g.q) < 0) zeile.quellen.push(g.q);
             });

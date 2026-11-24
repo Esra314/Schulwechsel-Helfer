@@ -23,10 +23,11 @@ test("Aufnahme-Daten: bekannte Schulen, gültige Jahre, Zahlen und Quellen", () 
         assert.ok(ids.has(id), id);
         for (const [jahr, e] of Object.entries(jahre)) {
             assert.match(jahr, /^20\d\d\/\d\d$/);
-            for (const k of Object.keys(e)) assert.ok(["p", "e", "q", "g"].includes(k), `${id} ${jahr}: ${k}`);
+            for (const k of Object.keys(e)) assert.ok(["p", "e", "q", "g", "a"].includes(k), `${id} ${jahr}: ${k}`);
             if (e.p !== undefined) assert.ok(Number.isInteger(e.p) && e.p > 0);
             if (e.e !== undefined) assert.ok(Number.isInteger(e.e) && e.e >= 0);
             if (e.q) assert.ok(AUFNAHME.quellen[e.q], e.q);
+            if (e.a) assert.ok(AUFNAHME.quellen[e.a] && e.a !== e.q, e.a);
             for (const g of e.g || []) {
                 assert.ok(AUFNAHME.quellen[g.q], g.q);
                 assert.ok(["note", "notensumme", "punktsumme", "los"].includes(g.art));
@@ -67,4 +68,15 @@ test("Jahre: neuestes zuerst, genug Platz wird erkannt (Beispiel Primo-Levi-Gymn
     assert.deepEqual(jahre[1].quellen, ["drs-19-23179", "ba-pankow-2026-01-29"]);
     assert.deepEqual(Aufnahme.jahre(AUFNAHME, "gibt-es-nicht"), []);
     assert.equal(Aufnahme.grenzSchluessel({ art: "los" }), "adm_grade_lot");
+});
+
+test("Korrigierte Schulen zeigen die verlässliche Quelle und einen Hinweis", () => {
+    const tag = Aufnahme.jahre(AUFNAHME, "10Y01").find((z) => z.jahr === "2026/27");
+    assert.equal(tag.plaetze, 160);
+    assert.equal(tag.erstwuensche, 103);
+    assert.equal(tag.abweichend, "drs-19-26317");
+    assert.deepEqual(tag.quellen, ["drs-19-26504", "drs-19-26317"]);
+    const tk = Aufnahme.jahre(AUFNAHME, "09Y06").find((z) => z.jahr === "2025/26");
+    assert.equal(tk.erstwuensche, 167);
+    assert.equal(tk.abweichend, "drs-19-26469");
 });

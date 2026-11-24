@@ -49,6 +49,37 @@
       "pruef": "drs-19-26504"
     }
   },
+  "_korrekturen_hinweis": "Wo sich Haupt- und Prüfquelle widersprechen und eine Quelle erkennbar fehlerhaft ist: Zahlen aus 'quelle' übernehmen und in der App auf die abweichende Quelle hinweisen (Entscheidung eak, 2026-11-24).",
+  "korrekturen": [
+    {
+      "j": "2025/26",
+      "ids": [
+        "09Y04",
+        "09Y05",
+        "09Y06",
+        "09Y10",
+        "09Y11",
+        "09Y12"
+      ],
+      "quelle": "drs-19-23179",
+      "abweichend": "drs-19-26469",
+      "grund": "In Drs. 19/26469 steht bei allen Gymnasien in Treptow-Köpenick (09Y03–09Y12) dieselbe Zahl 125 Erstwünsche – offensichtlich ein Übertragungsfehler; Drs. 19/23179 nennt je Schule eigene Werte."
+    },
+    {
+      "j": "2026/27",
+      "ids": [
+        "10Y01",
+        "10Y02",
+        "10Y03",
+        "10Y08",
+        "10Y11",
+        "10Y12"
+      ],
+      "quelle": "drs-19-26504",
+      "abweichend": "drs-19-26317",
+      "grund": "In Drs. 19/26317 sind die Zeilen der Gymnasien in Marzahn-Hellersdorf um eine Zeile verschoben (10Y01 zeigt die Vorjahreswerte, die übrigen die Werte der Nachbarschule); Drs. 19/26504 passt zu den Kapazitäten der Vorjahre."
+    }
+  ],
   "_grenzen_hinweis": "Durchschnittsnote (bzw. Noten-/Punktsumme), bis zu der im Kriterienkontingent aufgenommen wurde. art: note | notensumme | punktsumme | los. plus: Teilweise auch mit der nächsten Note aufgenommen. zitat: Wortlaut aus der Quelle.",
   "grenzen": [
     {

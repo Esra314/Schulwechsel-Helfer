@@ -986,6 +986,7 @@
             box.appendChild(zeile);
         });
         if (s.a === "gms") box.appendChild(element("p", "leise aufnahme-hinweis", t("adm_gms")));
+        if (s.a === "gym") box.appendChild(element("p", "aufnahme-hinweis aufnahme-gym", "🎓 " + t("adm_gym")));
         box.appendChild(element("p", "aufnahme-tipp", "💡 " + t(mitNachfrage ? "adm_tip" : "adm_tip_short")));
         var quelle = element("p", "quelle-zeile");
         quelle.appendChild(document.createTextNode("ⓘ " + t("adm_source", { datum: datum(aufnahmeDaten.stand) }) + " "));

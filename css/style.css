@@ -3336,3 +3336,10 @@ button.land-option.bald .land-marke { background: #f1f1f4; color: #4b5563; }
 .aufnahme .quelle-zeile {
     margin-top: 0;
 }
+
+.detail-abschnitt .aufnahme-gym {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--blau-hell);
+}

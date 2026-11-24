@@ -35,8 +35,13 @@
         return namen.length ? { mitte: daten.orte[namen[0]], ort: namen[0] } : { fehler: "ls_err_unknown" };
     }
 
+    // Ganztag in der Sekundarstufe I laut "Besonderheiten" der Landesdaten
+    function hatGanztag(s) {
+        return (s.bm || []).some(function (b) { return /ganztag/i.test(b) && /sek\s?i\b/i.test(b); });
+    }
+
     /*
-     * optionen: { eingabe | mitte: [lat, lon], arten: [...], privat, radiusKm }
+     * optionen: { eingabe | mitte: [lat, lon], arten: [...], privat, radiusKm, sprache?, ganztag? }
      * Rückgabe: { ok: true, mitte, schulen: [...mit km] } oder { ok: false, fehler }
      */
     function suche(daten, optionen) {
@@ -49,6 +54,8 @@
         var arten = optionen.arten || [];
         var schulen = daten.schulen
             .filter(function (s) { return arten.indexOf(s.a) !== -1 && (optionen.privat || !s.p); })
+            .filter(function (s) { return !optionen.sprache || (s.sp || []).indexOf(optionen.sprache) !== -1; })
+            .filter(function (s) { return !optionen.ganztag || hatGanztag(s); })
             .map(function (s) {
                 var k = {};
                 for (var x in s) k[x] = s[x];
@@ -60,7 +67,7 @@
         return { ok: true, mitte: mitte, schulen: schulen };
     }
 
-    var logik = { entfernungKm: entfernungKm, findeMitte: findeMitte, suche: suche };
+    var logik = { entfernungKm: entfernungKm, findeMitte: findeMitte, suche: suche, hatGanztag: hatGanztag };
     if (typeof module !== "undefined" && module.exports) {
         module.exports = logik;
         return;
@@ -105,7 +112,7 @@
         if (!zustand[aktuell]) {
             zustand[aktuell] = {
                 eingabe: "", arten: Object.keys(land().arten), privat: true,
-                radius: 10, ergebnis: null, sichtbar: PRO_SEITE
+                radius: 10, sprache: "", ganztag: false, ergebnis: null, sichtbar: PRO_SEITE
             };
         }
         return zustand[aktuell];
@@ -224,6 +231,47 @@
         }
         form.appendChild(fs);
 
+        var sprachen = {};
+        var spJahr = "";
+        d.schulen.forEach(function (s) {
+            (s.sp || []).forEach(function (x) { sprachen[x] = (sprachen[x] || 0) + 1; });
+            if (s.spj && s.spj > spJahr) spJahr = s.spj;
+        });
+        var namen = Object.keys(sprachen).filter(function (x) { return !/^sonstige/i.test(x); })
+            .sort(function (a, b) { return sprachen[b] - sprachen[a]; });
+        if (namen.length) {
+            var ff = el("fieldset", "filter");
+            ff.appendChild(el("legend", "", t("ls_more_filter")));
+            var sl = el("label", "feld");
+            sl.appendChild(el("span", "", t("ls_lang_filter")));
+            var sel = el("select");
+            sel.id = "lsSprache";
+            var alle = el("option", "", t("ls_lang_any"));
+            alle.value = "";
+            sel.appendChild(alle);
+            namen.forEach(function (n) {
+                var o = el("option", "", n);
+                o.value = n;
+                o.lang = "de";
+                if (n === st.sprache) o.selected = true;
+                sel.appendChild(o);
+            });
+            sl.appendChild(sel);
+            ff.appendChild(sl);
+            if (d.schulen.some(hatGanztag)) {
+                var gl = el("label", "schalter");
+                var gc = el("input");
+                gc.type = "checkbox";
+                gc.id = "lsGanztag";
+                gc.checked = st.ganztag;
+                gl.appendChild(gc);
+                gl.appendChild(el("span", "", " " + t("ls_ganztag")));
+                ff.appendChild(gl);
+            }
+            ff.appendChild(el("p", "klein", t("ls_filter_hint", { jahr: spJahr })));
+            form.appendChild(ff);
+        }
+
         var knoepfe = el("div", "knoepfe");
         var los = el("button", "", t("btn_search"));
         los.type = "submit";
@@ -296,6 +344,10 @@
         st.arten = Array.prototype.map.call(bereich.querySelectorAll('input[name="lsArt"]:checked'), function (c) { return c.value; });
         var p = document.getElementById("lsPrivat");
         st.privat = p ? p.checked : true;
+        var sp = document.getElementById("lsSprache");
+        st.sprache = sp ? sp.value : "";
+        var gt = document.getElementById("lsGanztag");
+        st.ganztag = gt ? gt.checked : false;
     }
 
     function zeigeFehler(schluessel) {
@@ -308,7 +360,10 @@
 
     function rechne(mitte, scrollen) {
         var st = z();
-        var r = suche(daten(), { eingabe: st.eingabe, mitte: mitte, arten: st.arten, privat: st.privat, radiusKm: st.radius });
+        var r = suche(daten(), {
+            eingabe: st.eingabe, mitte: mitte, arten: st.arten, privat: st.privat, radiusKm: st.radius,
+            sprache: st.sprache, ganztag: st.ganztag
+        });
         if (!r.ok) {
             st.ergebnis = null;
             zeigeFehler(r.fehler);
@@ -489,7 +544,9 @@
                 var km = entfernungKm(mitte[0], mitte[1], s.lat, s.lon);
                 return App.zahl(km, 1) + " km · 🚶 " + minuten(km, 4.5) + " min";
             }],
-            ["ls_languages", function (s) { return s.sp && s.sp.length ? s.sp.join(", ") : "–"; }],
+            ["ls_languages", function (s) {
+                return s.sp && s.sp.length ? s.sp.join(", ") + (s.spj ? " (" + t("ls_sp_year", { jahr: s.spj }) + ")" : "") : "–";
+            }],
             ["ls_features", function (s) { return s.bm && s.bm.length ? s.bm.join(", ") : "–"; }],
             ["website", function (s) { return s.w ? link("🌐 " + t("website"), s.w) : "–"; }],
             ["ls_phone", function (s) { return s.t || "–"; }],
@@ -562,7 +619,9 @@
         d.appendChild(anfahrt);
 
         if (s.f) d.appendChild(zeile(t("ls_form"), s.f));
-        if (s.sp && s.sp.length) d.appendChild(zeile(t("ls_languages"), s.sp.join(", ")));
+        if (s.sp && s.sp.length) {
+            d.appendChild(zeile(t("ls_languages") + (s.spj ? " (" + t("ls_sp_year", { jahr: s.spj }) + ")" : ""), s.sp.join(", ")));
+        }
         if (s.bm && s.bm.length) d.appendChild(zeile(t("ls_features"), s.bm.join(", ")));
 
         if (!s.w && !s.t && !s.e) {

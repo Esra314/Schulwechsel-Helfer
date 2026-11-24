@@ -104,6 +104,24 @@ Lädt die offenen Daten aus dem Geoportal Berlin (Schulen: Datenlizenz Deutschla
 Postleitzahlen: Amt für Statistik Berlin-Brandenburg, CC BY 3.0 DE) und schreibt `data/schulen.js`.
 Am besten einmal pro Schuljahr ausführen.
 
+### Schulen in Brandenburg und Bayern (`data/schulen-bb.js`, `data/schulen-by.js`)
+
+```bash
+node scripts/laender-schulen-laden.mjs
+```
+
+Lädt die amtlichen Schulstandorte aus den WFS-Diensten der Länder:
+
+- Brandenburg: MBJS, `https://schullandschaft.brandenburg.de/edugis/wfs/schulen`,
+  Datenlizenz Deutschland – Namensnennung – Version 2.0, „© Ministerium für Bildung, Jugend und Sport“
+- Bayern: StMUK, `https://gdiserv.bayern.de/srv112940/services/schulstandortebayern-wfs`,
+  CC BY 4.0, „Bayerisches Staatsministerium für Unterricht und Kultus“ (nur staatliche Schulen)
+
+Die Lizenz steht jeweils auch im GetCapabilities des Dienstes. Hinter einem Proxy die GML-Dateien
+vorher mit curl laden und mit `--bb` / `--by` übergeben (siehe Kopf des Skripts).
+Sachsen und Thüringen fehlen noch: Für Sachsen ist keine Lizenz angegeben, für Thüringen gibt es
+keinen landesweiten offenen Datensatz.
+
 ### Schulangebote und Termine (`data/schulinfos.js`)
 
 Fremdsprachen, Ganztag, Profil, AGs und Mittagessen kommen aus den Schulporträts des

@@ -175,6 +175,7 @@
             berechne: berechneBY,
             amtlich: "https://www.km.bayern.de/lernen/ubertritt-und-bildungswege/uebertritt",
             terminQuelle: "https://www.km.bayern.de/termine/schulanmeldungen",
+            schuldaten: "data/schulen-by.js",
             termine: [
                 { von: "2027-05-03", text: "by_t1" },
                 { von: "2027-05-10", bis: "2027-05-14", text: "by_t2" },
@@ -208,6 +209,7 @@
             berechne: berechneBB,
             amtlich: "https://mbjs.brandenburg.de/bildung/allgemeinbildende-schulen/grundschule/uebergang-in-die-sekundarstufe-i.html",
             terminQuelle: "https://mbjs.brandenburg.de/sixcms/media.php/140/zeitplan_ue7-verfahren_zum_schuljahr_2027_28.pdf",
+            schuldaten: "data/schulen-bb.js",
             termine: [
                 { von: "2027-01-29", text: "bb_t1" },
                 { von: "2027-02-08", bis: "2027-02-10", text: "bb_t2" },

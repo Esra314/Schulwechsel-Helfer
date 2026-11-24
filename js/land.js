@@ -482,6 +482,8 @@
             }
         }
 
+        var bald = document.getElementById("sucheBald");
+        if (bald) bald.hidden = !!l.schuldaten;
         var soonTitel = document.getElementById("sucheBaldTitel");
         if (soonTitel) soonTitel.textContent = tl("ss_soon_title");
         var soonText = document.getElementById("sucheBaldText");
@@ -500,6 +502,7 @@
         baueRechner();
         baueTermine();
         baueInfo();
+        if (window.LandSuche && window.LandSuche.baue) window.LandSuche.baue(aktuell);
         if (dialog && dialog.open) baueDialog();
     }
 

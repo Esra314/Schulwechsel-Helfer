@@ -21,7 +21,9 @@ test("Pflichtfelder und Einwilligung werden geprüft", () => {
     const gut = { vorname: "Ada", nachname: "Muster", email: "ada@example.de", nachricht: "Hallo", einwilligung: "ja" };
     assert.equal(K.pruefe(gut), null);
     assert.equal(K.pruefe({ ...gut, einwilligung: undefined }), "k_fehlt");
-    assert.equal(K.pruefe({ ...gut, nachname: "  " }), "k_fehlt");
+    // Name ist freiwillig (Datensparsamkeit)
+    assert.equal(K.pruefe({ ...gut, vorname: "", nachname: "  " }), null);
+    assert.equal(K.pruefe({ ...gut, email: "  " }), "k_fehlt");
     assert.equal(K.pruefe({ ...gut, nachricht: "" }), "k_fehlt");
     assert.equal(K.pruefe({ ...gut, email: "ada@" }), "k_email_falsch");
     assert.equal(K.pruefe({ ...gut, email: "ada example.de" }), "k_email_falsch");
@@ -59,6 +61,8 @@ test("Kontaktseite: CSP erlaubt nur Formdall, Honigtopf und Einwilligung vorhand
     assert.match(html, /type="checkbox" name="einwilligung" value="ja" required/);
     for (const f of ["vorname", "nachname", "email", "anliegen", "nachricht"]) assert.match(html, new RegExp('name="' + f + '"'), f);
     assert.doesNotMatch(html, /<script\b[^>]*>[^<]+<\/script>/, "Inline-Skript");
+    assert.doesNotMatch(html, /name="(vorname|nachname)"[^>]*required/, "Name muss freiwillig sein");
+    assert.doesNotMatch(html, /Werbung/, "keine Werbe-Anfragen, solange die Seite werbefrei ist");
 });
 
 test("Kontakt ist verlinkt und in der Datenschutzerklärung beschrieben", () => {
@@ -74,4 +78,16 @@ test("Kontakt ist verlinkt und in der Datenschutzerklärung beschrieben", () => 
         const m = ds.match(new RegExp('<section id="' + code + '"[\\s\\S]*?</section>'));
         assert.match(m[0], /Formdall/, code);
     }
+});
+
+test("Alle Seiten verlinken die Bildnachweise im Impressum statt QUELLEN.md", () => {
+    const index = fs.readFileSync(path.join(wurzel, "index.html"), "utf8");
+    assert.doesNotMatch(index, /QUELLEN\.md/);
+    assert.match(index, /impressum\.html#bildnachweise/);
+    const imp = fs.readFileSync(path.join(wurzel, "impressum.html"), "utf8");
+    assert.match(imp, /id="bildnachweise"/);
+    const fotos = fs.readdirSync(path.join(wurzel, "img", "fotos")).filter((d) => d.endsWith(".webp"));
+    const eintraege = imp.match(/<ul class="bildnachweise">[\s\S]*?<\/ul>/)[0].match(/<li>/g);
+    assert.equal(eintraege.length, fotos.length, "jedes Foto steht in den Bildnachweisen");
+    assert.match(imp, /CC0/);
 });

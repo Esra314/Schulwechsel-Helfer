@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https://api.formdall.de; object-src 'none'; base-uri 'self'; form-action https://api.formdall.de">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Kontakt – Schulwechsel-Helfer</title>
-    <meta name="description" content="Kontakt zum Schulwechsel-Helfer: Fragen, Fehler melden, Werbung und Kooperation.">
+    <meta name="description" content="Kontakt zum Schulwechsel-Helfer: Fragen, Fehler melden, Schuldaten korrigieren und Verbesserungsvorschläge.">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -33,21 +33,22 @@
 
         <!-- action: Adresse aus dem Formdall-Dashboard eintragen (siehe README, Abschnitt Kontaktformular) -->
         <form id="kontaktForm" class="kontakt-form" action="https://api.formdall.de/api/v1/f/tkULRoMJLut80VWMkF5TgxSutPF2pNfUzuoWcUqU" method="POST" data-mail="IT.projekt.314@gmail.com" novalidate>
-            <p class="kontakt-intro" data-k="k_intro">Eine Frage, ein Fehler auf der Seite oder Interesse an Werbung oder einer Kooperation? Schreiben Sie uns – wir antworten per E-Mail.</p>
+            <p class="kontakt-intro" data-k="k_intro">Eine Frage, ein Fehler auf der Seite oder eine Idee, wie wir die Seite besser machen können? Schreiben Sie uns – wir antworten per E-Mail.</p>
             <div class="kontakt-zeile">
-                <label><span data-k="k_vorname">Vorname</span><input type="text" name="vorname" autocomplete="given-name" maxlength="80" required></label>
-                <label><span data-k="k_nachname">Nachname</span><input type="text" name="nachname" autocomplete="family-name" maxlength="80" required></label>
+                <label><span data-k="k_vorname">Vorname (freiwillig)</span><input type="text" name="vorname" autocomplete="given-name" maxlength="80"></label>
+                <label><span data-k="k_nachname">Nachname (freiwillig)</span><input type="text" name="nachname" autocomplete="family-name" maxlength="80"></label>
             </div>
             <label><span data-k="k_email">E-Mail</span><input type="email" name="email" autocomplete="email" maxlength="200" required dir="ltr"></label>
             <label><span data-k="k_anliegen">Worum geht es?</span>
-                <select name="anliegen">
+                <select name="anliegen" id="kontaktAnliegen">
                     <option value="Frage zur Seite" data-k="k_a_frage">Frage zur Seite</option>
                     <option value="Fehler melden" data-k="k_a_fehler">Fehler melden</option>
-                    <option value="Werbung &amp; Kooperation" data-k="k_a_werbung">Werbung &amp; Kooperation</option>
+                    <option value="Schuldaten korrigieren" data-k="k_a_daten">Schuldaten korrigieren</option>
+                    <option value="Verbesserungsvorschlag" data-k="k_a_idee">Verbesserungsvorschlag</option>
                     <option value="Sonstiges" data-k="k_a_sonst">Sonstiges</option>
                 </select>
             </label>
-            <label><span data-k="k_nachricht">Nachricht</span><textarea name="nachricht" rows="6" maxlength="3000" required></textarea></label>
+            <label><span data-k="k_nachricht">Nachricht</span><textarea name="nachricht" id="kontaktNachricht" rows="6" maxlength="3000" required></textarea></label>
             <p class="kontakt-tipp" data-k="k_tipp">Bitte keine Noten oder Daten Ihres Kindes mitschicken – die brauchen wir nicht.</p>
             <!-- Honigtopf gegen Spam-Bots: für Menschen unsichtbar, bitte leer lassen -->
             <div class="kontakt-honig" aria-hidden="true">
@@ -60,12 +61,12 @@
                 <input type="checkbox" name="einwilligung" value="ja" required>
                 <span><span data-k="k_einw_vor">Ich bin einverstanden, dass meine Angaben zur Beantwortung meiner Nachricht verarbeitet werden. Mehr dazu in der </span><a href="datenschutz.html#kontakt" id="kontaktDsLink" data-k="k_einw_link">Datenschutzerklärung</a><span data-k="k_einw_nach">.</span></span>
             </label>
-            <p class="klein" data-k="k_pflicht">Alle Felder sind Pflichtfelder.</p>
+            <p class="klein" data-k="k_pflicht">Ihr Name ist freiwillig. E-Mail, Nachricht und der Haken sind nötig, damit wir antworten können.</p>
             <button type="submit" id="kontaktSenden" data-k="k_senden">Nachricht senden</button>
         </form>
     </div>
 
-    <p class="klein kontakt-fuss"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
+    <p class="klein kontakt-fuss"><a href="impressum.html" data-k="k_impressum">Impressum</a> · <a href="datenschutz.html" id="kontaktFussDs" data-k="k_datenschutz">Datenschutz</a></p>
     <p class="klein copyright">© 2026 Schulwechsel-Helfer</p>
 </main>
 <script src="js/kontakt-texte.js"></script>

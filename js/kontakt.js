@@ -25,7 +25,8 @@
 
     // Gibt den Schlüssel des Fehlertexts zurück oder null, wenn alles passt.
     function pruefe(d) {
-        var leer = ["vorname", "nachname", "email", "nachricht"].some(function (f) {
+        // Name ist freiwillig (Datensparsamkeit), nötig sind nur E-Mail und Nachricht.
+        var leer = ["email", "nachricht"].some(function (f) {
             return !d[f] || !String(d[f]).trim();
         });
         if (leer || !d.einwilligung) return "k_fehlt";
@@ -78,8 +79,19 @@
     if (zurueck && sprache !== "de") zurueck.href = "index.html?lang=" + sprache;
     var dsLink = document.getElementById("kontaktDsLink");
     if (dsLink && sprache !== "de") dsLink.href = "datenschutz.html#" + sprache;
+    var fussDs = document.getElementById("kontaktFussDs");
+    if (fussDs && sprache !== "de") fussDs.href = "datenschutz.html#" + sprache;
     var hiddenSprache = document.getElementById("kontaktSprache");
     if (hiddenSprache) hiddenSprache.value = sprache;
+
+    // Kurz-Links wie kontakt.html?thema=daten&schule=… füllen Thema und Schule vor
+    var parameter = new URLSearchParams(window.location.search);
+    var THEMEN = { frage: "Frage zur Seite", fehler: "Fehler melden", daten: "Schuldaten korrigieren", idee: "Verbesserungsvorschlag" };
+    var anliegen = document.getElementById("kontaktAnliegen");
+    if (anliegen && THEMEN[parameter.get("thema")]) anliegen.value = THEMEN[parameter.get("thema")];
+    var schule = (parameter.get("schule") || "").replace(/[\u0000-\u001f]/g, " ").trim().slice(0, 150);
+    var nachrichtFeld = document.getElementById("kontaktNachricht");
+    if (schule && nachrichtFeld && !nachrichtFeld.value) nachrichtFeld.value = t("k_schule") + schule + "\n\n";
 
     var form = document.getElementById("kontaktForm");
     var meldung = document.getElementById("kontaktMeldung");

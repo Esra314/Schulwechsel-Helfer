@@ -19,7 +19,7 @@
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="de_DE">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="canonical" href="https://esra314.github.io/Schulwechsel-Helfer/">
+    <!-- canonical setzt app.js passend zur Sprache (?lang=…), damit jede Sprachfassung indexiert werden kann -->
     <link rel="alternate" hreflang="de" href="https://esra314.github.io/Schulwechsel-Helfer/">
     <link rel="alternate" hreflang="en" href="https://esra314.github.io/Schulwechsel-Helfer/?lang=en">
     <link rel="alternate" hreflang="tr" href="https://esra314.github.io/Schulwechsel-Helfer/?lang=tr">
@@ -478,7 +478,7 @@
         <p class="nur-be" data-i18n="disclaimer">Unverbindliche Berechnung. Alle Angaben ohne Gewähr, auch Schuldaten und Termine. Verbindlich ist nur die Förderprognose der Grundschule. Stand der Regeln: November 2026.</p>
         <p data-i18n="privacy_note">Ihre Eingaben bleiben auf Ihrem Gerät. Nichts wird gesendet. Gemerkte Schulen und Notizen werden nur in diesem Browser gespeichert.</p>
         <p class="nur-land" data-i18n="ld_disclaimer">Unverbindliche Berechnung. Alle Angaben ohne Gewähr, auch Schuldaten und Termine. Verbindlich sind nur die Entscheidungen der Grundschule und der Schulbehörde. Stand der Regeln: November 2026.</p>
-        <p class="nur-be" lang="de">Datenquellen: Schulen – Geoportal Berlin (dl-de/zero-2-0); Postleitzahlen – Amt für Statistik Berlin-Brandenburg 2026 / Postleitzahlen (<a href="https://creativecommons.org/licenses/by/3.0/de/" target="_blank" rel="noopener">CC BY 3.0 DE</a>); Schulangebote – <a href="https://www.bildung.berlin.de/Schulverzeichnis/" target="_blank" rel="noopener">Berliner Schulverzeichnis</a>; Termine – <a href="https://www.berlin.de/land/kalender/index.php?c=79" target="_blank" rel="noopener">Kalender der Senatsverwaltung für Bildung, Jugend und Familie</a> (ohne Gewähr, bitte bei der Schule prüfen) und Websites der Schulen; Aufnahmezahlen und Grenznoten – Antworten des Senats auf Schriftliche Anfragen im <a href="https://pardok.parlament-berlin.de/" target="_blank" rel="noopener">Abgeordnetenhaus Berlin</a> und Angaben der Bezirksämter (Quelle steht bei jeder Schule); Karte – © OpenStreetMap-Mitwirkende; Fotos – <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>, gemeinfrei (CC0), Liste in <a href="img/fotos/QUELLEN.md" target="_blank" rel="noopener">QUELLEN.md</a>.</p>
+        <p class="nur-be" lang="de">Datenquellen: Schulen – Geoportal Berlin (dl-de/zero-2-0); Postleitzahlen – Amt für Statistik Berlin-Brandenburg 2026 / Postleitzahlen (<a href="https://creativecommons.org/licenses/by/3.0/de/" target="_blank" rel="noopener">CC BY 3.0 DE</a>, bearbeitet: Gebiete Schulen zugeordnet); Schulangebote – <a href="https://www.bildung.berlin.de/Schulverzeichnis/" target="_blank" rel="noopener">Berliner Schulverzeichnis</a>; Termine – <a href="https://www.berlin.de/land/kalender/index.php?c=79" target="_blank" rel="noopener">Kalender der Senatsverwaltung für Bildung, Jugend und Familie</a> (ohne Gewähr, bitte bei der Schule prüfen) und Websites der Schulen; Aufnahmezahlen und Grenznoten – Antworten des Senats auf Schriftliche Anfragen im <a href="https://pardok.parlament-berlin.de/" target="_blank" rel="noopener">Abgeordnetenhaus Berlin</a> und Angaben der Bezirksämter (Quelle steht bei jeder Schule); Karte – © OpenStreetMap-Mitwirkende; Fotos – <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>, gemeinfrei (CC0), Urheber in den <a href="impressum.html#bildnachweise">Bildnachweisen</a>.</p>
         <p class="nur-land"><a id="landAmtlich" href="#" target="_blank" rel="noopener" data-i18n="li_official">Offizielle Informationen des Landes</a></p>
         <p class="nur-be">
             <a href="https://www.berlin.de/sen/bildung/schule/bildungswege/uebergang-weiterfuehrende-schule/wechsel-zur-7-klasse/"
@@ -498,23 +498,23 @@
 <dialog id="landDialog" class="land-dialog"></dialog>
 
 <script src="vendor/leaflet/leaflet.js" defer></script>
-<script src="data/schulen.js"></script>
-<script src="data/schulinfos.js"></script>
-<script src="data/aufnahme.js"></script>
-<script src="js/rechner.js"></script>
-<script src="js/umkreis.js"></script>
-<script src="js/filter.js"></script>
-<script src="js/aufnahme.js"></script>
-<script src="js/merkliste.js"></script>
-<script src="js/kalender.js"></script>
-<script src="js/i18n.js"></script>
-<script src="js/i18n-laender.js"></script>
-<script src="js/laender.js"></script>
-<script src="js/app.js"></script>
-<script src="js/land-suche.js"></script>
-<script src="js/land.js"></script>
-<script src="js/assistent-daten.js"></script>
-<script src="js/assistent.js"></script>
+<script src="data/schulen.js" defer></script>
+<script src="data/schulinfos.js" defer></script>
+<script src="data/aufnahme.js" defer></script>
+<script src="js/rechner.js" defer></script>
+<script src="js/umkreis.js" defer></script>
+<script src="js/filter.js" defer></script>
+<script src="js/aufnahme.js" defer></script>
+<script src="js/merkliste.js" defer></script>
+<script src="js/kalender.js" defer></script>
+<script src="js/i18n.js" defer></script>
+<script src="js/i18n-laender.js" defer></script>
+<script src="js/laender.js" defer></script>
+<script src="js/app.js" defer></script>
+<script src="js/land-suche.js" defer></script>
+<script src="js/land.js" defer></script>
+<script src="js/assistent-daten.js" defer></script>
+<script src="js/assistent.js" defer></script>
 
 </body>
 </html>

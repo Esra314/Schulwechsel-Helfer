@@ -1577,7 +1577,10 @@
             (p.toString() ? "?" + p.toString() : "");
         var marke = document.querySelector(".hero-marke");
         if (status) status.textContent = "";
-        if (navigator.share) {
+        // Teilen-Menü nur auf Handy/Tablet: Am Computer (z. B. Windows) ist es oft leer und nutzlos,
+        // dort wird der Link kopiert und bestätigt.
+        var mitFinger = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+        if (navigator.share && mitFinger) {
             navigator.share({ title: marke ? marke.textContent.trim() : document.title, text: t("share_text"), url: url })
                 .catch(function () { /* abgebrochen */ });
             return;

@@ -658,6 +658,7 @@
             box.appendChild(p);
             d.appendChild(box);
         }
+        d.appendChild(App.korrekturLink(s.n + ", " + s.o));
         return d;
     }
 

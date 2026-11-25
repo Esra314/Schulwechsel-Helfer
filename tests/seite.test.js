@@ -66,3 +66,13 @@ test("Impressum und Datenschutz enthalten keine Platzhalter mehr", () => {
         assert.match(inhalt, /02977 Hoyerswerda/, datei);
     }
 });
+
+test("Teilen und Korrektur vorschlagen: nur der Seitenlink wird geteilt", () => {
+    assert.match(html, /id="teilen"/);
+    assert.match(html, /id="vorschlagLink" [^>]*data-i18n="footer_idea"/);
+    const app = fs.readFileSync(path.join(wurzel, "js", "app.js"), "utf8");
+    const teilen = app.match(/function teileSeite[\s\S]*?\n    \}\n/)[0];
+    assert.match(teilen, /window\.location\.origin \+ window\.location\.pathname/);
+    assert.doesNotMatch(teilen, /note|ergebnis|plz/i, "keine Noten oder Eingaben im geteilten Text");
+    assert.match(app, /details\.appendChild\(korrekturLink\(s\.n\)\)/);
+});

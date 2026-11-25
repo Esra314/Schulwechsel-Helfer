@@ -3342,3 +3342,82 @@ button.land-option.bald .land-marke { background: #f1f1f4; color: #4b5563; }
     border-radius: 8px;
     background: var(--blau-hell);
 }
+
+/* ---------- Aufnahme-Karten in "Meine Auswahl" ---------- */
+.vgl-aufnahme {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.vgl-aufnahme:empty {
+    display: none;
+}
+
+.vgl-aufnahme-titel {
+    margin: 18px 0 0;
+}
+
+.vgl-karten {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 10px;
+}
+
+.vgl-karte {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #f7fbfe;
+    border: 1px solid #dcebf5;
+}
+
+.vgl-karte p {
+    margin: 0;
+}
+
+.vgl-karte .aufnahme-grenze {
+    font-size: 0.88rem;
+}
+
+.balken-zeile {
+    width: 100%;
+    font-size: 0.88rem;
+}
+
+.balken-spur {
+    height: 10px;
+    margin-top: 3px;
+    border-radius: 6px;
+    background: #eef3f8;
+    overflow: hidden;
+}
+
+.balken {
+    height: 100%;
+    border-radius: 6px;
+}
+
+.balken-plaetze { background: #89CFF3; }
+.balken-ok { background: #7fcf9c; }
+.balken-mehr { background: #AD88C6; }
+
+.vgl-aufnahme .aufnahme-tipp {
+    margin: 0;
+    font-size: 0.85rem;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #fff8ec;
+}
+
+.vgl-aufnahme .quelle-zeile {
+    margin: 0;
+}
+
+@media print {
+    .balken-spur { border: 1px solid #ccc; }
+    .vgl-karte { break-inside: avoid; }
+}

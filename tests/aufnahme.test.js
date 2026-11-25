@@ -80,3 +80,30 @@ test("Korrigierte Schulen zeigen die verlässliche Quelle und einen Hinweis", ()
     assert.equal(tk.erstwuensche, 167);
     assert.equal(tk.abweichend, "drs-19-26469");
 });
+
+test("Aufnahme.kurz: neuestes Jahr mit Zahlen und neueste Aufnahme-Note für Meine Auswahl", () => {
+    const daten = {
+        schulen: {
+            X1: {
+                "2025/26": { q: "a", p: 128, e: 186, g: [{ w: "1,2", art: "note", q: "b" }] },
+                "2026/27": { q: "c", p: 128, e: 133 }
+            },
+            X2: { "2026/27": { q: "c", p: 156, e: 79 } }
+        },
+        offen: { X3: ["2026/27"] }
+    };
+    const k = Aufnahme.kurz(daten, "X1");
+    assert.equal(k.zahlen.jahr, "2026/27");
+    assert.equal(k.zahlen.genugPlatz, false);
+    assert.equal(k.grenze.jahr, "2025/26");
+    assert.deepEqual(k.quellen, ["c", "b"]);
+    const k2 = Aufnahme.kurz(daten, "X2");
+    assert.equal(k2.zahlen.genugPlatz, true);
+    assert.equal(k2.grenze, null);
+    const k3 = Aufnahme.kurz(daten, "X3");
+    assert.equal(k3.zahlen, null);
+    assert.equal(k3.offen, true);
+    assert.equal(Aufnahme.kurz(daten, "fehlt"), null);
+    // echte Daten: jede Schule mit Aufnahme-Daten liefert eine Kurzfassung
+    for (const id of Object.keys(AUFNAHME.schulen)) assert.ok(Aufnahme.kurz(AUFNAHME, id), id);
+});

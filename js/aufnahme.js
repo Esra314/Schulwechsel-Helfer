@@ -41,7 +41,28 @@
         return { note: "adm_grade_note", notensumme: "adm_grade_sum", punktsumme: "adm_grade_points", los: "adm_grade_lot" }[g.art] || "adm_grade_note";
     }
 
-    var Aufnahme = { jahre: jahre, grenzSchluessel: grenzSchluessel };
+    // Kurzfassung für "Meine Auswahl": neuestes Jahr mit Zahlen und neueste Aufnahme-Note
+    function kurz(daten, id) {
+        var alle = jahre(daten, id);
+        if (!alle.length) return null;
+        var zahlen = alle.filter(function (j) { return !j.offen && j.plaetze !== undefined; })[0] || null;
+        var grenze = null;
+        for (var i = 0; i < alle.length; i++) {
+            if (alle[i].grenzen.length) { grenze = { jahr: alle[i].jahr, liste: alle[i].grenzen }; break; }
+        }
+        var quellen = [];
+        function merke(q) { if (q && quellen.indexOf(q) < 0) quellen.push(q); }
+        if (zahlen) zahlen.quellen.forEach(merke);
+        if (grenze) grenze.liste.forEach(function (g) { merke(g.q); });
+        return {
+            zahlen: zahlen,
+            grenze: grenze,
+            offen: !zahlen && alle.some(function (j) { return j.offen; }),
+            quellen: quellen
+        };
+    }
+
+    var Aufnahme = { jahre: jahre, grenzSchluessel: grenzSchluessel, kurz: kurz };
     if (typeof module !== "undefined" && module.exports) module.exports = Aufnahme;
     else root.Aufnahme = Aufnahme;
 })(this);

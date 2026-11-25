@@ -1169,6 +1169,7 @@
         var tabelle = document.getElementById("vergleichTabelle");
         tabelle.textContent = "";
         zeigeMeineTermine(ids);
+        zeigeAufnahmeKarten(ids.map(function (id) { return schuleNachId[id]; }));
         if (ids.length === 0) return;
 
         var schulen = ids.map(function (id) { return schuleNachId[id]; });
@@ -1260,6 +1261,95 @@
         tabelle.appendChild(rumpf);
         document.getElementById("vergleichLegende").textContent = "ⓘ = " + t("sv_mark") + ". "
             + t("sv_dates_source", { datum: infoStand ? datum(infoStand) : "–" });
+    }
+
+    // Aufnahme in Klasse 7 als Karten unter der Vergleichstabelle (Plätze, Erstwünsche, Aufnahme-Note)
+    var WUNSCH_QUELLE = "https://www.berlin.de/sen/bildung/schule/bildungswege/uebergang-weiterfuehrende-schule/wechsel-zur-7-klasse/";
+
+    function balken(text, wert, max, klasse) {
+        var zeile = element("div", "balken-zeile");
+        zeile.appendChild(element("span", "balken-text", text + ": " + wert));
+        var spur = element("div", "balken-spur");
+        spur.setAttribute("aria-hidden", "true");
+        var fuellung = element("div", "balken " + klasse);
+        fuellung.style.width = Math.max(3, Math.round(100 * wert / max)) + "%";
+        spur.appendChild(fuellung);
+        zeile.appendChild(spur);
+        return zeile;
+    }
+
+    function zeigeAufnahmeKarten(schulen) {
+        var bereich = document.getElementById("vergleichAufnahme");
+        if (!bereich) return;
+        bereich.textContent = "";
+        if (!aufnahmeDaten || !window.Aufnahme || !schulen.length) return;
+        bereich.appendChild(element("h3", "vgl-aufnahme-titel", "📊 " + t("adm_title")));
+        var reihe = element("div", "vgl-karten");
+        var genutzt = [];
+        schulen.forEach(function (s) {
+            var karte = element("div", "vgl-karte");
+            var name = element("strong", "vgl-karte-name", s.n);
+            name.lang = "de";
+            karte.appendChild(name);
+            var k = window.Aufnahme.kurz(aufnahmeDaten, s.id);
+            var j = k && k.zahlen;
+            if (!k || (!j && !k.grenze)) {
+                karte.appendChild(element("p", "leise", t(k && k.offen ? "adm_open" : "adm_none")));
+            }
+            if (j) {
+                karte.appendChild(element("span", "aufnahme-jahreszahl", j.jahr));
+                if (j.erstwuensche !== undefined) {
+                    var max = Math.max(j.plaetze, j.erstwuensche, 1);
+                    karte.appendChild(balken(t("adm_bar_places"), j.plaetze, max, "balken-plaetze"));
+                    karte.appendChild(balken(t("adm_bar_first"), j.erstwuensche, max, j.genugPlatz ? "balken-ok" : "balken-mehr"));
+                    karte.appendChild(chip(j.genugPlatz ? "✅ " + t("adm_room") : "👥 " + t("adm_more"),
+                        j.genugPlatz ? "chip-platz" : "chip-nachfrage"));
+                } else {
+                    karte.appendChild(element("p", "aufnahme-zahlen", t("adm_places_only", { plaetze: j.plaetze })));
+                }
+                if (j.abweichend && aufnahmeDaten.quellen[j.abweichend]) {
+                    karte.appendChild(element("p", "leise aufnahme-abweichend",
+                        "ⓘ " + t("adm_differs", { quelle: aufnahmeDaten.quellen[j.abweichend].k })));
+                }
+            }
+            if (k && k.grenze) {
+                k.grenze.liste.forEach(function (g) {
+                    var p = element("p", "aufnahme-grenze");
+                    p.appendChild(document.createTextNode("🎯 "));
+                    if (g.teil) {
+                        var teil = element("span", "", g.teil + ": ");
+                        teil.lang = "de";
+                        p.appendChild(teil);
+                    }
+                    p.appendChild(document.createTextNode(grenzText(g) + " (" + k.grenze.jahr + ")"));
+                    karte.appendChild(p);
+                });
+            }
+            if (k) k.quellen.forEach(function (q) { if (genutzt.indexOf(q) < 0) genutzt.push(q); });
+            reihe.appendChild(karte);
+        });
+        bereich.appendChild(reihe);
+        var hinweis = element("p", "aufnahme-tipp");
+        hinweis.appendChild(document.createTextNode("💡 " + t("adm_second") + " "));
+        var wunschLink = neuerLink(WUNSCH_QUELLE, "berlin.de");
+        wunschLink.lang = "de";
+        hinweis.appendChild(wunschLink);
+        bereich.appendChild(hinweis);
+        bereich.appendChild(element("p", "aufnahme-tipp", "🌱 " + t("adm_tip_short")));
+        if (genutzt.length) {
+            var quelle = element("p", "quelle-zeile");
+            quelle.appendChild(document.createTextNode("ⓘ " + t("adm_source", { datum: datum(aufnahmeDaten.stand) }) + " "));
+            genutzt.forEach(function (q, i) {
+                var info = aufnahmeDaten.quellen[q];
+                if (!info) return;
+                if (i) quelle.appendChild(document.createTextNode(" · "));
+                var a = neuerLink(info.u, info.k);
+                a.title = info.t;
+                a.lang = "de";
+                quelle.appendChild(a);
+            });
+            bereich.appendChild(quelle);
+        }
     }
 
     document.getElementById("meineTermineKalender").addEventListener("click", function () {

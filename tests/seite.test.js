@@ -58,3 +58,11 @@ test("Datenschutz nennt GitHub Pages und hat eine Kurzfassung in allen Sprachen"
         assert.match(m[0], /Data Privacy Framework/, code);
     }
 });
+
+test("Impressum und Datenschutz enthalten keine Platzhalter mehr", () => {
+    for (const datei of ["impressum.html", "datenschutz.html"]) {
+        const inhalt = fs.readFileSync(path.join(wurzel, datei), "utf8");
+        assert.doesNotMatch(inhalt, /class="platzhalter"|\[Vorname|\[Anschrift|\[PLZ/, datei);
+        assert.match(inhalt, /02977 Hoyerswerda/, datei);
+    }
+});

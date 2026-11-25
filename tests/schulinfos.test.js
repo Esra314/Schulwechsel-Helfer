@@ -53,7 +53,7 @@ test("Schulinfos enthalten nur erlaubte Felder und Werte", () => {
 
 test("Die Seite lädt die Schulinfos und nennt die Quellen", () => {
     const html = fs.readFileSync(path.join(wurzel, "index.html"), "utf8");
-    assert.ok(html.includes('<script src="data/schulinfos.js"></script>'));
+    assert.ok(html.includes('<script src="data/schulinfos.js" defer></script>'));
     assert.ok(html.includes("Berliner Schulverzeichnis"));
     assert.ok(html.indexOf("data/schulinfos.js") < html.indexOf("js/app.js"));
 });

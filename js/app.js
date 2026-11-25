@@ -122,6 +122,25 @@
         return "de";
     }
 
+    // Suchmaschinen: jede Sprachfassung (?lang=…) zeigt auf sich selbst (canonical),
+    // Titel und Beschreibung in der gewählten Sprache. Deutsch bleibt die Grundfassung.
+    var startTitel = document.title;
+    var startBeschreibung = (document.querySelector('meta[name="description"]') || {}).content;
+    function setzeSeitenangaben(code) {
+        var basis = window.location.origin + window.location.pathname.replace(/index\.html$/, "");
+        var link = document.querySelector('link[rel="canonical"]');
+        if (!link) {
+            link = document.createElement("link");
+            link.rel = "canonical";
+            document.head.appendChild(link);
+        }
+        link.href = basis + (code === "de" ? "" : "?lang=" + code);
+        var marke = document.querySelector(".hero-marke");
+        document.title = code === "de" ? startTitel : (marke ? marke.textContent.trim() + " – " : "") + t("subtitle");
+        var meta = document.querySelector('meta[name="description"]');
+        if (meta) meta.content = code === "de" ? startBeschreibung : t("subtitle");
+    }
+
     function setzeSprache(code) {
         aktuelleSprache = code;
         var info = I18n.SPRACHEN.filter(function (s) { return s.code === code; })[0];
@@ -145,6 +164,7 @@
             url.searchParams.set("lang", code);
         }
         window.history.replaceState(null, "", url.toString());
+        setzeSeitenangaben(code);
 
         // Datenschutz-Link führt direkt zur Kurzfassung in der gewählten Sprache
         var dsLink = document.querySelector('.seitenfuss a[href^="datenschutz.html"]');

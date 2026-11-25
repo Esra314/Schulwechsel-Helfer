@@ -234,6 +234,10 @@
         karte.classList.toggle("bedingt", !r.gymnasiumMoeglich);
         status.textContent = r.gymnasiumMoeglich ? t("status_yes") : t("status_probe");
         document.getElementById("probe").classList.toggle("verborgen", r.gymnasiumMoeglich);
+        // Lob passt zum Ergebnis: über 14 geht es ans Gymnasium über den Probeunterricht
+        var lob = document.querySelector(".ergebnis-lob");
+        lob.dataset.i18n = r.gymnasiumMoeglich ? "result_cheer" : "result_cheer_probe";
+        lob.textContent = t(lob.dataset.i18n);
 
         var noten = leseNoten();
         var kern = Rechner.FAECHER.filter(function (f) { return f.kern; });
@@ -542,6 +546,13 @@
         }
         fehler.classList.add("verborgen");
         bereich.classList.remove("verborgen");
+
+        if (gewaehlteArten().length === 0) {
+            fehler.textContent = t("err_no_type");
+            fehler.classList.remove("verborgen");
+            bereich.classList.add("verborgen");
+            return;
+        }
 
         var km = document.getElementById("radius").value;
         document.getElementById("trefferAnzahl").textContent = r.schulen.length > 0
@@ -1364,6 +1375,13 @@
     document.getElementById("sucheForm").addEventListener("change", function (event) {
         if (event.target.name === "art") aktualisiereGymHinweis();
         if (letzteSuche && letzteSuche.ok && event.target.id !== "plz") sucheSchulen(false);
+    });
+
+    // Postleitzahl: Leerzeichen und andere Zeichen (z. B. beim Einfügen) entfernen
+    document.getElementById("plz").addEventListener("input", function () {
+        var feld = this;
+        var sauber = feld.value.replace(/\D/g, "").slice(0, 5);
+        if (sauber !== feld.value) feld.value = sauber;
     });
 
     document.getElementById("karteLaden").addEventListener("click", ladeKarte);

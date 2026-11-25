@@ -26,7 +26,11 @@
         var e = normal(eingabe);
         if (!e) return { fehler: "ls_err_empty" };
         if (/^\d{5}$/.test(e)) {
-            return daten.plz[e] ? { mitte: daten.plz[e] } : { fehler: "ls_err_unknown" };
+            if (daten.plz[e]) return { mitte: daten.plz[e] };
+            // Postleitzahl ohne Schule (z. B. 80331 in der Münchner Innenstadt):
+            // ungefähre Mitte aus den bekannten Postleitzahlen mit gleichem Anfang
+            var naehe = ungefaehreMitte(daten.plz, e);
+            return naehe ? { mitte: naehe, ungefaehr: true } : { fehler: "ls_err_unknown" };
         }
         if (/^\d+$/.test(e)) return { fehler: "ls_err_unknown" };
         if (daten.orte[e]) return { mitte: daten.orte[e] };
@@ -35,20 +39,43 @@
         return namen.length ? { mitte: daten.orte[namen[0]], ort: namen[0] } : { fehler: "ls_err_unknown" };
     }
 
+    // Mittelpunkt der bekannten Postleitzahlen mit denselben ersten 4 (sonst 3) Ziffern
+    function ungefaehreMitte(plz, eingabe) {
+        for (var stellen = 4; stellen >= 3; stellen--) {
+            var anfang = eingabe.slice(0, stellen);
+            var treffer = Object.keys(plz).filter(function (p) { return p.indexOf(anfang) === 0; });
+            if (treffer.length) {
+                var lat = 0, lon = 0;
+                treffer.forEach(function (p) { lat += plz[p][0]; lon += plz[p][1]; });
+                return [lat / treffer.length, lon / treffer.length];
+            }
+        }
+        return null;
+    }
+
+    // Ganztag in der Sekundarstufe I laut "Besonderheiten" der Landesdaten
+    function hatGanztag(s) {
+        return (s.bm || []).some(function (b) { return /ganztag/i.test(b) && /sek\s?i\b/i.test(b); });
+    }
+
     /*
-     * optionen: { eingabe | mitte: [lat, lon], arten: [...], privat, radiusKm }
+     * optionen: { eingabe | mitte: [lat, lon], arten: [...], privat, radiusKm, sprache?, ganztag? }
      * Rückgabe: { ok: true, mitte, schulen: [...mit km] } oder { ok: false, fehler }
      */
     function suche(daten, optionen) {
         var mitte = optionen.mitte;
+        var ungefaehr = false;
         if (!mitte) {
             var m = findeMitte(daten, optionen.eingabe);
             if (m.fehler) return { ok: false, fehler: m.fehler };
             mitte = m.mitte;
+            ungefaehr = !!m.ungefaehr;
         }
         var arten = optionen.arten || [];
         var schulen = daten.schulen
             .filter(function (s) { return arten.indexOf(s.a) !== -1 && (optionen.privat || !s.p); })
+            .filter(function (s) { return !optionen.sprache || (s.sp || []).indexOf(optionen.sprache) !== -1; })
+            .filter(function (s) { return !optionen.ganztag || hatGanztag(s); })
             .map(function (s) {
                 var k = {};
                 for (var x in s) k[x] = s[x];
@@ -57,10 +84,10 @@
             })
             .filter(function (s) { return s.km <= optionen.radiusKm; })
             .sort(function (a, b) { return a.km - b.km; });
-        return { ok: true, mitte: mitte, schulen: schulen };
+        return { ok: true, mitte: mitte, schulen: schulen, ungefaehr: ungefaehr };
     }
 
-    var logik = { entfernungKm: entfernungKm, findeMitte: findeMitte, suche: suche };
+    var logik = { entfernungKm: entfernungKm, findeMitte: findeMitte, suche: suche, hatGanztag: hatGanztag };
     if (typeof module !== "undefined" && module.exports) {
         module.exports = logik;
         return;
@@ -75,6 +102,19 @@
     var aktuell = null;
     var karte = null, markerSchicht = null, karteAn = false;
     var PRO_SEITE = 10;
+    var MERK_SCHLUESSEL = "schulwechsel-land-merkliste";
+    var merk = null;
+
+    function merkliste() {
+        if (!merk) {
+            var speicher = null;
+            try { speicher = window.localStorage; } catch (e) { speicher = null; }
+            merk = window.Merkliste.erstelle(speicher, MERK_SCHLUESSEL);
+        }
+        return merk;
+    }
+
+    function merkId(s) { return aktuell + ":" + s.id; }
 
     function daten() { return (window.LANDSCHULEN || {})[aktuell]; }
     function land() { return Laender.LAND[aktuell]; }
@@ -92,7 +132,7 @@
         if (!zustand[aktuell]) {
             zustand[aktuell] = {
                 eingabe: "", arten: Object.keys(land().arten), privat: true,
-                radius: 10, ergebnis: null, sichtbar: PRO_SEITE
+                radius: 10, sprache: "", ganztag: false, ergebnis: null, sichtbar: PRO_SEITE
             };
         }
         return zustand[aktuell];
@@ -115,6 +155,8 @@
         if (code !== aktuell) karteAn = false;
         aktuell = code;
         bereich.textContent = "";
+        var vg = document.getElementById("landVergleich");
+        if (vg) vg.textContent = "";
         karte = null;
         var l = Laender.LAND[code];
         if (!l || !l.schuldaten) return;
@@ -128,6 +170,7 @@
             }
             baueForm();
             if (z().ergebnis) zeige();
+            zeigeVergleich();
         });
     }
 
@@ -208,6 +251,47 @@
         }
         form.appendChild(fs);
 
+        var sprachen = {};
+        var spJahr = "";
+        d.schulen.forEach(function (s) {
+            (s.sp || []).forEach(function (x) { sprachen[x] = (sprachen[x] || 0) + 1; });
+            if (s.spj && s.spj > spJahr) spJahr = s.spj;
+        });
+        var namen = Object.keys(sprachen).filter(function (x) { return !/^sonstige/i.test(x); })
+            .sort(function (a, b) { return sprachen[b] - sprachen[a]; });
+        if (namen.length) {
+            var ff = el("fieldset", "filter");
+            ff.appendChild(el("legend", "", t("ls_more_filter")));
+            var sl = el("label", "feld");
+            sl.appendChild(el("span", "", t("ls_lang_filter")));
+            var sel = el("select");
+            sel.id = "lsSprache";
+            var alle = el("option", "", t("ls_lang_any"));
+            alle.value = "";
+            sel.appendChild(alle);
+            namen.forEach(function (n) {
+                var o = el("option", "", n);
+                o.value = n;
+                o.lang = "de";
+                if (n === st.sprache) o.selected = true;
+                sel.appendChild(o);
+            });
+            sl.appendChild(sel);
+            ff.appendChild(sl);
+            if (d.schulen.some(hatGanztag)) {
+                var gl = el("label", "schalter");
+                var gc = el("input");
+                gc.type = "checkbox";
+                gc.id = "lsGanztag";
+                gc.checked = st.ganztag;
+                gl.appendChild(gc);
+                gl.appendChild(el("span", "", " " + t("ls_ganztag")));
+                ff.appendChild(gl);
+            }
+            ff.appendChild(el("p", "klein", t("ls_filter_hint", { jahr: spJahr })));
+            form.appendChild(ff);
+        }
+
         var knoepfe = el("div", "knoepfe");
         var los = el("button", "", t("btn_search"));
         los.type = "submit";
@@ -254,7 +338,7 @@
         form.addEventListener("change", function (e) {
             if (e.target === input) return;
             lies();
-            if (st.ergebnis && st.ergebnis.ok) rechne(st.ergebnis.mitte, false);
+            if (st.ergebnis && st.ergebnis.ok) rechne(st.ergebnis.mitte, false, st.ergebnis.ungefaehr);
         });
     }
 
@@ -280,6 +364,10 @@
         st.arten = Array.prototype.map.call(bereich.querySelectorAll('input[name="lsArt"]:checked'), function (c) { return c.value; });
         var p = document.getElementById("lsPrivat");
         st.privat = p ? p.checked : true;
+        var sp = document.getElementById("lsSprache");
+        st.sprache = sp ? sp.value : "";
+        var gt = document.getElementById("lsGanztag");
+        st.ganztag = gt ? gt.checked : false;
     }
 
     function zeigeFehler(schluessel) {
@@ -290,14 +378,22 @@
         if (schluessel) document.getElementById("lsErgebnis").classList.add("verborgen");
     }
 
-    function rechne(mitte, scrollen) {
+    function rechne(mitte, scrollen, ungefaehr) {
         var st = z();
-        var r = suche(daten(), { eingabe: st.eingabe, mitte: mitte, arten: st.arten, privat: st.privat, radiusKm: st.radius });
+        if (!st.arten || st.arten.length === 0) {
+            zeigeFehler("err_no_type");
+            return;
+        }
+        var r = suche(daten(), {
+            eingabe: st.eingabe, mitte: mitte, arten: st.arten, privat: st.privat, radiusKm: st.radius,
+            sprache: st.sprache, ganztag: st.ganztag
+        });
         if (!r.ok) {
             st.ergebnis = null;
             zeigeFehler(r.fehler);
             return;
         }
+        if (ungefaehr) r.ungefaehr = true;
         st.ergebnis = r;
         st.sichtbar = PRO_SEITE;
         zeigeFehler(null);
@@ -316,6 +412,7 @@
         erg.appendChild(el("p", "treffer-anzahl", r.schulen.length
             ? t("near_count", { anzahl: r.schulen.length, km: st.radius })
             : t("near_none")));
+        if (r.ungefaehr) erg.appendChild(el("p", "klein hinweis-orange", t("ls_approx")));
         erg.appendChild(el("p", "klein hinweis-blau", t("open_day_hint")));
 
         // Karte erst nach Zustimmung (OpenStreetMap bekommt die IP-Adresse)
@@ -372,27 +469,8 @@
         adr.lang = "de";
         li.appendChild(adr);
 
-        if ((s.sp && s.sp.length) || (s.bm && s.bm.length)) {
-            var mehr = el("details", "schule-details");
-            mehr.appendChild(el("summary", "", t("ls_details")));
-            if (s.sp && s.sp.length) {
-                var p1 = el("p");
-                p1.appendChild(el("strong", "", t("ls_languages") + ": "));
-                var sp = el("span", "", s.sp.join(", "));
-                sp.lang = "de";
-                p1.appendChild(sp);
-                mehr.appendChild(p1);
-            }
-            if (s.bm && s.bm.length) {
-                var p2 = el("p");
-                p2.appendChild(el("strong", "", t("ls_features") + ": "));
-                var bm = el("span", "", s.bm.join(", "));
-                bm.lang = "de";
-                p2.appendChild(bm);
-                mehr.appendChild(p2);
-            }
-            li.appendChild(mehr);
-        }
+        li.appendChild(merkKnopf(s));
+        li.appendChild(details(s, l));
 
         var kontakt = el("div", "kontakt");
         if (s.w) kontakt.appendChild(link("🌐 " + t("website"), s.w));
@@ -410,6 +488,177 @@
         }
         if (kontakt.childNodes.length) li.appendChild(kontakt);
         return li;
+    }
+
+    function merkKnopf(s) {
+        var knopf = el("button", "merken");
+        knopf.type = "button";
+        var id = merkId(s);
+        function beschriften() {
+            var an = merkliste().istGemerkt(id);
+            knopf.textContent = an ? t("btn_remembered") : t("btn_remember");
+            knopf.setAttribute("aria-pressed", an ? "true" : "false");
+        }
+        beschriften();
+        knopf.addEventListener("click", function () {
+            merkliste().umschalten(id);
+            beschriften();
+            zeigeVergleich();
+        });
+        return knopf;
+    }
+
+    function gemerkte() {
+        var d = daten();
+        if (!d) return [];
+        var nachId = {};
+        d.schulen.forEach(function (s) { nachId[aktuell + ":" + s.id] = s; });
+        return merkliste().ids().filter(function (id) { return nachId[id]; }).map(function (id) { return nachId[id]; });
+    }
+
+    function zeigeVergleich() {
+        var box = document.getElementById("landVergleich");
+        if (!box || !daten()) return;
+        var l = land();
+        var schulen = gemerkte();
+        var zaehler = document.getElementById("merkZaehler");
+        if (zaehler) {
+            zaehler.textContent = schulen.length ? String(schulen.length) : "";
+            zaehler.classList.toggle("verborgen", schulen.length === 0);
+        }
+        box.textContent = "";
+        if (!schulen.length) {
+            box.appendChild(el("p", "klein", t("compare_empty")));
+            return;
+        }
+        var st = z();
+        var mitte = st.ergebnis && st.ergebnis.ok ? st.ergebnis.mitte : null;
+        var scroll = el("div", "tabelle-scroll");
+        var tab = el("table", "vergleich-tabelle");
+        var kopf = el("thead");
+        var kz = el("tr");
+        kz.appendChild(el("th"));
+        schulen.forEach(function (s) {
+            var th = el("th");
+            th.scope = "col";
+            var name = el("div", "", s.n);
+            name.lang = "de";
+            th.appendChild(name);
+            var weg = el("button", "entfernen nur-bildschirm", "✕ " + t("compare_remove"));
+            weg.type = "button";
+            weg.addEventListener("click", function () {
+                merkliste().umschalten(merkId(s));
+                zeigeVergleich();
+                if (st.ergebnis) zeige();
+            });
+            th.appendChild(weg);
+            kz.appendChild(th);
+        });
+        kopf.appendChild(kz);
+        tab.appendChild(kopf);
+
+        var zeilen = [
+            ["compare_type", function (s) {
+                var sp = el("span", "art-" + l.arten[s.a].farbe, s.f || l.arten[s.a].name);
+                sp.lang = "de";
+                return sp;
+            }],
+            ["compare_carrier", function (s) { return s.p ? t("school_private") : t("school_public"); }],
+            ["ls_place", function (s) { return s.z + " " + s.o; }],
+            ["compare_distance", function (s) {
+                if (!mitte) return "–";
+                var km = entfernungKm(mitte[0], mitte[1], s.lat, s.lon);
+                return App.zahl(km, 1) + " km · 🚶 " + minuten(km, 4.5) + " min";
+            }],
+            ["ls_languages", function (s) {
+                return s.sp && s.sp.length ? s.sp.join(", ") + (s.spj ? " (" + t("ls_sp_year", { jahr: s.spj }) + ")" : "") : "–";
+            }],
+            ["ls_features", function (s) { return s.bm && s.bm.length ? s.bm.join(", ") : "–"; }],
+            ["website", function (s) { return s.w ? link("🌐 " + t("website"), s.w) : "–"; }],
+            ["ls_phone", function (s) { return s.t || "–"; }],
+            ["f_notes", function (s) {
+                var ta = el("textarea", "land-notiz");
+                ta.rows = 3;
+                ta.value = merkliste().notiz(merkId(s), "notizen");
+                ta.setAttribute("aria-label", t("f_notes") + ": " + s.n);
+                ta.addEventListener("input", function () { merkliste().setzeNotiz(merkId(s), "notizen", ta.value); });
+                return ta;
+            }]
+        ];
+        var rumpf = el("tbody");
+        zeilen.forEach(function (zl) {
+            var tr = el("tr");
+            var th = el("th", "", t(zl[0]));
+            th.scope = "row";
+            tr.appendChild(th);
+            schulen.forEach(function (s) {
+                var td = el("td");
+                td.dir = "auto";
+                var inhalt = zl[1](s);
+                if (typeof inhalt === "string") td.textContent = inhalt; else td.appendChild(inhalt);
+                tr.appendChild(td);
+            });
+            rumpf.appendChild(tr);
+        });
+        tab.appendChild(rumpf);
+        scroll.appendChild(tab);
+        box.appendChild(scroll);
+
+        var knoepfe = el("div", "knoepfe nur-bildschirm");
+        var leeren = el("button", "zweitrangig", t("compare_clear"));
+        leeren.type = "button";
+        leeren.addEventListener("click", function () {
+            gemerkte().forEach(function (s) { merkliste().umschalten(merkId(s)); });
+            zeigeVergleich();
+            if (st.ergebnis) zeige();
+        });
+        knoepfe.appendChild(leeren);
+        box.appendChild(knoepfe);
+    }
+
+    function minuten(km, kmh) {
+        // Umweg-Faktor 1,3 gegenüber der Luftlinie, auf 5 Minuten gerundet (wie in Berlin)
+        return Math.max(5, Math.round((km * 1.3 / kmh) * 60 / 5) * 5);
+    }
+
+    function zeile(titel, text) {
+        var p = el("p");
+        p.appendChild(el("strong", "", titel + ": "));
+        var sp = el("span", "", text);
+        sp.lang = "de";
+        p.appendChild(sp);
+        return p;
+    }
+
+    function details(s, l) {
+        var d = el("details", "schule-details");
+        d.appendChild(el("summary", "", t("ls_details")));
+
+        var fakten = el("div", "fakten");
+        fakten.appendChild(el("span", "chip fakt", "🚶 " + t("chip_walk", { min: minuten(s.km, 4.5) })));
+        fakten.appendChild(el("span", "chip fakt", "🚲 " + t("chip_bike", { min: minuten(s.km, 15) })));
+        d.appendChild(fakten);
+        d.appendChild(el("p", "klein", t("travel_note")));
+        var ziel = s.s + ", " + s.z + " " + s.o;
+        var anfahrt = link("🚌 " + t("travel_link"), "https://www.google.com/maps/dir/?api=1&travelmode=transit&destination=" + encodeURIComponent(ziel));
+        anfahrt.className = "anfahrt-link";
+        d.appendChild(anfahrt);
+
+        if (s.f) d.appendChild(zeile(t("ls_form"), s.f));
+        if (s.sp && s.sp.length) {
+            d.appendChild(zeile(t("ls_languages") + (s.spj ? " (" + t("ls_sp_year", { jahr: s.spj }) + ")" : ""), s.sp.join(", ")));
+        }
+        if (s.bm && s.bm.length) d.appendChild(zeile(t("ls_features"), s.bm.join(", ")));
+
+        if (!s.w && !s.t && !s.e) {
+            var box = el("div", "info-box");
+            box.appendChild(el("p", "", t("ls_no_contact", { land: l.name })));
+            var p = el("p");
+            p.appendChild(link("🔎 " + t("ls_search_web"), "https://duckduckgo.com/?q=" + encodeURIComponent(s.n + " " + s.o)));
+            box.appendChild(p);
+            d.appendChild(box);
+        }
+        return d;
     }
 
     var FARBEN = { gym: "#1565c0", iss: "#2e7d32", gms: "#8e24aa" };

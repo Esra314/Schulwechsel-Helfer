@@ -16,6 +16,9 @@
 
     var SPRACHEN = ["de", "en", "tr", "ar", "uk", "ru"];
 
+    // Kleine deutsche Alltagswörter: Daran erkennen wir eine deutsche Frage
+    var DEUTSCHE_WOERTER = / (wie|was|wann|wo|wer|warum|wieso|welche[rsnm]?|ist|sind|gibt|kann|darf|muss|mein[e]?|meinem|ich|wir|und|oder|mit|fur|bei|zum|zur|nicht|kein[e]?|bitte) /;
+
     // ---------- Suche ----------
 
     // Kleinschreibung, ohne Akzente und Satzzeichen; "+" und "-" bleiben (2+, 3-, 2-3).
@@ -114,8 +117,11 @@
      * Rückgabe: { art: "thema" | "smalltalk" | "unbekannt", sprache, thema, smalltalk,
      *             gruss (true, wenn zusätzlich gegrüßt wurde), weitere: [Themen-IDs] }
      */
-    function finde(frage, seitenSprache) {
+    function finde(frage, seitenSprache, erlaubt) {
         var v = bereiteVor();
+        var themenListe = erlaubt
+            ? v.themen.filter(function (x) { return erlaubt.indexOf(x.thema.id) !== -1; })
+            : v.themen;
         var satz = normalisiere(frage);
         var woerter = satz ? satz.split(" ") : [];
         satz = " " + satz + " ";
@@ -123,7 +129,7 @@
 
         var proSprache = {};
         SPRACHEN.forEach(function (l) {
-            var themen = v.themen.map(function (x) {
+            var themen = themenListe.map(function (x) {
                 return { id: x.thema.id, p: punkte(woerter, satz, x.w[l]) };
             }).sort(function (a, b) { return b.p - a.p; });
             var st = v.smalltalk.map(function (x) {
@@ -134,6 +140,7 @@
 
         // Sprache der Antwort: die Seitensprache, außer die Frage passt klar besser zu einer anderen
         var sprache = seitenSprache;
+        var themaSprache = null;
         var roh = String(frage || "").toLowerCase();
         if (/[؀-ۿ]/.test(roh)) {
             sprache = "ar";
@@ -142,12 +149,21 @@
                 : proSprache.ru.gesamt > proSprache.uk.gesamt ? "ru"
                 : (/[іїєґ]/.test(roh) ? "uk" : "ru");
         } else {
+            // Die Frage passt am besten zu dieser Sprache (für die Wahl des Themas)
+            var beste = sprache;
             SPRACHEN.forEach(function (l) {
-                if (proSprache[l].gesamt > proSprache[sprache].gesamt) sprache = l;
+                if (proSprache[l].gesamt > proSprache[beste].gesamt) beste = l;
             });
+            // Deutsche Fachwörter (Probeunterricht, Durchschnitt, Ganztag …) kommen in allen
+            // Sprachen vor. Auf Deutsch antworten wir nur, wenn die Frage wirklich deutsch ist.
+            if (beste !== "de" || sprache === "de" || DEUTSCHE_WOERTER.test(" " + normalisiere(frage) + " ")) {
+                sprache = beste;
+            } else {
+                themaSprache = "de";
+            }
         }
 
-        var p = proSprache[sprache];
+        var p = proSprache[themaSprache || sprache];
         // "Hallo, wie geht's?" -> lieber "wie geht's" beantworten als nur grüßen
         var treffer = p.st.filter(function (x) { return x.p > 0; });
         var gruss = treffer.some(function (x) { return x.id === "gruss"; });
@@ -214,6 +230,60 @@
         imprint: { href: "impressum.html", text: "footer_imprint", seite: true },
         official: { href: OFFIZIELL, text: "official_link", extern: true }
     };
+
+    // ---------- Andere Bundesländer ----------
+    // Dort gibt es nur Themen, deren Antwort aus den geprüften Länder-Texten kommt
+    // (js/laender.js und js/i18n-laender.js). Berlin-Texte werden dort nie gezeigt.
+    var LAND_START = ["durchschnitt", "eignung", "probe", "anmeldung", "schularten", "termine"];
+
+    function landModus() {
+        var code = document.documentElement.getAttribute("data-land");
+        var L = root.Laender;
+        if (!code || code === "BE" || !L || !L.LAND[code] || !L.LAND[code].faecher) return null;
+        return L.LAND[code];
+    }
+
+    function landThemen(l) {
+        var ids = LAND_START.concat(["datenschutz"]);
+        if (l.schuldaten) ids.push("app", "schulsuche");
+        return ids;
+    }
+
+    function fuelle(text, l) {
+        var werte = { land: l.name, k: l.klasse, k1: l.klasse + 1 };
+        return String(text || "").replace(/\{(\w+)\}/g, function (m, k) {
+            return werte[k] !== undefined ? werte[k] : m;
+        });
+    }
+
+    function landTermine(l, sprache) {
+        var datum = root.App ? root.App.datum : function (x) { return x; };
+        var bereich = root.App ? root.App.datumBereich : function (a, b) { return a + "–" + b; };
+        return (l.termine || []).map(function (x) {
+            var wann = x.wann ? i18n(x.wann, sprache) : (x.bis ? bereich(x.von, x.bis) : datum(x.von));
+            return "• " + wann + ": " + i18n(x.text, sprache);
+        }).join("\n");
+    }
+
+    function landAntwort(id, sprache, l) {
+        var tx = function (k) { return fuelle(i18n(k, sprache), l); };
+        if (id === "durchschnitt" || id === "eignung") return { a: tx(l.regel), links: ["calc"] };
+        if (id === "probe") return { a: tx(l.weg), links: ["dates"] };
+        if (id === "anmeldung") return { a: tx(l.wahl) + "\n" + landTermine(l, sprache), links: ["dates", "official"] };
+        if (id === "termine") {
+            var t = tx("li_when_a") + "\n" + landTermine(l, sprache);
+            if (!l.terminQuelle) t += "\n" + tx("lt_note");
+            return { a: t, links: ["dates", "official"] };
+        }
+        if (id === "schularten") {
+            var zeilen = Object.keys(l.arten).map(function (k) {
+                var a = l.arten[k];
+                return "• " + a.name + (a.text ? ": " + tx(a.text) : "");
+            });
+            return { a: tx("as_types_land") + "\n" + zeilen.join("\n") + "\n" + tx("lr_cheer"), links: ["info"] };
+        }
+        return null;
+    }
 
     function seitenSprache() {
         var l = document.documentElement.lang;
@@ -380,6 +450,7 @@
             var thema = themaNachId(id);
             if (!thema) return;
             var text = themaText(thema, sprache, I18N).q;
+            if (thema.faq && landModus()) text = (thema[sprache] && thema[sprache].q) || text;
             var c = el("button", "hilfe-chip", text);
             c.type = "button";
             c.addEventListener("click", function () {
@@ -415,11 +486,33 @@
         verlauf.textContent = "";
         nurBegruessung = true;
         var l = seitenSprache();
+        var land = landModus();
+        if (land) {
+            botNachricht(fuelle(i18n("as_hello_land", l), land), l, [chipReihe(LAND_START, l, ui("topics", l))]);
+            return;
+        }
         botNachricht(ui("hello", l), l, [chipReihe(Daten.START, l, ui("topics", l))]);
     }
 
     function antworte(e) {
         var l = e.sprache;
+        var land = landModus();
+        LINKS.official.href = land ? land.amtlich : OFFIZIELL;
+        // In den anderen Ländern nicht "Senatsverwaltung" (Berlin), sondern "Informationen des Landes"
+        LINKS.official.text = land ? "li_official" : "official_link";
+        if (land && e.art === "thema" && landAntwort(e.thema, l, land)) {
+            var la = landAntwort(e.thema, l, land);
+            botNachricht(la.a, l, [
+                linkReihe(la.links, l),
+                e.weitere && e.weitere.length ? chipReihe(e.weitere, l, ui("more", l)) : null
+            ]);
+            return;
+        }
+        if (land && e.art === "unbekannt") {
+            var vor = e.weitere.length ? e.weitere : LAND_START.slice(0, 4);
+            botNachricht(fuelle(i18n("as_unknown_land", l), land), l, [chipReihe(vor, l), linkReihe(["official"], l)]);
+            return;
+        }
         if (e.art === "thema") {
             var thema = themaNachId(e.thema);
             var text = themaText(thema, l, I18N).a;
@@ -446,7 +539,8 @@
     function frageGestellt(text, ergebnis) {
         nurBegruessung = false;
         nutzerNachricht(text);
-        var e = ergebnis || finde(text, seitenSprache());
+        var land = landModus();
+        var e = ergebnis || finde(text, seitenSprache(), land ? landThemen(land) : null);
         var tippt = el("div", "hilfe-zeile bot hilfe-tippt");
         tippt.setAttribute("aria-hidden", "true");
         var punkte3 = el("div", "hilfe-blase");
@@ -499,6 +593,11 @@
         beschrifte();
         if (nurBegruessung && verlauf.firstChild) begruesse();
     }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+
+    // Bundesland gewechselt: neu begrüßen, damit keine Antworten des anderen Landes stehen bleiben
+    new MutationObserver(function () {
+        if (verlauf.firstChild) begruesse();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-land"] });
 
     beschrifte();
 })(this);

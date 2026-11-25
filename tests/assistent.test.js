@@ -73,3 +73,21 @@ test("Amtliche Regel im Text: Durchschnitt nicht gerundet, Grenze 14", () => {
     assert.match(t.de.a, /67 : 26 = 2,57… → 2,5/);
     assert.match(D.THEMEN.find((x) => x.id === "eignung").de.a, /Bis 14/);
 });
+
+test("Deutsche Fachwörter in einer anderen Sprache: Antwort bleibt in der Seitensprache", () => {
+    assert.deepEqual(
+        [A.finde("probeunterricht ne zaman", "tr").sprache, A.finde("probeunterricht ne zaman", "tr").thema],
+        ["tr", "probe"]);
+    assert.equal(A.finde("durchschnitt nasıl", "tr").sprache, "tr");
+    assert.equal(A.finde("ganztag", "en").sprache, "en");
+    assert.equal(A.finde("tag der offenen tür", "ru").thema, "offenetuer");
+    assert.equal(A.finde("tag der offenen tür", "ru").sprache, "ru");
+    // Eine echte deutsche Frage wird weiter auf Deutsch beantwortet
+    assert.equal(A.finde("Wann ist der Probeunterricht?", "tr").sprache, "de");
+});
+
+test("Kein Probejahr mehr am Gymnasium (berlin.de, Übergang 2026/27)", () => {
+    for (const l of A.SPRACHEN) {
+        assert.doesNotMatch(I18n.TEXTE[l].faq_a7, /erste Jahr ist ein Probejahr|first year is a trial year|deneme yılıdır|السنة الأولى سنة تجريبية|рік – пробний|год – пробный/);
+    }
+});

@@ -81,3 +81,15 @@ test("Alle Textschlüssel von land-suche.js gibt es in allen Sprachen", () => {
         for (const k of schluessel) assert.ok(alle[k], s.code + ": " + k);
     }
 });
+
+test("Brandenburg: Filter nach Fremdsprache und Ganztag", () => {
+    const d = DATEN.BB;
+    const basis = { eingabe: "Potsdam", arten: ["gym", "ges", "os"], privat: true, radiusKm: 25 };
+    const latein = LS.suche(d, Object.assign({ sprache: "Latein" }, basis));
+    assert.ok(latein.schulen.length > 0);
+    assert.ok(latein.schulen.every((s) => s.sp.includes("Latein")));
+    const gt = LS.suche(d, Object.assign({ ganztag: true }, basis));
+    assert.ok(gt.schulen.length > 0);
+    assert.ok(gt.schulen.every(LS.hatGanztag));
+    assert.ok(d.schulen.some((s) => /^\d{4}\/\d{4}$/.test(s.spj)), "Schuljahr der Sprachangaben fehlt");
+});

@@ -9,11 +9,12 @@
     var SCHLUESSEL = "oberschul-helfer-merkliste";
     var FELDER = ["sprachen", "ganztag", "profil", "essen", "tdot", "notizen"];
 
-    function erstelle(speicher) {
+    function erstelle(speicher, schluessel) {
+        var KEY = schluessel || SCHLUESSEL;
         var zustand = { ids: [], notizen: {} };
 
         try {
-            var roh = speicher && speicher.getItem(SCHLUESSEL);
+            var roh = speicher && speicher.getItem(KEY);
             if (roh) {
                 var gelesen = JSON.parse(roh);
                 if (gelesen && Array.isArray(gelesen.ids)) {
@@ -25,7 +26,7 @@
 
         function sichern() {
             try {
-                if (speicher) speicher.setItem(SCHLUESSEL, JSON.stringify(zustand));
+                if (speicher) speicher.setItem(KEY, JSON.stringify(zustand));
             } catch (e) { /* Speicher voll oder gesperrt */ }
         }
 
@@ -54,7 +55,7 @@
             leeren: function () {
                 zustand = { ids: [], notizen: {} };
                 try {
-                    if (speicher) speicher.removeItem(SCHLUESSEL);
+                    if (speicher) speicher.removeItem(KEY);
                 } catch (e) { /* egal */ }
             }
         };

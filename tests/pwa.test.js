@@ -23,3 +23,11 @@ test("Manifest ist gültig und die Icons existieren", () => {
         assert.ok(fs.existsSync(path.join(wurzel, icon.src)), `Icon fehlt: ${icon.src}`);
     }
 });
+
+test("Alle Fotos der Seite sind auch offline gespeichert", () => {
+    const sw = fs.readFileSync(path.join(wurzel, "sw.js"), "utf8");
+    const quellen = ["index.html", "css/style.css"].map((d) => fs.readFileSync(path.join(wurzel, d), "utf8")).join("\n");
+    const fotos = [...new Set([...quellen.matchAll(/img\/fotos\/[a-z-]+\.webp/g)].map((m) => m[0]))];
+    assert.ok(fotos.length > 0);
+    for (const foto of fotos) assert.ok(sw.includes(`"${foto}"`), `nicht im Offline-Speicher: ${foto}`);
+});

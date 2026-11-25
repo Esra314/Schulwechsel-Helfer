@@ -13,7 +13,10 @@
     var aktuelleSprache = "de";
     var letztesErgebnis = null;
 
+    // Auf schmalen Bildschirmen passt "Note wählen" nicht in die Notenfelder: kurze Fassung
+    var schmal = window.matchMedia ? window.matchMedia("(max-width: 600px)") : null;
     function t(schluessel, werte) {
+        if (schluessel === "choose" && schmal && schmal.matches) schluessel = "choose_short";
         var text = (I18n.TEXTE[aktuelleSprache] || {})[schluessel];
         if (text === undefined) {
             text = I18n.TEXTE.de[schluessel] || "";
@@ -1494,7 +1497,28 @@
 
     baueTabelle();
     baueSprachauswahl();
+    // Beim Drucken (oder PDF) den Rechenweg aufklappen, danach wieder wie vorher
+    var zuGedruckt = [];
+    window.addEventListener("beforeprint", function () {
+        zuGedruckt = Array.prototype.filter.call(document.querySelectorAll("details.rechenweg"), function (d) { return !d.open; });
+        zuGedruckt.forEach(function (d) { d.open = true; });
+    });
+    window.addEventListener("afterprint", function () {
+        zuGedruckt.forEach(function (d) { d.open = false; });
+        zuGedruckt = [];
+    });
+
     setzeSprache(waehleStartsprache());
+    if (schmal) {
+        var wechsel = function () {
+            document.querySelectorAll('option[data-i18n="choose"]').forEach(function (o) { o.textContent = t("choose"); });
+            document.querySelectorAll(".noten-tabelle select").forEach(function (s) {
+                if (s.options[0] && s.options[0].value === "" && !s.options[0].dataset.i18n) s.options[0].textContent = t("choose");
+            });
+        };
+        if (schmal.addEventListener) schmal.addEventListener("change", wechsel);
+        else if (schmal.addListener) schmal.addListener(wechsel);
+    }
     if (ANSICHTEN.length > 0) {
         ansichtAusAdresse(true);
         // Beim Öffnen mit #abschnitt erneut hinscrollen, wenn alles geladen ist

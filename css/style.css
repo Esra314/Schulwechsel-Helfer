@@ -1415,7 +1415,7 @@ input[type="checkbox"]:focus-visible {
     --f1: #0369a1; --f1-dunkel: #075985; --f1-hell: #CDF5FD;   /* Noten berechnen: Himmelblau */
     --f2: #0e7490; --f2-dunkel: #155e75; --f2-hell: #e2f4fd;   /* Schulen finden: Hellblau */
     --f3: #6a5fae; --f3-dunkel: #574c99; --f3-hell: #ebe8f7;   /* Meine Auswahl: Lila #7469B6 */
-    --f4: #8a5aa8; --f4-dunkel: #714790; --f4-hell: #f3eaf9;   /* Tipps & Termine: Flieder #AD88C6 */
+    --f4: #8557a3; --f4-dunkel: #714790; --f4-hell: #f3eaf9;   /* Tipps & Termine: Flieder #AD88C6 */
     --f5: #a8457f; --f5-dunkel: #8a3567; --f5-hell: #FFE6E6;   /* Schul-Infos: Rosa #E1AFD1 */
 }
 

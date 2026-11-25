@@ -650,6 +650,7 @@
         }
         if (s.bm && s.bm.length) d.appendChild(zeile(t("ls_features"), s.bm.join(", ")));
 
+        if (s.w && s.wg) d.appendChild(el("p", "klein land-web-geprueft", t("ls_web_checked", { datum: App.datum(s.wg) })));
         if (!s.w && !s.t && !s.e) {
             var box = el("div", "info-box");
             box.appendChild(el("p", "", t("ls_no_contact", { land: l.name })));

@@ -93,3 +93,33 @@ test("Brandenburg: Filter nach Fremdsprache und Ganztag", () => {
     assert.ok(gt.schulen.every(LS.hatGanztag));
     assert.ok(d.schulen.some((s) => /^\d{4}\/\d{4}$/.test(s.spj)), "Schuljahr der Sprachangaben fehlt");
 });
+
+test("Bayern: Webseiten nur geprüft, mit Prüfdatum und passend zur Quelle", () => {
+    const web = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "quellen", "by-webseiten.json"), "utf8"));
+    const mitWeb = DATEN.BY.schulen.filter((s) => s.w);
+    assert.ok(mitWeb.length > 1000, "zu wenige Webseiten");
+    for (const s of mitWeb) {
+        assert.match(s.w, /^https?:\/\/[^\s/]+\.[a-z]{2,}/i, s.n + ": url");
+        assert.doesNotMatch(s.w, /km\.bayern\.de|wikipedia|facebook|instagram|reset|login|passwort/i, s.n + ": url-Art");
+        assert.match(s.wg, /^\d{4}-\d{2}-\d{2}$/, s.n + ": Prüfdatum");
+        const q = web.schulen[s.n + "|" + s.z];
+        assert.ok(q && q.url === s.w && q.geprueft === s.wg, s.n + ": nicht in quellen/by-webseiten.json");
+        assert.ok(web.art[q.art], s.n + ": Art der Quelle");
+    }
+    assert.equal(mitWeb.length, Object.keys(web.schulen).length, "jeder Eintrag passt zu genau einer Schule");
+    assert.ok(DATEN.BB.schulen.every((s) => !s.wg), "Brandenburg hat amtliche Webseiten");
+});
+
+test("Webseiten-Zusammenführung nach Name und PLZ, nicht nach id", async () => {
+    const { webseitenAnwenden } = await import("../scripts/laender-schulen-laden.mjs");
+    const schulen = [{ n: "A-Schule", z: "80331" }, { n: "A-Schule", z: "90402" }, { n: "B-Schule", z: "80331" }];
+    const n = webseitenAnwenden(schulen, { schulen: {
+        "A-Schule|90402": { url: "https://a.example", geprueft: "2026-11-25" },
+        "B-Schule|80331": { url: "javascript:alert(1)", geprueft: "2026-11-25" }
+    } });
+    assert.equal(n, 1);
+    assert.equal(schulen[0].w, undefined);
+    assert.equal(schulen[1].w, "https://a.example");
+    assert.equal(schulen[1].wg, "2026-11-25");
+    assert.equal(schulen[2].w, undefined, "nur http(s)");
+});

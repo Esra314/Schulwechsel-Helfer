@@ -6,6 +6,8 @@
  * Ohne Internet im Node-Prozess (z. B. hinter einem Proxy) vorher mit curl laden
  * und die Dateien übergeben:
  *   node scripts/laender-schulen-laden.mjs --bb schulen-bb.gml --by Gymnasien.gml Realschulen.gml Mittelschulen.gml Grundschulen.gml
+ * Mit --stand JJJJ-MM-TT bleibt das Datum der amtlichen Daten erhalten (z. B. wenn nur
+ * quellen/by-webseiten.json geändert wurde und die GML-Dateien vom selben Tag sind).
  *
  * Quellen (Lizenz steht auch im GetCapabilities der Dienste):
  * - Brandenburg: MBJS, WFS https://schullandschaft.brandenburg.de/edugis/wfs/schulen
@@ -151,7 +153,23 @@ export function baueBB(gml, stand) {
 
 const BY_ARTEN = { "Gymnasien": "gym", "Realschulen": "rs", "Mittelschulen": "ms" };
 
-export function baueBY(gmlListe, stand) {
+// Webseiten bayerischer Schulen stehen nicht im amtlichen Datensatz. Sie wurden
+// einzeln gesucht und auf der Seite der Schule selbst geprüft (quellen/by-webseiten.json,
+// Schlüssel "Schulname|PLZ"). Nur geprüfte Einträge stehen dort; der Rest bleibt ohne Webseite.
+export function webseitenAnwenden(schulen, webseiten) {
+    if (!webseiten || !webseiten.schulen) return 0;
+    let n = 0;
+    schulen.forEach((s) => {
+        const w = webseiten.schulen[s.n + "|" + s.z];
+        if (!w || !/^https?:\/\//.test(w.url)) return;
+        s.w = w.url;
+        s.wg = w.geprueft;
+        n++;
+    });
+    return n;
+}
+
+export function baueBY(gmlListe, stand, webseiten) {
     const alle = [].concat(...gmlListe.map((g) => leseGml(g, "schul")));
     const punkte = alle.map((o) => ({ z: o.postleitzahl, o: o.ort, lat: o.lat, lon: o.lon }));
     const gesehen = new Set();
@@ -175,6 +193,7 @@ export function baueBY(gmlListe, stand) {
         })
         .sort((x, y) => x.n.localeCompare(y.n, "de"));
     schulen.forEach((s, i) => { s.id = "by" + (i + 1); });
+    webseitenAnwenden(schulen, webseiten);
     return {
         stand,
         quelle: "Bayerisches Staatsministerium für Unterricht und Kultus, Schulstandorte in Bayern",
@@ -215,14 +234,15 @@ function getFeature(basis, typ, ns) {
 
 async function main() {
     const args = process.argv.slice(2);
-    const stand = heute();
+    const iStand = args.indexOf("--stand");
+    const stand = iStand !== -1 ? args[iStand + 1] : heute();
     let bbGml, byGml;
     const iBB = args.indexOf("--bb");
     const iBY = args.indexOf("--by");
     if (iBB !== -1 || iBY !== -1) {
         if (iBB !== -1) bbGml = await readFile(args[iBB + 1], "utf8");
         if (iBY !== -1) {
-            const ende = iBB > iBY ? iBB : args.length;
+            const ende = Math.min(...[iBB, iStand, args.length].filter((i) => i > iBY));
             byGml = await Promise.all(args.slice(iBY + 1, ende).map((f) => readFile(f, "utf8")));
         }
     } else {
@@ -237,10 +257,12 @@ async function main() {
         console.log("Brandenburg:", bb.schulen.length, "Schulen,", Object.keys(bb.plz).length, "PLZ");
     }
     if (byGml) {
-        const by = baueBY(byGml, stand);
+        const web = JSON.parse(await readFile(new URL("../quellen/by-webseiten.json", import.meta.url), "utf8"));
+        const by = baueBY(byGml, stand, web);
         if (by.schulen.length < 1000) throw new Error("Bayern: zu wenige Schulen (" + by.schulen.length + ")");
         await writeFile(new URL("../data/schulen-by.js", import.meta.url), datei("BY", by));
-        console.log("Bayern:", by.schulen.length, "Schulen,", Object.keys(by.plz).length, "PLZ");
+        console.log("Bayern:", by.schulen.length, "Schulen,", Object.keys(by.plz).length, "PLZ,",
+            by.schulen.filter((s) => s.w).length, "geprüfte Webseiten");
     }
 }
 

@@ -31,6 +31,8 @@ test("Honigtopf und Zeitsperre erkennen Bots", () => {
     assert.equal(K.istBot({ website: "" }, 10), false);
     assert.equal(K.istBot({ website: "http://spam" }, 10), true);
     assert.equal(K.istBot({}, 1), true);
+    assert.equal(K.istBot({ _url: "x" }, 10), true);
+    assert.equal(K.istBot({ website: "", _url: "" }, 10), false);
 });
 
 test("Antworten des Formular-Dienstes werden richtig gedeutet", () => {

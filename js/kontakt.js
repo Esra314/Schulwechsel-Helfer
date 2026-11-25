@@ -7,7 +7,8 @@
  * ist das Formular nicht eingerichtet und die Seite zeigt nur die E-Mail-Adresse.
  *
  * Spam-Schutz ohne Tracking und ohne Captcha:
- *  - verstecktes Feld „website“ (Honigtopf): Menschen sehen es nicht, Bots füllen es aus
+ *  - versteckte Felder „website“ und „_url“ (Honigtopf, „_url“ prüft auch Formdall):
+ *    Menschen sehen sie nicht, Bots füllen sie aus
  *  - Zeitsperre: wer schneller als 3 Sekunden absendet, ist sehr wahrscheinlich ein Bot
  *  - Formdall prüft zusätzlich auf dem Server (eigener Honigtopf, Spamfilter)
  */
@@ -34,7 +35,8 @@
 
     // Sieht nach Bot aus? (Honigtopf ausgefüllt oder zu schnell abgeschickt)
     function istBot(d, sekunden) {
-        return Boolean(d.website && String(d.website).trim()) || sekunden < MIN_SEKUNDEN;
+        var gefuellt = ["website", "_url"].some(function (f) { return d[f] && String(d[f]).trim(); });
+        return gefuellt || sekunden < MIN_SEKUNDEN;
     }
 
     // Antwort des Dienstes in einen Text-Schlüssel übersetzen.

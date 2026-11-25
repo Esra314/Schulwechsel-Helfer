@@ -73,6 +73,7 @@ test("Teilen und Korrektur vorschlagen: nur der Seitenlink wird geteilt", () => 
     const app = fs.readFileSync(path.join(wurzel, "js", "app.js"), "utf8");
     const teilen = app.match(/function teileSeite[\s\S]*?\n    \}\n/)[0];
     assert.match(teilen, /window\.location\.origin \+ window\.location\.pathname/);
+    assert.match(teilen, /pointer: coarse/, "Teilen-Menü nur auf Touch-Geräten, am Computer Link kopieren");
     assert.doesNotMatch(teilen, /note|ergebnis|plz/i, "keine Noten oder Eingaben im geteilten Text");
     assert.match(app, /details\.appendChild\(korrekturLink\(s\.n\)\)/);
 });

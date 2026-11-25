@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https://api.formdall.de; object-src 'none'; base-uri 'self'; form-action https://api.formdall.de">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>Kontakt – Schulwechsel-Helfer</title>
+    <meta name="description" content="Kontakt zum Schulwechsel-Helfer: Fragen, Fehler melden, Werbung und Kooperation.">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main class="container rechtstext kontakt-seite">
+    <nav class="kontakt-sprachen" aria-label="Sprache / Language">
+        <a href="kontakt.html" hreflang="de" lang="de">Deutsch</a>
+        <a href="kontakt.html?lang=en" hreflang="en" lang="en">English</a>
+        <a href="kontakt.html?lang=tr" hreflang="tr" lang="tr">Türkçe</a>
+        <a href="kontakt.html?lang=ar" hreflang="ar" lang="ar">العربية</a>
+        <a href="kontakt.html?lang=uk" hreflang="uk" lang="uk">Українська</a>
+        <a href="kontakt.html?lang=ru" hreflang="ru" lang="ru">Русский</a>
+    </nav>
+    <p><a href="index.html" id="kontaktZurueck" data-k="k_back">← Zurück zur Startseite</a></p>
+    <h1><span aria-hidden="true">✉️ </span><span data-k="k_title">Kontakt</span></h1>
+
+    <div class="kontakt-karte">
+        <p id="kontaktMeldung" class="kontakt-meldung verborgen" role="alert" tabindex="-1"></p>
+
+        <div id="kontaktDanke" class="kontakt-danke verborgen" role="status" tabindex="-1">
+            <p class="kontakt-danke-titel"><span aria-hidden="true">💌 </span><span data-k="k_ok_titel">Danke! Ihre Nachricht ist angekommen.</span></p>
+            <p data-k="k_ok_text">Wir antworten so bald wie möglich per E-Mail.</p>
+        </div>
+
+        <!-- action: Adresse aus dem Formdall-Dashboard eintragen (siehe README, Abschnitt Kontaktformular) -->
+        <form id="kontaktForm" class="kontakt-form" action="https://api.formdall.de/api/v1/f/tkULRoMJLut80VWMkF5TgxSutPF2pNfUzuoWcUqU" method="POST" data-mail="IT.projekt.314@gmail.com" novalidate>
+            <p class="kontakt-intro" data-k="k_intro">Eine Frage, ein Fehler auf der Seite oder Interesse an Werbung oder einer Kooperation? Schreiben Sie uns – wir antworten per E-Mail.</p>
+            <div class="kontakt-zeile">
+                <label><span data-k="k_vorname">Vorname</span><input type="text" name="vorname" autocomplete="given-name" maxlength="80" required></label>
+                <label><span data-k="k_nachname">Nachname</span><input type="text" name="nachname" autocomplete="family-name" maxlength="80" required></label>
+            </div>
+            <label><span data-k="k_email">E-Mail</span><input type="email" name="email" autocomplete="email" maxlength="200" required dir="ltr"></label>
+            <label><span data-k="k_anliegen">Worum geht es?</span>
+                <select name="anliegen">
+                    <option value="Frage zur Seite" data-k="k_a_frage">Frage zur Seite</option>
+                    <option value="Fehler melden" data-k="k_a_fehler">Fehler melden</option>
+                    <option value="Werbung &amp; Kooperation" data-k="k_a_werbung">Werbung &amp; Kooperation</option>
+                    <option value="Sonstiges" data-k="k_a_sonst">Sonstiges</option>
+                </select>
+            </label>
+            <label><span data-k="k_nachricht">Nachricht</span><textarea name="nachricht" rows="6" maxlength="3000" required></textarea></label>
+            <p class="kontakt-tipp" data-k="k_tipp">Bitte keine Noten oder Daten Ihres Kindes mitschicken – die brauchen wir nicht.</p>
+            <!-- Honigtopf gegen Spam-Bots: für Menschen unsichtbar, bitte leer lassen -->
+            <div class="kontakt-honig" aria-hidden="true">
+                <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+                <label>URL <input type="text" name="_url" tabindex="-1" autocomplete="off"></label>
+            </div>
+            <input type="hidden" name="seite" value="Schulwechsel-Helfer">
+            <input type="hidden" name="sprache" id="kontaktSprache" value="de">
+            <label class="kontakt-einwilligung">
+                <input type="checkbox" name="einwilligung" value="ja" required>
+                <span><span data-k="k_einw_vor">Ich bin einverstanden, dass meine Angaben zur Beantwortung meiner Nachricht verarbeitet werden. Mehr dazu in der </span><a href="datenschutz.html#kontakt" id="kontaktDsLink" data-k="k_einw_link">Datenschutzerklärung</a><span data-k="k_einw_nach">.</span></span>
+            </label>
+            <p class="klein" data-k="k_pflicht">Alle Felder sind Pflichtfelder.</p>
+            <button type="submit" id="kontaktSenden" data-k="k_senden">Nachricht senden</button>
+        </form>
+    </div>
+
+    <p class="klein kontakt-fuss"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
+    <p class="klein copyright">© 2026 Schulwechsel-Helfer</p>
+</main>
+<script src="js/kontakt-texte.js"></script>
+<script src="js/kontakt.js"></script>
+</body>
+</html>

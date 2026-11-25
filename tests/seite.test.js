@@ -13,7 +13,7 @@ test("Deutsche Texte stehen direkt in index.html (npm run texte ausführen)", ()
 });
 
 test("Sicherheitsregeln (CSP) sind auf allen Seiten gesetzt", () => {
-    for (const datei of ["index.html", "impressum.html", "datenschutz.html"]) {
+    for (const datei of ["index.html", "impressum.html", "datenschutz.html", "kontakt.html"]) {
         const inhalt = fs.readFileSync(path.join(wurzel, datei), "utf8");
         assert.match(inhalt, /http-equiv="Content-Security-Policy"/, datei);
         assert.match(inhalt, /object-src 'none'/, datei);

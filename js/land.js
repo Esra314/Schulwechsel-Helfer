@@ -346,7 +346,15 @@
         drucken.type = "button";
         drucken.addEventListener("click", function () { window.print(); });
         knoepfe.appendChild(drucken);
+        var teilen = el("button", "zweitrangig nur-bildschirm", "📤 " + t("btn_share"));
+        teilen.type = "button";
+        knoepfe.appendChild(teilen);
         erg.appendChild(knoepfe);
+        erg.appendChild(el("p", "klein nur-bildschirm teilen-hinweis", t("share_hint")));
+        var teilenStatus = el("p", "klein nur-bildschirm teilen-status");
+        teilenStatus.setAttribute("role", "status");
+        erg.appendChild(teilenStatus);
+        teilen.addEventListener("click", function () { App.teileSeite(teilenStatus); });
 
         erg.classList.remove("verborgen");
         if (scrollen) {

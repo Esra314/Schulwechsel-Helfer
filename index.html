@@ -257,7 +257,10 @@
 
         <div class="knoepfe">
             <button type="button" id="drucken" class="zweitrangig" data-i18n="btn_print">Als PDF speichern oder drucken</button>
+            <button type="button" id="teilen" class="zweitrangig nur-bildschirm"><span aria-hidden="true">📤 </span><span data-i18n="btn_share">Seite teilen</span></button>
         </div>
+        <p class="klein nur-bildschirm teilen-hinweis" data-i18n="share_hint">Geteilt wird nur der Link zur Seite – nie Ihre Noten.</p>
+        <p class="klein nur-bildschirm teilen-status" id="teilenStatus" role="status"></p>
         <p class="klein nur-bildschirm" data-i18n="pdf_hint">Tipp: Im Druckfenster können Sie „Als PDF speichern“ wählen.</p>
         <a class="weiter nur-bildschirm" href="#schulsuche" data-i18n="next_find">Weiter: Passende Schulen finden</a>
     </section>
@@ -492,6 +495,7 @@
     <a href="impressum.html" data-i18n="footer_imprint">Impressum</a>
     <a href="datenschutz.html" data-i18n="footer_privacy">Datenschutz</a>
     <a href="kontakt.html" data-i18n="footer_contact">Kontakt</a>
+    <a href="kontakt.html?thema=idee" id="vorschlagLink" data-i18n="footer_idea">Verbesserungsvorschlag</a>
     <small class="copyright">© 2026 Schulwechsel-Helfer</small>
 </footer>
 

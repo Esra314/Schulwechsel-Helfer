@@ -42,8 +42,8 @@ Quelle: [Senatsverwaltung für Bildung, Wechsel zur 7. Klasse](https://www.berli
 
 ```text
 index.html          Rechner
-impressum.html      Impressum (Platzhalter ausfüllen!)
-datenschutz.html    Datenschutzerklärung (Platzhalter ausfüllen!)
+impressum.html      Impressum
+datenschutz.html    Datenschutzerklärung
 favicon.svg
 css/style.css
 js/rechner.js       Berechnung (ohne Abhängigkeiten, auch in Node testbar)
@@ -172,7 +172,7 @@ Schule unter `offen` und die App zeigt „wird noch geprüft“. Braucht `curl` 
 ## Veröffentlichung (GitHub Pages)
 
 Repository → Settings → Pages → Source: „Deploy from branch“, Branch `main`, Ordner `/ (root)`.
-Vorher in `impressum.html` und `datenschutz.html` die gelb markierten Platzhalter ausfüllen.
+Name und Anschrift in `impressum.html` und `datenschutz.html` sind eingetragen (Impressum-Service Autorenglück, Kundennummer #20605). Bei einem Umzug oder Wechsel des Dienstes beide Dateien anpassen.
 
 Die Adresse `https://esra314.github.io/Schulwechsel-Helfer/` steht in `index.html`
 (canonical, hreflang, og:url, og:image), `sitemap.xml` und `robots.txt`. Bei einer eigenen Domain dort anpassen.

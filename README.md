@@ -194,8 +194,8 @@ Formulars nur die E-Mail-Adresse.
 
 1. Bei formdall.de kostenlos registrieren und den Auftragsverarbeitungsvertrag (AVV) bestätigen.
 2. Ein Formular anlegen, Captcha: **keins** (Spam-Schutz läuft über Honigtopf, Zeitsperre und Formdall-Spamfilter).
-3. Einstellungen: Empfänger = Impressum-Adresse, Aufbewahrung = **14 Tage**,
-   Betreff z. B. `{{anliegen}} – {{seite}}`, erlaubte Herkunft = `https://esra314.github.io`,
+3. Einstellungen: E-Mail-Aktion mit Empfänger = Impressum-Adresse; „Einsendungen speichern“ **aus** lassen,
+   Betreff z. B. `{{anliegen}} – {{seite}}`, erlaubte Herkunft = `esra314.github.io`,
    Weiterleitungs-URL = `https://esra314.github.io/Schulwechsel-Helfer/kontakt.html` (nur für Browser ohne JavaScript).
 4. Die Formular-Adresse (`https://api.formdall.de/api/v1/f/…`) in `kontakt.html` im `action`-Attribut eintragen.
 

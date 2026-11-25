@@ -217,6 +217,9 @@
     if (typeof document === "undefined" || !Daten) return;
 
     var I18N = (root.I18n && root.I18n.TEXTE) || {};
+    // Startadresse der Seite (auch auf /tr/ usw.): assistent.js liegt in js/
+    var WURZEL = document.currentScript && document.currentScript.src
+        ? new URL("../", document.currentScript.src).href : "";
     var OFFIZIELL = "https://www.berlin.de/sen/bildung/schule/bildungswege/uebergang-weiterfuehrende-schule/wechsel-zur-7-klasse/";
 
     var LINKS = {
@@ -423,7 +426,7 @@
             var a = el("a", "hilfe-link", i18n(def.text, sprache));
             var href = def.href;
             if (id === "privacy" && sprache !== "de") href += "#" + sprache;
-            a.href = href;
+            a.href = def.seite ? WURZEL + href : href;
             if (def.extern) {
                 a.target = "_blank";
                 a.rel = "noopener";

@@ -19,14 +19,16 @@
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="de_DE">
     <meta name="twitter:card" content="summary_large_image">
-    <!-- canonical setzt app.js passend zur Sprache (?lang=…), damit jede Sprachfassung indexiert werden kann -->
+    <!-- SPRACHSEITEN:START (npm run texte schreibt diesen Block) -->
+    <link rel="canonical" href="https://esra314.github.io/Schulwechsel-Helfer/">
     <link rel="alternate" hreflang="de" href="https://esra314.github.io/Schulwechsel-Helfer/">
-    <link rel="alternate" hreflang="en" href="https://esra314.github.io/Schulwechsel-Helfer/?lang=en">
-    <link rel="alternate" hreflang="tr" href="https://esra314.github.io/Schulwechsel-Helfer/?lang=tr">
-    <link rel="alternate" hreflang="ar" href="https://esra314.github.io/Schulwechsel-Helfer/?lang=ar">
-    <link rel="alternate" hreflang="uk" href="https://esra314.github.io/Schulwechsel-Helfer/?lang=uk">
-    <link rel="alternate" hreflang="ru" href="https://esra314.github.io/Schulwechsel-Helfer/?lang=ru">
+    <link rel="alternate" hreflang="en" href="https://esra314.github.io/Schulwechsel-Helfer/en/">
+    <link rel="alternate" hreflang="tr" href="https://esra314.github.io/Schulwechsel-Helfer/tr/">
+    <link rel="alternate" hreflang="ar" href="https://esra314.github.io/Schulwechsel-Helfer/ar/">
+    <link rel="alternate" hreflang="uk" href="https://esra314.github.io/Schulwechsel-Helfer/uk/">
+    <link rel="alternate" hreflang="ru" href="https://esra314.github.io/Schulwechsel-Helfer/ru/">
     <link rel="alternate" hreflang="x-default" href="https://esra314.github.io/Schulwechsel-Helfer/">
+    <!-- SPRACHSEITEN:ENDE -->
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -43,7 +45,14 @@
 
     <nav class="sprachleiste" aria-label="Sprache / Language">
         <span class="sprachleiste-text" data-i18n="lang_available">Diese Seite gibt es in 6 Sprachen:</span>
-        <ul class="sprach-chips" id="sprachChips"></ul>
+        <ul class="sprach-chips" id="sprachChips"><!-- SPRACHCHIPS:START -->
+            <li><a href="./" hreflang="de" lang="de" data-lang="de" aria-current="true">Deutsch</a></li>
+            <li><a href="en/" hreflang="en" lang="en" data-lang="en">English</a></li>
+            <li><a href="tr/" hreflang="tr" lang="tr" data-lang="tr">Türkçe</a></li>
+            <li><a href="ar/" hreflang="ar" lang="ar" data-lang="ar">العربية</a></li>
+            <li><a href="uk/" hreflang="uk" lang="uk" data-lang="uk">Українська</a></li>
+            <li><a href="ru/" hreflang="ru" lang="ru" data-lang="ru">Русский</a></li>
+        <!-- SPRACHCHIPS:ENDE --></ul>
     </nav>
 
     <header class="hero">

@@ -98,6 +98,9 @@
 
     var App, Laender, t, el;
     var bereich = document.getElementById("landSuche");
+    // Startadresse der Seite (auch auf /tr/ usw.): land-suche.js liegt in js/
+    var WURZEL = document.currentScript && document.currentScript.src
+        ? new URL("../", document.currentScript.src).href : "";
     var zustand = {};   // je Land: { eingabe, arten, privat, radius, ergebnis, sichtbar }
     var aktuell = null;
     var karte = null, markerSchicht = null, karteAn = false;
@@ -122,7 +125,7 @@
     function ladeDaten(code, fertig) {
         if ((window.LANDSCHULEN || {})[code]) { fertig(); return; }
         var s = document.createElement("script");
-        s.src = Laender.LAND[code].schuldaten;
+        s.src = WURZEL + Laender.LAND[code].schuldaten;
         s.onload = function () { fertig(); };
         s.onerror = function () { fertig(new Error("laden")); };
         document.head.appendChild(s);

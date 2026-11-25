@@ -296,7 +296,10 @@
             faq_q6: "Im Zeugnis fehlt eine Note oder steht etwas anderes?",
             faq_a6: "Zum Beispiel eine Zwischennote wie „2-3“, ein anderes Fach oder ein Zeugnis aus einem anderen Bundesland oder Land. Dann gelten Sonderregeln. Die Grundschule berät Sie und berechnet die Förderprognose. Diese Seite kann solche Fälle nicht genau berechnen.",
             footer_privacy: "Datenschutz",
-            footer_contact: "Kontakt"
+            footer_contact: "Kontakt",
+            // Suchmaschinen: Titel und Beschreibung der Sprachseite
+            seo_title: "Schulwechsel-Helfer – Von der Grundschule zur weiterführenden Schule | Notenrechner Berlin, Brandenburg, Bayern, Sachsen, Thüringen",
+            seo_desc: "Schulwechsel-Helfer: Von der Grundschule zur weiterführenden Schule. Kostenloser Notenrechner für Berlin, Brandenburg, Bayern, Sachsen und Thüringen – Notendurchschnitt berechnen, Gymnasialeignung prüfen, Schularten verstehen und wichtige Termine kennen. Mehrsprachig: Deutsch, Englisch, Türkisch, Arabisch, Ukrainisch und Russisch."
         },
 
         en: {
@@ -576,7 +579,10 @@
             faq_q6: "A grade is missing in the report, or it shows something else?",
             faq_a6: "For example an in-between grade like “2-3”, a different subject, or a report from another federal state or country. Special rules apply then. The primary school advises you and calculates the Förderprognose. This page cannot calculate such cases exactly.",
             footer_privacy: "Privacy policy (Datenschutz)",
-            footer_contact: "Contact (Kontakt)"
+            footer_contact: "Contact (Kontakt)",
+            // Suchmaschinen: Titel und Beschreibung der Sprachseite
+            seo_title: "Schulwechsel-Helfer – From primary to secondary school | Grade calculator for Berlin, Brandenburg, Bavaria, Saxony, Thuringia",
+            seo_desc: "Free grade calculator for Berlin, Brandenburg, Bavaria, Saxony and Thuringia: calculate the grade average, check Gymnasium eligibility, understand the school types and know the important dates. In English, German, Turkish, Arabic, Ukrainian and Russian."
         },
 
         tr: {
@@ -856,7 +862,10 @@
             faq_q6: "Karnede bir not eksik ya da farklı bir şey mi yazıyor?",
             faq_a6: "Örneğin „2-3“ gibi ara bir not, farklı bir ders ya da başka bir eyaletten veya ülkeden gelen bir karne. Bu durumda özel kurallar geçerlidir. İlkokul size danışmanlık yapar ve Förderprognose'u hesaplar. Bu sayfa bu tür durumları tam olarak hesaplayamaz.",
             footer_privacy: "Gizlilik (Datenschutz)",
-            footer_contact: "İletişim (Kontakt)"
+            footer_contact: "İletişim (Kontakt)",
+            // Suchmaschinen: Titel und Beschreibung der Sprachseite
+            seo_title: "Schulwechsel-Helfer – İlkokuldan sonraki okula geçiş | Berlin, Brandenburg, Bavyera, Saksonya, Thüringen için not hesaplama",
+            seo_desc: "Berlin, Brandenburg, Bavyera, Saksonya ve Thüringen için ücretsiz not hesaplayıcı: not ortalamasını hesaplayın, Gymnasium uygunluğunu kontrol edin, okul türlerini anlayın ve önemli tarihleri öğrenin. Türkçe, Almanca, İngilizce, Arapça, Ukraynaca ve Rusça."
         },
 
         ar: {
@@ -1136,7 +1145,10 @@
             faq_q6: "هل تنقص درجة في الشهادة أو يوجد فيها شيء مختلف؟",
             faq_a6: "مثلاً درجة بينية مثل «2-3»، أو مادة مختلفة، أو شهادة من ولاية أو دولة أخرى. عندها تُطبَّق قواعد خاصة. المدرسة الابتدائية تقدم لكم الاستشارة وتحسب الـ Förderprognose. لا يمكن لهذه الصفحة حساب هذه الحالات بدقة.",
             footer_privacy: "حماية البيانات (Datenschutz)",
-            footer_contact: "تواصل معنا (Kontakt)"
+            footer_contact: "تواصل معنا (Kontakt)",
+            // Suchmaschinen: Titel und Beschreibung der Sprachseite
+            seo_title: "Schulwechsel-Helfer – من المدرسة الابتدائية إلى المدرسة الثانوية | حاسبة درجات لبرلين وبراندنبورغ وبافاريا وساكسونيا وتورينغن",
+            seo_desc: "حاسبة درجات مجانية لبرلين وبراندنبورغ وبافاريا وساكسونيا وتورينغن: احسب معدل الدرجات، وتحقق من الأهلية للـ Gymnasium، وتعرّف على أنواع المدارس والمواعيد المهمة. بالعربية والألمانية والإنجليزية والتركية والأوكرانية والروسية."
         },
 
         uk: {
@@ -1416,7 +1428,10 @@
             faq_q6: "У табелі бракує оцінки або написано щось інше?",
             faq_a6: "Наприклад, проміжна оцінка «2-3», інший предмет або табель з іншої федеральної землі чи країни. Тоді діють особливі правила. Початкова школа проконсультує вас і розрахує Förderprognose. Ця сторінка не може точно розрахувати такі випадки.",
             footer_privacy: "Захист даних (Datenschutz)",
-            footer_contact: "Контакт (Kontakt)"
+            footer_contact: "Контакт (Kontakt)",
+            // Suchmaschinen: Titel und Beschreibung der Sprachseite
+            seo_title: "Schulwechsel-Helfer – з початкової до середньої школи | Калькулятор оцінок: Берлін, Бранденбург, Баварія, Саксонія, Тюрингія",
+            seo_desc: "Безкоштовний калькулятор оцінок для Берліна, Бранденбурга, Баварії, Саксонії та Тюрингії: обчисліть середній бал, перевірте придатність до Gymnasium, дізнайтеся про типи шкіл і важливі терміни. Українською, німецькою, англійською, турецькою, арабською та російською."
         },
 
         ru: {
@@ -1696,7 +1711,10 @@
             faq_q6: "В табеле нет оценки или написано что-то другое?",
             faq_a6: "Например, промежуточная оценка «2-3», другой предмет или табель из другой федеральной земли или страны. Тогда действуют особые правила. Начальная школа проконсультирует вас и рассчитает Förderprognose. Эта страница не может точно рассчитать такие случаи.",
             footer_privacy: "Защита данных (Datenschutz)",
-            footer_contact: "Контакт (Kontakt)"
+            footer_contact: "Контакт (Kontakt)",
+            // Suchmaschinen: Titel und Beschreibung der Sprachseite
+            seo_title: "Schulwechsel-Helfer – из начальной в среднюю школу | Калькулятор оценок: Берлин, Бранденбург, Бавария, Саксония, Тюрингия",
+            seo_desc: "Бесплатный калькулятор оценок для Берлина, Бранденбурга, Баварии, Саксонии и Тюрингии: рассчитайте средний балл, проверьте пригодность для Gymnasium, узнайте о типах школ и важных сроках. На русском, немецком, английском, турецком, арабском и украинском."
         }
     };
 

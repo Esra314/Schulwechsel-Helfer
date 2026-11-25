@@ -914,7 +914,11 @@ input[type="checkbox"]:focus-visible {
     list-style: none;
 }
 
-.sprach-chips button {
+.sprach-chips a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
     font-weight: 500;
     font-size: 0.9rem;
     padding: 4px 12px;
@@ -925,12 +929,12 @@ input[type="checkbox"]:focus-visible {
     color: var(--text);
 }
 
-.sprach-chips button:hover {
+.sprach-chips a:hover {
     background: var(--blau-hell);
     border-color: var(--blau);
 }
 
-.sprach-chips button[aria-pressed="true"] {
+.sprach-chips a[aria-current="true"] {
     background: var(--blau);
     border-color: var(--blau);
     color: #fff;

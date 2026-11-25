@@ -2,7 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
-const { einsetzen } = require("../scripts/texte-einsetzen.js");
+const { einsetzen, seite, sitemap, SPRACHEN, DOMAIN } = require("../scripts/texte-einsetzen.js");
 
 const wurzel = path.join(__dirname, "..");
 const html = fs.readFileSync(path.join(wurzel, "index.html"), "utf8");
@@ -72,8 +72,40 @@ test("Teilen und Korrektur vorschlagen: nur der Seitenlink wird geteilt", () => 
     assert.match(html, /id="vorschlagLink" [^>]*data-i18n="footer_idea"/);
     const app = fs.readFileSync(path.join(wurzel, "js", "app.js"), "utf8");
     const teilen = app.match(/function teileSeite[\s\S]*?\n    \}\n/)[0];
-    assert.match(teilen, /window\.location\.origin \+ window\.location\.pathname/);
+    assert.match(teilen, /var url = sprachUrl\(aktuelleSprache\)/);
     assert.match(teilen, /pointer: coarse/, "Teilen-Menü nur auf Touch-Geräten, am Computer Link kopieren");
     assert.doesNotMatch(teilen, /note|ergebnis|plz/i, "keine Noten oder Eingaben im geteilten Text");
     assert.match(app, /details\.appendChild\(korrekturLink\(s\.n\)\)/);
+});
+
+test("Jede Sprache hat eine eigene Seite für Google (npm run texte ausführen)", () => {
+    for (const { code, dir } of SPRACHEN.filter((s) => s.code !== "de")) {
+        const datei = path.join(wurzel, code, "index.html");
+        assert.ok(fs.existsSync(datei), "fehlt: " + code + "/index.html");
+        const inhalt = fs.readFileSync(datei, "utf8");
+        assert.equal(inhalt, seite(html, code), code + "/index.html ist veraltet");
+        assert.match(inhalt, new RegExp('<html lang="' + code + '" dir="' + dir + '">'), code);
+        assert.match(inhalt, new RegExp('<link rel="canonical" href="' + DOMAIN + code + '/">'), code);
+        assert.match(inhalt, /<link rel="stylesheet" href="\.\.\/css\/style\.css">/, code);
+        assert.match(inhalt, /<script src="\.\.\/js\/app\.js" defer><\/script>/, code);
+        assert.doesNotMatch(inhalt, /\s(?:href|src)="(?:css|js|data|vendor|icons|img)\//, code + ": Pfad ohne ../");
+    }
+});
+
+test("Alle Sprachseiten verweisen gegenseitig aufeinander (hreflang + x-default)", () => {
+    for (const { code } of SPRACHEN) {
+        const inhalt = fs.readFileSync(path.join(wurzel, code === "de" ? "" : code, "index.html"), "utf8");
+        for (const s of SPRACHEN) {
+            assert.ok(inhalt.includes('<link rel="alternate" hreflang="' + s.code + '" href="' + DOMAIN + (s.code === "de" ? "" : s.code + "/") + '">'), code + " -> " + s.code);
+            assert.ok(inhalt.includes('data-lang="' + s.code + '"'), code + ": Sprach-Link " + s.code);
+        }
+        assert.ok(inhalt.includes('<link rel="alternate" hreflang="x-default" href="' + DOMAIN + '">'), code);
+    }
+});
+
+test("Sitemap enthält alle Sprachseiten", () => {
+    const sm = fs.readFileSync(path.join(wurzel, "sitemap.xml"), "utf8");
+    const datum = sm.match(/<lastmod>([^<]+)<\/lastmod>/)[1];
+    assert.equal(sm, sitemap(datum));
+    assert.equal((sm.match(/<loc>/g) || []).length, SPRACHEN.length);
 });

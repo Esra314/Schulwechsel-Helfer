@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://tile.openstreetmap.org; connect-src 'self'; font-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>Schulwechsel-Helfer – From primary to secondary school | Grade calculator for Berlin, Brandenburg, Bavaria, Saxony, Thuringia</title>
+    <meta name="description" content="Free grade calculator for Berlin, Brandenburg, Bavaria, Saxony and Thuringia: calculate the grade average, check Gymnasium eligibility, understand the school types and know the important dates. In English, German, Turkish, Arabic, Ukrainian and Russian.">
+    <meta name="keywords" content="Schulwechsel-Helfer, Übergang Grundschule weiterführende Schule, Gymnasium Rechner, Notenrechner, Durchschnitt berechnen, Gymnasialeignung, Übertrittszeugnis Bayern, Bildungsempfehlung Sachsen, Gymnasium Thüringen, Ü7 Brandenburg, Förderprognose Berlin, Oberschule, Realschule, Mittelschule, Gemeinschaftsschule, Probeunterricht, mehrsprachig">
+    <meta name="theme-color" content="#7469B6">
+    <meta name="format-detection" content="telephone=no">
+    <meta property="og:title" content="Schulwechsel-Helfer – From primary to secondary school">
+    <meta property="og:description" content="Free helper for moving on after primary school: enter grades and find suitable schools nearby.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://esra314.github.io/Schulwechsel-Helfer/en/">
+    <meta property="og:image" content="https://esra314.github.io/Schulwechsel-Helfer/icons/og-bild.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- SPRACHSEITEN:START (npm run texte schreibt diesen Block) -->
+    <link rel="canonical" href="https://esra314.github.io/Schulwechsel-Helfer/en/">
+    <link rel="alternate" hreflang="de" href="https://esra314.github.io/Schulwechsel-Helfer/">
+    <link rel="alternate" hreflang="en" href="https://esra314.github.io/Schulwechsel-Helfer/en/">
+    <link rel="alternate" hreflang="tr" href="https://esra314.github.io/Schulwechsel-Helfer/tr/">
+    <link rel="alternate" hreflang="ar" href="https://esra314.github.io/Schulwechsel-Helfer/ar/">
+    <link rel="alternate" hreflang="uk" href="https://esra314.github.io/Schulwechsel-Helfer/uk/">
+    <link rel="alternate" hreflang="ru" href="https://esra314.github.io/Schulwechsel-Helfer/ru/">
+    <link rel="alternate" hreflang="x-default" href="https://esra314.github.io/Schulwechsel-Helfer/">
+    <!-- SPRACHSEITEN:ENDE -->
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="Schulwechsel-Helfer">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<main class="container">
+
+    <nav class="sprachleiste" aria-label="Sprache / Language">
+        <span class="sprachleiste-text" data-i18n="lang_available">This page is available in 6 languages:</span>
+        <ul class="sprach-chips" id="sprachChips"><!-- SPRACHCHIPS:START -->
+            <li><a href="../" hreflang="de" lang="de" data-lang="de">Deutsch</a></li>
+            <li><a href="../en/" hreflang="en" lang="en" data-lang="en" aria-current="true">English</a></li>
+            <li><a href="../tr/" hreflang="tr" lang="tr" data-lang="tr">Türkçe</a></li>
+            <li><a href="../ar/" hreflang="ar" lang="ar" data-lang="ar">العربية</a></li>
+            <li><a href="../uk/" hreflang="uk" lang="uk" data-lang="uk">Українська</a></li>
+            <li><a href="../ru/" hreflang="ru" lang="ru" data-lang="ru">Русский</a></li>
+        <!-- SPRACHCHIPS:ENDE --></ul>
+    </nav>
+
+    <header class="hero">
+        <div class="c-raster" aria-hidden="true"></div>
+        <div class="hero-text">
+            <h1 class="hero-marke" lang="de">Schulwechsel-Helfer</h1>
+            <button type="button" id="landKnopf" class="land-knopf" aria-haspopup="dialog"><span aria-hidden="true">📍</span> <span id="landName" lang="de">Berlin</span> <span aria-hidden="true">▾</span></button>
+            <p class="hero-titel" data-i18n="hero_title">Your journey to your new school</p>
+            <p class="hero-unter" data-i18n="hero_sub">Four stops – and you'll know which schools suit you.</p>
+        </div>
+        <div class="hero-beispiel" aria-hidden="true">
+            <div class="b-ergebnis nur-be">
+                <svg viewBox="0 0 120 120" class="b-ring">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="#e7edf6" stroke-width="12"/>
+                    <circle class="b-ring-wert" cx="60" cy="60" r="50" fill="none" stroke="#2e7d4f" stroke-width="12" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="80" transform="rotate(-90 60 60)"/>
+                    <text x="60" y="58" text-anchor="middle" font-size="26" font-weight="800" fill="#1f2933">2,1</text>
+                    <text x="60" y="78" text-anchor="middle" font-size="11" fill="#56616e" data-i18n="hero_avg">Average</text>
+                </svg>
+                <div>
+                    <p class="b-badge" data-i18n="hero_possible">All paths lead to the Abitur</p>
+                    <p class="b-klein" data-i18n="hero_example">Example result</p>
+                </div>
+            </div>
+            <ul class="b-schulen nur-be" lang="de" dir="ltr">
+                <li><span class="b-punkt gym"></span>Gymnasium <small>Abitur ✓</small></li>
+                <li><span class="b-punkt iss"></span>Integrierte Sekundarschule <small>Abitur ✓</small></li>
+                <li><span class="b-punkt gms"></span>Gemeinschaftsschule <small>Abitur ✓</small></li>
+            </ul>
+            <ul class="b-schulen nur-land" id="heroArten" lang="de" dir="ltr"></ul>
+        </div>
+        <svg class="c-karte" viewBox="0 28 640 202" role="group" data-i18n-aria="hero_map" aria-label="Four stops: grades, schools, shortlist, registration">
+            <defs>
+                <linearGradient id="cLinie" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#cffafe"/>
+                    <stop offset="0.5" stop-color="#ffffff"/>
+                    <stop offset="1" stop-color="#fbcfe8"/>
+                </linearGradient>
+                <radialGradient id="cGlow">
+                    <stop offset="0" stop-color="#fff"/>
+                    <stop offset="0.4" stop-color="#67e8f9"/>
+                    <stop offset="1" stop-color="#67e8f9" stop-opacity="0"/>
+                </radialGradient>
+            </defs>
+            <path id="cWeg" d="M60 150 C140 110 180 175 245 150 S360 50 420 62 S540 140 590 120" fill="none" stroke="url(#cLinie)" stroke-width="3.5" stroke-linecap="round"/>
+            <a href="#rechner" class="c-station">
+                <circle class="c-ring" cx="60" cy="150" r="27"/>
+                <g class="c-icon" transform="translate(48 138)">
+                    <rect x="0" y="0" width="24" height="24" rx="4"/><path d="M6 6h12M6 12h3M11 12h2M15 12h3M6 18h3M11 18h2M15 18h3"/>
+                </g>
+                <text x="60" y="204" text-anchor="middle" class="c-nr">01</text>
+                <text x="60" y="222" text-anchor="middle" class="c-label" data-i18n="hero_s1">Grades</text>
+            </a>
+            <a href="#schulsuche" class="c-station">
+                <circle class="c-ring" cx="245" cy="150" r="27"/>
+                <g class="c-icon" transform="translate(233 138)">
+                    <path d="M12 23s8-7.5 8-13.5A8 8 0 0 0 4 9.5C4 15.5 12 23 12 23z"/><circle cx="12" cy="9.5" r="3"/>
+                </g>
+                <text x="245" y="204" text-anchor="middle" class="c-nr">02</text>
+                <text x="245" y="222" text-anchor="middle" class="c-label" data-i18n="hero_s2">Schools</text>
+            </a>
+            <a href="#vergleich" class="c-station">
+                <circle class="c-ring" cx="420" cy="62" r="27"/>
+                <g class="c-icon" transform="translate(408 50)">
+                    <path d="M5 2h14v21l-7-5-7 5z"/>
+                </g>
+                <text x="420" y="116" text-anchor="middle" class="c-nr">03</text>
+                <text x="420" y="134" text-anchor="middle" class="c-label" data-i18n="hero_s3">Shortlist</text>
+            </a>
+            <a href="#ratgeber" class="c-station">
+                <circle class="c-ring" cx="590" cy="120" r="27"/>
+                <g class="c-icon" transform="translate(578 108)">
+                    <rect x="1" y="4" width="22" height="19" rx="3"/><path d="M1 10h22M7 1v6M17 1v6M8 16l3 3 5-6"/>
+                </g>
+                <text x="590" y="174" text-anchor="middle" class="c-nr">04</text>
+                <text x="590" y="192" text-anchor="middle" class="c-label" data-i18n="hero_s4">Registration</text>
+            </a>
+            <circle r="9" fill="url(#cGlow)" class="c-punkt" aria-hidden="true">
+                <animateMotion dur="6s" repeatCount="indefinite"><mpath href="#cWeg"/></animateMotion>
+            </circle>
+        </svg>
+        <div class="c-unten">
+            <a class="c-start" href="#rechnerForm"><span data-i18n="hero_cta">Let's go: enter your grades</span> <span aria-hidden="true">→</span></a>
+            <p class="c-tipp">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>
+                <span><strong data-i18n="hero_tip_who">Tip:</strong> <span id="heroTipp" data-i18n="hero_tip">Have your report cards from years 5 and 6 ready!</span></span>
+            </p>
+        </div>
+    </header>
+
+    <nav class="hauptmenue nur-bildschirm" id="hauptmenue" data-i18n-aria="nav_label" aria-label="Contents">
+        <a href="#rechner"><span class="tab-nr" aria-hidden="true">1</span><span class="tab-text" data-i18n="tab_calc">Calculate grades</span></a>
+        <a href="#schulsuche"><span class="tab-nr" aria-hidden="true">2</span><span class="tab-text" data-i18n="tab_find">Find schools</span></a>
+        <a href="#vergleich"><span class="tab-nr" aria-hidden="true">3</span><span class="tab-text" data-i18n="tab_mine">My selection</span><span class="zaehler verborgen" id="merkZaehler"></span></a>
+        <a href="#ratgeber"><span class="tab-nr" aria-hidden="true">4</span><span class="tab-text" data-i18n="tab_guide">Tips &amp; dates</span></a>
+        <a href="#fragen"><span class="tab-nr" aria-hidden="true">5</span><span class="tab-text" data-i18n="tab_info">School info</span></a>
+    </nav>
+
+    <noscript>
+        <div class="fehler-box">
+            <p lang="de">Bitte aktivieren Sie JavaScript, um den Rechner zu nutzen.</p>
+            <p lang="en">Please turn on JavaScript to use the calculator.</p>
+            <p lang="tr">Hesaplayıcıyı kullanmak için lütfen JavaScript'i açın.</p>
+            <p lang="ar" dir="rtl">يرجى تفعيل JavaScript لاستخدام الحاسبة.</p>
+            <p lang="uk">Будь ласка, увімкніть JavaScript, щоб користуватися калькулятором.</p>
+            <p lang="ru">Пожалуйста, включите JavaScript, чтобы пользоваться калькулятором.</p>
+        </div>
+    </noscript>
+
+    <div id="rechner" class="ansicht">
+    <img class="ansicht-foto nur-bildschirm" src="../img/fotos/stifte-bunt.webp" alt="" width="1200" height="675" loading="lazy" decoding="async">
+    <h2 class="ansicht-titel" data-i18n="view_calc">Step 1: Enter the grades from the Zeugnis</h2>
+    <p class="hinweis" data-i18n="intro">Enter the grades exactly as they appear on the report (Zeugnis). Subject and school names stay in German so you can find them on the report and in letters from the school.</p>
+
+    <form id="rechnerForm" class="nur-be" novalidate>
+
+        <fieldset>
+            <legend data-i18n="legend_grades">Report grades (Zeugnisnoten)</legend>
+
+            <label class="fs-wahl">
+                <span data-i18n="fs_label">Which language is the first foreign language (1. Fremdsprache)?</span>
+                <select id="fremdsprache-name">
+                    <option>Englisch</option>
+                    <option>Französisch</option>
+                    <option>Spanisch</option>
+                    <option>Italienisch</option>
+                    <option>Polnisch</option>
+                    <option>Portugiesisch</option>
+                    <option>Russisch</option>
+                    <option>Türkisch</option>
+                    <option>Griechisch</option>
+                </select>
+            </label>
+
+            <table class="noten-tabelle">
+                <thead>
+                    <tr>
+                        <th scope="col" data-i18n="col_subject">Subject (Fach)</th>
+                        <th scope="col"><span class="hj">5/2</span><span class="hj-text" data-i18n="col_52">Report grade 5, 2nd half-year</span></th>
+                        <th scope="col"><span class="hj">6/1</span><span class="hj-text" data-i18n="col_61">Report grade 6, 1st half-year</span></th>
+                    </tr>
+                </thead>
+                <tbody id="noten-zeilen"></tbody>
+            </table>
+
+            <p class="klein" data-i18n="optional_hint">For Kunst, Musik and Sport you can choose “no grade” if the report shows none.</p>
+            <p class="klein" data-i18n="tendency_hint">Plus and minus do not count: 3+ and 3- are a 3.</p>
+        </fieldset>
+
+        <div id="fehler" class="fehler-box verborgen" role="alert"></div>
+
+        <div class="knoepfe">
+            <button type="submit" data-i18n="btn_calc">Calculate</button>
+            <button type="reset" class="zweitrangig" data-i18n="btn_reset">Start over</button>
+        </div>
+
+    </form>
+
+    <section id="ergebnis" class="ergebnis verborgen nur-be" aria-live="polite" tabindex="-1">
+        <h2 data-i18n="result_title">Result</h2>
+
+        <div class="kennzahlen">
+            <div class="kennzahl">
+                <div class="kennzahl-titel" data-i18n="sum_label">Sum of grades (Notensumme)</div>
+                <div class="kennzahl-wert" id="notensumme"></div>
+                <p class="klein" data-i18n="sum_hint">German + maths + 1st foreign language from both reports. Up to 14 the path to the Gymnasium is direct, otherwise via the Probeunterricht. ISS and Gemeinschaftsschule are always open.</p>
+            </div>
+            <div class="kennzahl">
+                <div class="kennzahl-titel" data-i18n="avg_label">Average grade (Durchschnittsnote)</div>
+                <div class="kennzahl-wert" id="durchschnitt"></div>
+                <p class="gerundet" data-i18n="avg_cut">One decimal place, not rounded (as in the official procedure)</p>
+                <p class="klein" data-i18n="avg_hint">All subjects. Deutsch, Mathematik, 1. Fremdsprache, Naturwissenschaften and Gesellschaftswissenschaften count double. This grade does not decide eligibility. It is only used when a school has more applicants than places.</p>
+            </div>
+        </div>
+
+        <p class="ergebnis-lob" data-i18n="result_cheer">Well done! With your report, all three school types are open to you – and all of them lead to the Abitur. Choose the school where you feel at home and can show your strengths.</p>
+        <h3 data-i18n="schools_title">Your paths to the Abitur</h3>
+        <ul class="schularten">
+            <li class="schulart" id="karte-gym">
+                <div class="schulart-kopf">
+                    <strong class="art-gym">Gymnasium</strong>
+                    <span class="status" id="status-gym"></span>
+                </div>
+                <p data-i18n="desc_gym">Abitur after grade 12, at a faster pace.</p>
+            </li>
+            <li class="schulart ok" id="karte-iss">
+                <div class="schulart-kopf">
+                    <strong class="art-iss">Integrierte Sekundarschule (ISS)</strong>
+                    <span class="status" data-i18n="status_yes">possible</span>
+                </div>
+                <p data-i18n="desc_iss">All qualifications up to the Abitur after grade 13 – with more time for projects, practical work and personal strengths.</p>
+            </li>
+            <li class="schulart ok" id="karte-gms">
+                <div class="schulart-kopf">
+                    <strong class="art-gms">Gemeinschaftsschule</strong>
+                    <span class="status" data-i18n="status_yes">possible</span>
+                </div>
+                <p data-i18n="desc_gms">Learning together until graduation – all qualifications up to the Abitur after grade 13.</p>
+            </li>
+        </ul>
+
+        <div id="probe" class="info-box verborgen">
+            <h3 data-i18n="probe_title">Want to go to a Gymnasium? Here's how</h3>
+            <p data-i18n="probe_text">The grade total is above 14. If your child would like to go to a Gymnasium, the way there is the Probeunterricht (trial lessons). Registration is voluntary and goes through the primary school. German, maths and cross-subject skills are assessed. The deadlines are on the official page.</p>
+        </div>
+
+        <details class="rechenweg">
+            <summary data-i18n="details_title">How it was calculated</summary>
+            <p id="rechenweg-summe"></p>
+            <p id="rechenweg-schnitt"></p>
+        </details>
+
+        <div class="knoepfe">
+            <button type="button" id="drucken" class="zweitrangig" data-i18n="btn_print">Save as PDF or print</button>
+            <button type="button" id="teilen" class="zweitrangig nur-bildschirm"><span aria-hidden="true">📤 </span><span data-i18n="btn_share">Share this page</span></button>
+        </div>
+        <p class="klein nur-bildschirm teilen-hinweis" data-i18n="share_hint">Only the link to the page is shared – never your grades.</p>
+        <p class="klein nur-bildschirm teilen-status" id="teilenStatus" role="status"></p>
+        <p class="klein nur-bildschirm" data-i18n="pdf_hint">Tip: in the print window you can choose “Save as PDF”.</p>
+        <a class="weiter nur-bildschirm" href="#schulsuche" data-i18n="next_find">Next: Find suitable schools</a>
+    </section>
+    <div id="landRechner" class="nur-land"></div>
+    </div>
+
+    <section id="schulsuche" class="abschnitt ansicht">
+    <img class="ansicht-foto nur-bildschirm nur-be" src="../img/fotos/berlin-fernsehturm.webp" alt="" width="1200" height="800" loading="lazy" decoding="async">
+        <h2 data-i18n="near_title">Schools nearby</h2>
+        <div id="landSuche" class="nur-land"></div>
+        <div id="sucheBald" class="info-box nur-land">
+            <h3 id="sucheBaldTitel"></h3>
+            <p id="sucheBaldText"></p>
+            <p><a id="sucheBaldLink" href="#" target="_blank" rel="noopener"></a></p>
+        </div>
+        <p class="nur-be" data-i18n="near_intro">Enter your postcode to see schools in your area that match the result.</p>
+
+        <form id="sucheForm" class="suche nur-be" novalidate>
+            <div class="suche-zeile">
+                <label class="feld">
+                    <span data-i18n="plz_label">Postcode (Postleitzahl)</span>
+                    <input id="plz" type="text" inputmode="numeric" autocomplete="postal-code"
+                           maxlength="12" pattern="[0-9]{5}" placeholder="10115" dir="ltr">
+                </label>
+                <label class="feld">
+                    <span data-i18n="radius_label">Distance</span>
+                    <select id="radius" dir="ltr">
+                        <option value="2">2 km</option>
+                        <option value="3">3 km</option>
+                        <option value="5" selected>5 km</option>
+                        <option value="10">10 km</option>
+                    </select>
+                </label>
+            </div>
+
+            <fieldset class="filter">
+                <legend data-i18n="types_label">School types</legend>
+                <label class="schalter art-gym"><input type="checkbox" name="art" value="gym" checked> Gymnasium</label>
+                <label class="schalter art-iss"><input type="checkbox" name="art" value="iss" checked> Integrierte Sekundarschule (ISS)</label>
+                <label class="schalter art-gms"><input type="checkbox" name="art" value="gms" checked> Gemeinschaftsschule</label>
+                <label class="schalter"><input type="checkbox" id="privat" checked> <span data-i18n="private_label">Also show private schools</span></label>
+            </fieldset>
+            <p id="gym-hinweis" class="klein hinweis-orange verborgen"></p>
+
+            <div class="sfilter">
+                <button type="button" id="filterKnopf" class="sfilter-knopf" aria-expanded="false" aria-controls="filterFeld">
+                    <span><span aria-hidden="true">🎛️</span> <span data-i18n="flt_button">Filter: focus, languages …</span> <span id="filterZahl" class="sfilter-zahl verborgen"></span></span>
+                    <span class="sfilter-pfeil" aria-hidden="true">▼</span>
+                </button>
+                <div id="filterFeld" class="sfilter-feld" hidden>
+                    <div id="filterGruppen"></div>
+                    <p class="sfilter-hinweis" data-i18n="flt_hint">Several in one group: one of them is enough. Information from the Berlin school directory, please check on the school's website.</p>
+                    <div class="sfilter-fuss">
+                        <button type="button" id="filterLoeschen" class="sfilter-link" data-i18n="flt_clear">Clear all</button>
+                        <button type="button" id="filterFertig" class="sfilter-fertig">Fertig</button>
+                    </div>
+                </div>
+                <div id="filterAktiv" class="sfilter-aktiv verborgen"></div>
+            </div>
+
+            <div class="knoepfe">
+                <button type="submit" data-i18n="btn_search">Find schools</button>
+            </div>
+            <p class="klein" data-i18n="near_privacy">Your postcode is not saved or sent anywhere. The search runs only on your device.</p>
+        </form>
+
+        <div id="sucheFehler" class="fehler-box verborgen nur-be" role="alert"></div>
+
+        <div id="sucheErgebnis" class="verborgen nur-be" aria-live="polite">
+            <p id="trefferAnzahl" class="treffer-anzahl"></p>
+            <p class="klein hinweis-blau" data-i18n="open_day_hint">Open days and information evenings: please check the school's website.</p>
+
+            <div class="liste-karte-schalter nur-bildschirm" role="group" data-i18n-aria="view_switch" aria-label="View: list or map">
+                <button type="button" id="zeigeListe" aria-pressed="true"><span aria-hidden="true">📋</span> <span data-i18n="view_list">List</span></button>
+                <button type="button" id="zeigeKarte" aria-pressed="false"><span aria-hidden="true">🗺️</span> <span data-i18n="view_map">Map</span></button>
+            </div>
+
+            <div id="karteBereich" class="karte-bereich nur-bildschirm verborgen">
+                <div id="karteHinweis" class="karte-einwilligung">
+                    <p class="karte-einwilligung-titel" data-i18n="map_consent_title">See the schools on a map</p>
+                    <button type="button" id="karteLaden" data-i18n="btn_map">Show map</button>
+                    <p class="klein" data-i18n="map_notice">The map loads map images from OpenStreetMap. Your IP address and the map area are sent to OpenStreetMap.</p>
+                </div>
+                <div id="karte" class="karte verborgen"></div>
+                <p class="karte-legende">
+                    <span class="punkt punkt-gym" aria-hidden="true"></span><span lang="de" class="art-gym">Gymnasium</span>
+                    <span class="punkt punkt-iss" aria-hidden="true"></span><span lang="de" class="art-iss">Integrierte Sekundarschule (ISS)</span>
+                    <span class="punkt punkt-gms" aria-hidden="true"></span><span lang="de" class="art-gms">Gemeinschaftsschule</span>
+                    <span class="punkt punkt-du" aria-hidden="true"></span><span data-i18n="map_you">Centre of your postcode area</span>
+                </p>
+            </div>
+
+            <div id="listeBereich">
+
+            <ol id="schulListe" class="schul-liste"></ol>
+            <button type="button" id="mehrSchulen" class="zweitrangig verborgen" data-i18n="show_more">Show more schools</button>
+            </div>
+        </div>
+
+        <p id="datenquelle" class="klein nur-be"></p>
+        <a class="weiter nur-bildschirm" href="#vergleich" data-i18n="next_mine">Next: Compare saved schools</a>
+    </section>
+
+    <section id="vergleich" class="abschnitt ansicht">
+    <img class="ansicht-foto nur-bildschirm nur-be" src="../img/fotos/berlin-dom-baeume.webp" alt="" width="1200" height="675" loading="lazy" decoding="async">
+        <h2 data-i18n="compare_title">Compare my schools</h2>
+        <div id="landVergleich" class="nur-land"></div>
+        <p id="vergleichLeer" class="klein nur-be" data-i18n="compare_empty">No school saved yet. Click “Save” in the school list.</p>
+        <div id="vergleichBereich" class="verborgen nur-be">
+            <div class="tabelle-scroll">
+                <table id="vergleichTabelle" class="vergleich-tabelle"></table>
+            </div>
+            <p id="vergleichLegende" class="klein"></p>
+            <div id="vergleichAufnahme" class="vgl-aufnahme"></div>
+            <div class="kalender-box nur-bildschirm">
+                <button type="button" id="meineTermineKalender" class="kalender-gross" data-i18n="cal_mine">Add my schools' dates to calendar</button>
+                <p id="meineTermineInfo" class="klein"></p>
+            </div>
+            <div class="knoepfe nur-bildschirm">
+                <button type="button" id="vergleichLeeren" class="zweitrangig" data-i18n="compare_clear">Delete all</button>
+            </div>
+        </div>
+        <p class="klein" data-i18n="compare_storage">Saved schools and notes are stored only in this browser and are not sent anywhere.</p>
+        <a class="weiter nur-bildschirm" href="#ratgeber" data-i18n="next_guide">Next: Tips and dates</a>
+    </section>
+
+    <div id="ratgeber" class="ansicht">
+    <img class="ansicht-foto nur-bildschirm nur-be" src="../img/fotos/berlin-dom.webp" alt="" width="1200" height="800" loading="lazy" decoding="async">
+
+    <section id="checkliste" class="abschnitt">
+        <div class="ratgeber-karten">
+            <div class="ratgeber-karte">
+                <h2 data-i18n="guide_title">Checklist for choosing a school</h2>
+                <ul class="haken-liste">
+                <li data-i18n="guide_1">Foreign languages: Which languages are offered, and when does a second foreign language start?</li>
+                <li data-i18n="guide_2">All-day school: Are there lessons and activities into the afternoon?</li>
+                <li data-i18n="guide_3">Profile: Does the school have a focus, for example STEM (MINT), music, sports or bilingual classes?</li>
+                <li data-i18n="guide_4">Way to school: How long does it take on foot, by bike, by bus or train?</li>
+                <li data-i18n="guide_5">Lunch: Is there a canteen or a hot lunch?</li>
+                </ul>
+            </div>
+            <div class="ratgeber-karte">
+                <h2 data-i18n="q_title">5 questions for the open day</h2>
+                <ol class="fragen-liste">
+                <li data-i18n="q_1">Which foreign languages are offered from grade 7, and when does the second foreign language start?</li>
+                <li data-i18n="q_2">What does a normal school day look like, and how long is it?</li>
+                <li data-i18n="q_3">Which focus areas, clubs and projects are there?</li>
+                <li data-i18n="q_4">How are children who need help supported, and how are strong children encouraged?</li>
+                <li data-i18n="q_5">How many applications were there last year, and how many places are there in grade 7?</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section id="termine" class="abschnitt termine">
+        <h2 data-i18n="dates_title">Important dates for the 2027 transfer</h2>
+        <div class="nicht-verpassen nur-be">
+            <h3 data-i18n="dont_miss_title">Don't miss it!</h3>
+            <p data-i18n="dont_miss_text">Almost all secondary schools invite families to an open day (Tag der offenen Tür) or an information evening, usually between November and January. You get to know the school and can ask questions. The dates are on the school's website. You can also call the school.</p>
+        </div>
+        <ul id="terminListe" class="termin-liste nur-be"></ul>
+        <ul id="landTermine" class="termin-liste nur-land"></ul>
+        <div id="landKalender" class="kalender-box nur-bildschirm nur-land"></div>
+        <p id="landTerminQuelle" class="klein nur-land"></p>
+        <div class="kalender-box nur-bildschirm nur-be">
+            <button type="button" id="termineKalender" class="kalender-gross" data-i18n="cal_all">Add all dates to calendar</button>
+            <p class="klein" data-i18n="cal_note">You then choose your calendar (Google, Outlook, Apple / iPhone …).</p>
+        </div>
+        <p class="klein" data-i18n="dates_note">Please check the dates on the official website. They may change.</p>
+        <a class="weiter nur-bildschirm" href="#fragen" data-i18n="next_info">Next: About the school types</a>
+    </section>
+    </div>
+
+    <section id="fragen" class="abschnitt faq ansicht nur-bildschirm">
+    <img class="ansicht-foto nur-bildschirm nur-be" src="../img/fotos/berlin-stadt.webp" alt="" width="1200" height="764" loading="lazy" decoding="async">
+        <div id="landInfo" class="nur-land"></div>
+        <h2 class="nur-be" data-i18n="faq_title">Good to know: secondary schools in Berlin</h2>
+        <p class="hinweis" data-i18n="info_intro">What is what? Short explanations of the school types, qualifications and terms you will meet when choosing a school.</p>
+            <details class="faq-eintrag nur-be">
+                <summary data-i18n="faq_q7">What is a Gymnasium?</summary>
+                <p data-i18n="faq_a7">The Gymnasium leads to the Abitur in 6 years (grades 7 to 12). The pace is faster, and from grade 7 all children learn a second foreign language. There is no longer a trial year: suitability is decided beforehand, through the Notensumme or the Probeunterricht.</p>
+            </details>
+            <details class="faq-eintrag nur-be">
+                <summary data-i18n="faq_q1">What is an Integrierte Sekundarschule (ISS)?</summary>
+                <p data-i18n="faq_a1">The ISS leads to all school-leaving qualifications: Berufsbildungsreife, Mittlerer Schulabschluss and Abitur. The Abitur is taken after grade 13, so with one more year than at a Gymnasium. Many ISS have their own upper school (Oberstufe) or work with one.</p>
+            </details>
+            <details class="faq-eintrag nur-be">
+                <summary data-i18n="faq_q2">What is a Gemeinschaftsschule?</summary>
+                <p data-i18n="faq_a2">At a Gemeinschaftsschule all children learn together, often from grade 1 to 10 or up to the Abitur. Like the ISS, it leads to all qualifications, with the Abitur after grade 13.</p>
+            </details>
+            <details class="faq-eintrag nur-be">
+                <summary data-i18n="faq_q3">How does the Probeunterricht work?</summary>
+                <p data-i18n="faq_a3">The Probeunterricht is for children who would like to go to a Gymnasium and have a grade total above 14. Registration is voluntary and goes through the primary school. On one day there are written tasks in German and maths, and cross-subject skills are looked at. Children who pass can register at a Gymnasium.</p>
+            </details>
+            <details class="faq-eintrag nur-be">
+                <summary data-i18n="faq_q4">Which school suits my child?</summary>
+                <p data-i18n="faq_a4">Grades are not everything. Think about your child's learning pace, interests and strengths, the way to school, all-day programmes and languages. Visit open days and talk to your child's teacher.</p>
+            </details>
+            <details class="faq-eintrag nur-be">
+                <summary data-i18n="faq_q5">Can my child also get the Abitur at an ISS or Gemeinschaftsschule?</summary>
+                <p data-i18n="faq_a5">Yes. Both school types lead to the Abitur, after grade 13. The extra year gives more time for learning, projects and practical work – many young people reach their best result this way.</p>
+            </details>
+            <details class="faq-eintrag nur-be">
+                <summary data-i18n="faq_q8">What does Ganztag (all-day school) mean?</summary>
+                <p data-i18n="faq_a8">Gebundener Ganztag: lessons and activities go into the afternoon on several days, compulsory for all children. Teilgebundener Ganztag: compulsory only on some days. Offener Ganztag: afternoon activities are optional. Under “Details” in the school list you can see what each school offers.</p>
+            </details>
+            <details class="faq-eintrag nur-be">
+                <summary data-i18n="faq_q9">What do Profil, bilingual and Europa-Schule mean?</summary>
+                <p data-i18n="faq_a9">A Profil is a focus of the school, for example music, sport, MINT (maths and science) or languages. Bilingual means some subjects are taught in a foreign language. At a Staatliche Europa-Schule Berlin children learn in two languages, for example German and Spanish.</p>
+            </details>
+            <details class="faq-eintrag nur-be">
+                <summary data-i18n="faq_q6">A grade is missing in the report, or it shows something else?</summary>
+                <p data-i18n="faq_a6">For example an in-between grade like “2-3”, a different subject, or a report from another federal state or country. Special rules apply then. The primary school advises you and calculates the Förderprognose. This page cannot calculate such cases exactly.</p>
+            </details>
+    </section>
+
+    <aside class="fuss-hinweise">
+        <p class="nur-be" data-i18n="disclaimer">Non-binding calculation. All information without guarantee, including school data and dates. Only the Förderprognose from the primary school is binding. Rules as of November 2026.</p>
+        <p data-i18n="privacy_note">Your entries stay on your device. Nothing is sent. Saved schools and notes are stored only in this browser.</p>
+        <p class="nur-land" data-i18n="ld_disclaimer">Non-binding calculation. All information without guarantee, including school data and dates. Only the decisions of the primary school and the school authority are binding. Rules as of November 2026.</p>
+        <p class="nur-be" lang="de">Datenquellen: Schulen – Geoportal Berlin (dl-de/zero-2-0); Postleitzahlen – Amt für Statistik Berlin-Brandenburg 2026 / Postleitzahlen (<a href="https://creativecommons.org/licenses/by/3.0/de/" target="_blank" rel="noopener">CC BY 3.0 DE</a>, bearbeitet: Gebiete Schulen zugeordnet); Schulangebote – <a href="https://www.bildung.berlin.de/Schulverzeichnis/" target="_blank" rel="noopener">Berliner Schulverzeichnis</a>; Termine – <a href="https://www.berlin.de/land/kalender/index.php?c=79" target="_blank" rel="noopener">Kalender der Senatsverwaltung für Bildung, Jugend und Familie</a> (ohne Gewähr, bitte bei der Schule prüfen) und Websites der Schulen; Aufnahmezahlen und Grenznoten – Antworten des Senats auf Schriftliche Anfragen im <a href="https://pardok.parlament-berlin.de/" target="_blank" rel="noopener">Abgeordnetenhaus Berlin</a> und Angaben der Bezirksämter (Quelle steht bei jeder Schule); Karte – © OpenStreetMap-Mitwirkende; Fotos – <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>, gemeinfrei (CC0), Urheber in den <a href="../impressum.html#bildnachweise">Bildnachweisen</a>.</p>
+        <p class="nur-land"><a id="landAmtlich" href="#" target="_blank" rel="noopener" data-i18n="li_official">Official information from the federal state</a></p>
+        <p class="nur-be">
+            <a href="https://www.berlin.de/sen/bildung/schule/bildungswege/uebergang-weiterfuehrende-schule/wechsel-zur-7-klasse/"
+               target="_blank" rel="noopener" data-i18n="official_link">Official information from the Berlin Senate Department for Education (in German)</a>
+        </p>
+    </aside>
+
+</main>
+
+<footer class="seitenfuss">
+    <a href="../impressum.html" data-i18n="footer_imprint">Legal notice (Impressum)</a>
+    <a href="../datenschutz.html" data-i18n="footer_privacy">Privacy policy (Datenschutz)</a>
+    <a href="../kontakt.html" data-i18n="footer_contact">Contact (Kontakt)</a>
+    <a href="../kontakt.html?thema=idee" id="vorschlagLink" data-i18n="footer_idea">Suggest an improvement</a>
+    <small class="copyright">© 2026 Schulwechsel-Helfer</small>
+</footer>
+
+<dialog id="landDialog" class="land-dialog"></dialog>
+
+<script src="../vendor/leaflet/leaflet.js" defer></script>
+<script src="../data/schulen.js" defer></script>
+<script src="../data/schulinfos.js" defer></script>
+<script src="../data/aufnahme.js" defer></script>
+<script src="../js/rechner.js" defer></script>
+<script src="../js/umkreis.js" defer></script>
+<script src="../js/filter.js" defer></script>
+<script src="../js/aufnahme.js" defer></script>
+<script src="../js/merkliste.js" defer></script>
+<script src="../js/kalender.js" defer></script>
+<script src="../js/i18n.js" defer></script>
+<script src="../js/i18n-laender.js" defer></script>
+<script src="../js/laender.js" defer></script>
+<script src="../js/app.js" defer></script>
+<script src="../js/land-suche.js" defer></script>
+<script src="../js/land.js" defer></script>
+<script src="../js/assistent-daten.js" defer></script>
+<script src="../js/assistent.js" defer></script>
+
+</body>
+</html>

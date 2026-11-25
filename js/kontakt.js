@@ -76,7 +76,7 @@
     });
     // Links auf andere Seiten behalten die Sprache
     var zurueck = document.getElementById("kontaktZurueck");
-    if (zurueck && sprache !== "de") zurueck.href = "index.html?lang=" + sprache;
+    if (zurueck && sprache !== "de") zurueck.href = sprache + "/";
     var dsLink = document.getElementById("kontaktDsLink");
     if (dsLink && sprache !== "de") dsLink.href = "datenschutz.html#" + sprache;
     var fussDs = document.getElementById("kontaktFussDs");

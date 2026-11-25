@@ -11,6 +11,23 @@
     var ergebnis = document.getElementById("ergebnis");
 
     var aktuelleSprache = "de";
+
+    // Startadresse der Seite (z. B. https://esra314.github.io/Schulwechsel-Helfer/), egal ob wir auf / oder /tr/ sind.
+    // app.js liegt in js/, also ist die Startadresse eine Ebene höher.
+    var WURZEL = document.currentScript && document.currentScript.src
+        ? new URL("../", document.currentScript.src).href
+        : new URL("./", window.location.href).href;
+    // Adresse der Sprachseite: Deutsch ist die Startseite, sonst /en/, /tr/, /ar/, /uk/, /ru/
+    function sprachUrl(code) {
+        return WURZEL + (code === "de" ? "" : code + "/");
+    }
+    // Beim Sprachwechsel ändert sich die Adresse (z. B. / -> /tr/). Damit Links und Bilder
+    // danach nicht ins Leere zeigen, werden alle relativen Adressen jetzt fest gemacht.
+    Array.prototype.forEach.call(document.querySelectorAll("a[href], img[src]"), function (el) {
+        var attr = el.tagName === "IMG" ? "src" : "href";
+        var wert = el.getAttribute(attr);
+        if (wert && wert.charAt(0) !== "#" && !/^[a-z][a-z0-9+.-]*:/i.test(wert)) el.setAttribute(attr, el[attr]);
+    });
     var letztesErgebnis = null;
 
     // Auf schmalen Bildschirmen passt "Note wählen" nicht in die Notenfelder: kurze Fassung
@@ -112,33 +129,35 @@
 
     // ---------- Sprache ----------
 
-    // Standardsprache ist Deutsch. Eine andere Sprache nur über ?lang=… oder die Auswahl.
+    // Die Sprache steht in der Seite selbst (/tr/ ist Türkisch, / ist Deutsch).
+    // Alte Links mit ?lang=… führen weiter zur passenden Sprachseite (?land=… bleibt erhalten).
     function waehleStartsprache() {
         var codes = I18n.SPRACHEN.map(function (s) { return s.code; });
-        var ausUrl = new URLSearchParams(window.location.search).get("lang");
-        if (ausUrl && codes.indexOf(ausUrl) !== -1) {
-            return ausUrl;
+        var seitenSprache = codes.indexOf(document.documentElement.lang) !== -1 ? document.documentElement.lang : "de";
+        var parameter = new URLSearchParams(window.location.search);
+        var ausUrl = parameter.get("lang");
+        if (ausUrl && codes.indexOf(ausUrl) !== -1 && ausUrl !== seitenSprache) {
+            parameter.delete("lang");
+            var rest = parameter.toString();
+            window.location.replace(sprachUrl(ausUrl) + (rest ? "?" + rest : "") + window.location.hash);
+            return null;
         }
-        return "de";
+        return seitenSprache;
     }
 
-    // Suchmaschinen: jede Sprachfassung (?lang=…) zeigt auf sich selbst (canonical),
-    // Titel und Beschreibung in der gewählten Sprache. Deutsch bleibt die Grundfassung.
-    var startTitel = document.title;
-    var startBeschreibung = (document.querySelector('meta[name="description"]') || {}).content;
+    // Suchmaschinen: jede Sprachseite (/, /en/, /tr/ …) zeigt auf sich selbst (canonical),
+    // Titel und Beschreibung in ihrer Sprache. Die Seiten erzeugt "npm run texte".
     function setzeSeitenangaben(code) {
-        var basis = window.location.origin + window.location.pathname.replace(/index\.html$/, "");
         var link = document.querySelector('link[rel="canonical"]');
         if (!link) {
             link = document.createElement("link");
             link.rel = "canonical";
             document.head.appendChild(link);
         }
-        link.href = basis + (code === "de" ? "" : "?lang=" + code);
-        var marke = document.querySelector(".hero-marke");
-        document.title = code === "de" ? startTitel : (marke ? marke.textContent.trim() + " – " : "") + t("subtitle");
+        link.href = sprachUrl(code);
+        document.title = t("seo_title");
         var meta = document.querySelector('meta[name="description"]');
-        if (meta) meta.content = code === "de" ? startBeschreibung : t("subtitle");
+        if (meta) meta.content = t("seo_desc");
     }
 
     function setzeSprache(code) {
@@ -146,8 +165,9 @@
         var info = I18n.SPRACHEN.filter(function (s) { return s.code === code; })[0];
         document.documentElement.lang = code;
         document.documentElement.dir = info ? info.dir : "ltr";
-        document.querySelectorAll("#sprachChips button").forEach(function (b) {
-            b.setAttribute("aria-pressed", b.dataset.lang === code ? "true" : "false");
+        document.querySelectorAll("#sprachChips a").forEach(function (a) {
+            if (a.dataset.lang === code) a.setAttribute("aria-current", "true");
+            else a.removeAttribute("aria-current");
         });
 
         document.querySelectorAll("[data-i18n]").forEach(function (el) {
@@ -157,21 +177,21 @@
             el.setAttribute("aria-label", t(el.dataset.i18nAria));
         });
 
-        var url = new URL(window.location.href);
-        if (code === "de") {
-            url.searchParams.delete("lang");
-        } else {
-            url.searchParams.set("lang", code);
-        }
+        // Adresse auf die Sprachseite umstellen (ohne neu zu laden, Eingaben bleiben erhalten)
+        var url = new URL(sprachUrl(code));
+        var bisher = new URLSearchParams(window.location.search);
+        bisher.delete("lang");
+        url.search = bisher.toString();
+        url.hash = window.location.hash;
         window.history.replaceState(null, "", url.toString());
         setzeSeitenangaben(code);
 
         // Datenschutz-Link führt direkt zur Kurzfassung in der gewählten Sprache
-        var dsLink = document.querySelector('.seitenfuss a[href^="datenschutz.html"]');
-        if (dsLink) dsLink.setAttribute("href", "datenschutz.html" + (code === "de" ? "" : "#" + code));
+        var dsLink = document.querySelector('.seitenfuss a[href*="datenschutz.html"]');
+        if (dsLink) dsLink.setAttribute("href", WURZEL + "datenschutz.html" + (code === "de" ? "" : "#" + code));
         // Kontaktseite öffnet sich in derselben Sprache
-        var kontaktLink = document.querySelector('.seitenfuss a[href^="kontakt.html"]');
-        if (kontaktLink) kontaktLink.setAttribute("href", "kontakt.html" + (code === "de" ? "" : "?lang=" + code));
+        var kontaktLink = document.querySelector('.seitenfuss a[href*="kontakt.html"]:not(#vorschlagLink)');
+        if (kontaktLink) kontaktLink.setAttribute("href", WURZEL + "kontakt.html" + (code === "de" ? "" : "?lang=" + code));
         var vorschlagLink = document.getElementById("vorschlagLink");
         if (vorschlagLink) vorschlagLink.setAttribute("href", kontaktUrl("idee"));
 
@@ -193,18 +213,15 @@
         document.dispatchEvent(new CustomEvent("app:sprache", { detail: { code: code } }));
     }
 
+    // Die Sprach-Chips sind echte Links auf die Sprachseiten (für Google).
+    // Ein normaler Klick wechselt die Sprache sofort, ohne neu zu laden.
     function baueSprachauswahl() {
-        var chips = document.getElementById("sprachChips");
-        I18n.SPRACHEN.forEach(function (s) {
-            var li = document.createElement("li");
-            var b = document.createElement("button");
-            b.type = "button";
-            b.lang = s.code;
-            b.dataset.lang = s.code;
-            b.textContent = s.name;
-            b.addEventListener("click", function () { setzeSprache(s.code); });
-            li.appendChild(b);
-            chips.appendChild(li);
+        document.querySelectorAll("#sprachChips a[data-lang]").forEach(function (a) {
+            a.addEventListener("click", function (e) {
+                if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                setzeSprache(a.dataset.lang);
+            });
         });
     }
 
@@ -875,7 +892,7 @@
         if (thema) p.set("thema", thema);
         if (schule) p.set("schule", schule);
         var q = p.toString();
-        return "kontakt.html" + (q ? "?" + q : "");
+        return WURZEL + "kontakt.html" + (q ? "?" + q : "");
     }
 
     // „Angabe falsch? Korrektur vorschlagen“ unter den Angaben einer Schule
@@ -1572,9 +1589,7 @@
         var p = new URLSearchParams();
         var land = new URLSearchParams(window.location.search).get("land");
         if (land) p.set("land", land);
-        if (aktuelleSprache !== "de") p.set("lang", aktuelleSprache);
-        var url = window.location.origin + window.location.pathname.replace(/index\.html$/, "") +
-            (p.toString() ? "?" + p.toString() : "");
+        var url = sprachUrl(aktuelleSprache) + (p.toString() ? "?" + p.toString() : "");
         var marke = document.querySelector(".hero-marke");
         if (status) status.textContent = "";
         // Teilen-Menü nur auf Handy/Tablet: Am Computer (z. B. Windows) ist es oft leer und nutzlos,
@@ -1599,7 +1614,7 @@
     // Als App installierbar und offline nutzbar (nur über https oder localhost)
     if ("serviceWorker" in navigator && window.isSecureContext && location.protocol !== "file:") {
         window.addEventListener("load", function () {
-            navigator.serviceWorker.register("sw.js").catch(function () { /* ohne Offline-Modus weiter */ });
+            navigator.serviceWorker.register(WURZEL + "sw.js").catch(function () { /* ohne Offline-Modus weiter */ });
         });
     }
 
@@ -1673,7 +1688,8 @@
         zuGedruckt = [];
     });
 
-    setzeSprache(waehleStartsprache());
+    var startSprache = waehleStartsprache();
+    if (startSprache) setzeSprache(startSprache);
     if (schmal) {
         var wechsel = function () {
             document.querySelectorAll('option[data-i18n="choose"]').forEach(function (o) { o.textContent = t("choose"); });

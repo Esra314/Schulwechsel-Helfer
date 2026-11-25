@@ -215,32 +215,32 @@
             de: {
                 q: "Ist das Gymnasium möglich?",
                 a: "Das zeigt die Notensumme: Deutsch + Mathematik + 1. Fremdsprache aus den Zeugnissen 5/2 und 6/1, also 6 Noten.\nBis 14: Das Gymnasium ist direkt möglich.\nÜber 14: Der Weg ans Gymnasium geht über den Probeunterricht.\nISS und Gemeinschaftsschule stehen allen offen und führen genauso zum Abitur. 🎓",
-                w: ["!eignung", "!geeignet", "!gymnasialeignung", "!notensumme", "!gymnasialempfehlung", "empfehlung", "summe", "!14", "aufs gymnasium", "ans gymnasium", "zum gymnasium", "fur das gymnasium", "furs gymnasium", "schafft", "reicht", "~gymnasium", "darf mein kind"]
+                w: ["!eignung", "!geeignet", "!gymnasialeignung", "!notensumme", "!gymnasialempfehlung", "empfehlung", "summe", "!14", "aufs gymnasium", "ans gymnasium", "zum gymnasium", "fur das gymnasium", "furs gymnasium", "schafft", "reicht", "~gymnasium", "darf mein kind", "~was brauche", "~was braucht", "voraussetzung", "welche noten", "bedingung"]
             },
             en: {
                 q: "Is the Gymnasium possible?",
                 a: "The grade total (Notensumme) shows it: Deutsch + Mathematik + 1. Fremdsprache from the reports 5/2 and 6/1, so 6 grades.\nUp to 14: the Gymnasium is possible directly.\nAbove 14: the way to the Gymnasium is through the Probeunterricht.\nISS and Gemeinschaftsschule are open to everyone and lead to the Abitur just the same. 🎓",
-                w: ["!eligible", "!eligibility", "!suitable", "!notensumme", "!grade total", "!sum of grades", "recommendation", "!14", "get into", "go to gymnasium", "enough", "~gymnasium", "qualify"]
+                w: ["!eligible", "!eligibility", "!suitable", "!notensumme", "!grade total", "!sum of grades", "recommendation", "!14", "get into", "go to gymnasium", "enough", "~gymnasium", "qualify", "what do i need", "what does my child need", "requirement", "what grades"]
             },
             tr: {
                 q: "Gymnasium mümkün mü?",
                 a: "Bunu not toplamı (Notensumme) gösterir: 5/2 ve 6/1 karnelerinden Deutsch + Mathematik + 1. Fremdsprache, yani 6 not.\n14'e kadar: Gymnasium doğrudan mümkün.\n14'ün üzerinde: Gymnasium'a yol Probeunterricht üzerinden geçer.\nISS ve Gemeinschaftsschule herkese açıktır ve aynı şekilde Abitur'a götürür. 🎓",
-                w: ["!eignung", "!uygun mu", "!uygunluk", "!not toplami", "!notensumme", "!toplam", "tavsiye", "!14", "gymnasiuma gidebilir", "gymnasiuma girebilir", "gidebilir mi", "girebilir mi", "yeter mi", "yetiyor mu", "~gymnasium", "~gimnazyum"]
+                w: ["!eignung", "!uygun mu", "!uygunluk", "!not toplami", "!notensumme", "!toplam", "tavsiye", "!14", "gymnasiuma gidebilir", "gymnasiuma girebilir", "gidebilir mi", "girebilir mi", "yeter mi", "yetiyor mu", "~gymnasium", "~gimnazyum", "ne lazim", "ne gerek", "hangi not", "sart"]
             },
             ar: {
                 q: "هل الـ Gymnasium ممكن؟",
                 a: "يُظهر ذلك مجموع الدرجات (Notensumme): Deutsch + Mathematik + 1. Fremdsprache من شهادتي 5/2 و6/1، أي 6 درجات.\nحتى 14: الـ Gymnasium ممكن مباشرة.\nأكثر من 14: الطريق إلى الـ Gymnasium عبر الـ Probeunterricht.\nالـ ISS والـ Gemeinschaftsschule مفتوحتان للجميع وتؤديان بالمثل إلى الـ Abitur. 🎓",
-                w: ["!الاهلية", "!مؤهل", "!مناسب", "!مجموع الدرجات", "!notensumme", "!مجموع", "توصية", "!14", "يكفي", "هل يمكن", "~gymnasium", "~جمنازيوم"]
+                w: ["!الاهلية", "!مؤهل", "!مناسب", "!مجموع الدرجات", "!notensumme", "!مجموع", "توصية", "!14", "يكفي", "هل يمكن", "~gymnasium", "~جمنازيوم", "ماذا يحتاج", "ماذا احتاج", "شروط", "متطلبات"]
             },
             uk: {
                 q: "Чи можна до Gymnasium?",
                 a: "Це показує сума оцінок (Notensumme): Deutsch + Mathematik + 1. Fremdsprache з табелів 5/2 і 6/1, тобто 6 оцінок.\nДо 14: Gymnasium можливий одразу.\nБільше 14: шлях до Gymnasium через Probeunterricht.\nISS і Gemeinschaftsschule відкриті для всіх і так само ведуть до Abitur. 🎓",
-                w: ["!придатн", "!підходить", "!сума оцінок", "!notensumme", "!сума", "рекомендац", "!14", "вистачить", "чи можна", "чи може", "~gymnasium", "~гімназ"]
+                w: ["!придатн", "!підходить", "!сума оцінок", "!notensumme", "!сума", "рекомендац", "!14", "вистачить", "чи можна", "чи може", "~gymnasium", "~гімназ", "що потрібно", "що треба", "умови", "які оцінки"]
             },
             ru: {
                 q: "Можно ли в Gymnasium?",
                 a: "Это показывает сумма оценок (Notensumme): Deutsch + Mathematik + 1. Fremdsprache из табелей 5/2 и 6/1, то есть 6 оценок.\nДо 14: Gymnasium возможен сразу.\nБольше 14: путь в Gymnasium через Probeunterricht.\nISS и Gemeinschaftsschule открыты для всех и так же ведут к Abitur. 🎓",
-                w: ["!пригодн", "!подходит", "!сумма оценок", "!notensumme", "!сумма", "рекомендац", "!14", "хватит", "можно ли", "может ли", "~gymnasium", "~гимназ"]
+                w: ["!пригодн", "!подходит", "!сумма оценок", "!notensumme", "!сумма", "рекомендац", "!14", "хватит", "можно ли", "может ли", "~gymnasium", "~гимназ", "что нужно", "что надо", "условия", "какие оценки"]
             }
         },
         {

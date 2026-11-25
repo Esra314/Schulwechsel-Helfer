@@ -91,3 +91,15 @@ test("Kein Probejahr mehr am Gymnasium (berlin.de, Übergang 2026/27)", () => {
         assert.doesNotMatch(I18n.TEXTE[l].faq_a7, /erste Jahr ist ein Probejahr|first year is a trial year|deneme yılıdır|السنة الأولى سنة تجريبية|рік – пробний|год – пробный/);
     }
 });
+
+test("Frage-Assistent: 'Was brauche ich fürs Gymnasium?' in allen Sprachen", () => {
+    const A = require("../js/assistent.js");
+    const fragen = [["Gymnasium için ne lazım?", "tr"], ["Was brauche ich fürs Gymnasium?", "de"],
+        ["What do I need for the Gymnasium?", "en"], ["ماذا يحتاج ابني للجمنازيوم", "ar"],
+        ["Що потрібно для гімназії?", "uk"], ["Что нужно для гимназии?", "ru"]];
+    for (const [frage, sprache] of fragen) {
+        assert.equal(A.finde(frage, sprache).thema, "eignung", frage);
+    }
+    assert.equal(A.finde("kayıt için ne lazım", "tr").thema, "anmeldung");
+    assert.equal(A.finde("Was brauche ich für die Anmeldung?", "de").thema, "anmeldung");
+});

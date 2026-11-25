@@ -166,7 +166,7 @@
             ],
             spalte: "lr_col_by",
             arten: {
-                gym: { name: "Gymnasium", farbe: "gym" },
+                gym: { name: "Gymnasium", farbe: "gym", text: "by_desc_gym" },
                 rs: { name: "Realschule", farbe: "iss", text: "by_desc_rs" },
                 ms: { name: "Mittelschule", farbe: "gms", text: "by_desc_ms" }
             },
@@ -184,6 +184,7 @@
             quellen: [
                 { titel: "Grundschulordnung (GrSO) § 6", url: "https://www.gesetze-bayern.de/Content/Document/BayVSO-6" },
                 { titel: "Staatsministerium für Unterricht und Kultus: Übertritt", url: "https://www.km.bayern.de/lernen/ubertritt-und-bildungswege/uebertritt" },
+                { titel: "Staatsministerium für Unterricht und Kultus: Gymnasium", url: "https://www.km.bayern.de/lernen/schularten/gymnasium" },
                 { titel: "Staatsministerium für Unterricht und Kultus: Schulanmeldungen", url: "https://www.km.bayern.de/termine/schulanmeldungen" },
                 { titel: "Staatsministerium für Unterricht und Kultus: Prüfungen und Zeugnisse", url: "https://www.km.bayern.de/termine/pruefungen-und-zeugnisse" }
             ]

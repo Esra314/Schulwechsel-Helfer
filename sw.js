@@ -5,7 +5,7 @@
  * vom Server (Updates sind sofort sichtbar). Nur ohne Internet wird die
  * gespeicherte Kopie genutzt. VERSION nur erhöhen, wenn sich die Liste DATEIEN ändert.
  */
-const VERSION = "v14";
+const VERSION = "v15";
 const CACHE = "schulwechsel-helfer-" + VERSION;
 
 const DATEIEN = [
@@ -40,7 +40,12 @@ const DATEIEN = [
     "data/schulen-bb.js",
     "data/schulen-by.js",
     "vendor/leaflet/leaflet.js",
-    "vendor/leaflet/leaflet.css"
+    "vendor/leaflet/leaflet.css",
+    "img/fotos/berlin-dom-baeume.webp",
+    "img/fotos/berlin-dom.webp",
+    "img/fotos/berlin-fernsehturm.webp",
+    "img/fotos/berlin-stadt.webp",
+    "img/fotos/stifte-bunt.webp"
 ];
 
 self.addEventListener("install", (event) => {

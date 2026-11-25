@@ -7,7 +7,7 @@ ARTEN = {"Gymnasien", "Integrierte Sekundarschule", "Gemeinschaftsschule"}
 
 def get(url):
     for versuch in range(3):
-        r = subprocess.run(["curl", "-sS", "--max-time", "40", url], capture_output=True)
+        r = subprocess.run(["curl", "-sS", "-A", "Schulwechsel-Helfer/1.0 (Schulinfo-Abruf; +https://esra314.github.io/Schulwechsel-Helfer/kontakt.html)", "--max-time", "40", url], capture_output=True)
         if r.returncode == 0 and len(r.stdout) > 1000:
             return r.stdout.decode("utf-8", "replace")
         time.sleep(3)

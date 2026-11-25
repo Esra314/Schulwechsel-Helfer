@@ -184,3 +184,20 @@ fremde Server sind nur für die Kartenbilder von OpenStreetMap erlaubt.
 ## Lizenz
 
 Alle Rechte vorbehalten. Siehe [LICENSE](LICENSE).
+
+## Kontaktformular einrichten (kontakt.html)
+
+Die Seite ist statisch. Nachrichten aus dem Kontaktformular leitet der Dienst
+[Formdall](https://formdall.de) (Betreiber und Server in Deutschland, kostenlos bis 100 Nachrichten/Monat)
+per E-Mail weiter. Solange in `kontakt.html` noch `FORMULAR-SCHLUESSEL` steht, zeigt die Seite statt des
+Formulars nur die E-Mail-Adresse.
+
+1. Bei formdall.de kostenlos registrieren und den Auftragsverarbeitungsvertrag (AVV) bestätigen.
+2. Ein Formular anlegen, Captcha: **keins** (Spam-Schutz läuft über Honigtopf, Zeitsperre und Formdall-Spamfilter).
+3. Einstellungen: Empfänger = Impressum-Adresse, Aufbewahrung = **14 Tage**,
+   Betreff z. B. `{{anliegen}} – {{seite}}`, erlaubte Herkunft = `https://esra314.github.io`,
+   Weiterleitungs-URL = `https://esra314.github.io/Schulwechsel-Helfer/kontakt.html` (nur für Browser ohne JavaScript).
+4. Die Formular-Adresse (`https://api.formdall.de/api/v1/f/…`) in `kontakt.html` im `action`-Attribut eintragen.
+
+Wird der Dienst gewechselt: `action` in `kontakt.html`, `connect-src`/`form-action` in der CSP
+derselben Datei und Abschnitt 8 der Datenschutzerklärung anpassen.

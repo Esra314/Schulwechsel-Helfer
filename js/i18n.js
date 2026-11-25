@@ -289,7 +289,8 @@
             nav_faq: "Fragen",
             faq_q6: "Im Zeugnis fehlt eine Note oder steht etwas anderes?",
             faq_a6: "Zum Beispiel eine Zwischennote wie „2-3“, ein anderes Fach oder ein Zeugnis aus einem anderen Bundesland oder Land. Dann gelten Sonderregeln. Die Grundschule berät Sie und berechnet die Förderprognose. Diese Seite kann solche Fälle nicht genau berechnen.",
-            footer_privacy: "Datenschutz"
+            footer_privacy: "Datenschutz",
+            footer_contact: "Kontakt"
         },
 
         en: {
@@ -562,7 +563,8 @@
             nav_faq: "Questions",
             faq_q6: "A grade is missing in the report, or it shows something else?",
             faq_a6: "For example an in-between grade like “2-3”, a different subject, or a report from another federal state or country. Special rules apply then. The primary school advises you and calculates the Förderprognose. This page cannot calculate such cases exactly.",
-            footer_privacy: "Privacy policy (Datenschutz)"
+            footer_privacy: "Privacy policy (Datenschutz)",
+            footer_contact: "Contact (Kontakt)"
         },
 
         tr: {
@@ -835,7 +837,8 @@
             nav_faq: "Sorular",
             faq_q6: "Karnede bir not eksik ya da farklı bir şey mi yazıyor?",
             faq_a6: "Örneğin „2-3“ gibi ara bir not, farklı bir ders ya da başka bir eyaletten veya ülkeden gelen bir karne. Bu durumda özel kurallar geçerlidir. İlkokul size danışmanlık yapar ve Förderprognose'u hesaplar. Bu sayfa bu tür durumları tam olarak hesaplayamaz.",
-            footer_privacy: "Gizlilik (Datenschutz)"
+            footer_privacy: "Gizlilik (Datenschutz)",
+            footer_contact: "İletişim (Kontakt)"
         },
 
         ar: {
@@ -1108,7 +1111,8 @@
             nav_faq: "أسئلة",
             faq_q6: "هل تنقص درجة في الشهادة أو يوجد فيها شيء مختلف؟",
             faq_a6: "مثلاً درجة بينية مثل «2-3»، أو مادة مختلفة، أو شهادة من ولاية أو دولة أخرى. عندها تُطبَّق قواعد خاصة. المدرسة الابتدائية تقدم لكم الاستشارة وتحسب الـ Förderprognose. لا يمكن لهذه الصفحة حساب هذه الحالات بدقة.",
-            footer_privacy: "حماية البيانات (Datenschutz)"
+            footer_privacy: "حماية البيانات (Datenschutz)",
+            footer_contact: "تواصل معنا (Kontakt)"
         },
 
         uk: {
@@ -1381,7 +1385,8 @@
             nav_faq: "Питання",
             faq_q6: "У табелі бракує оцінки або написано щось інше?",
             faq_a6: "Наприклад, проміжна оцінка «2-3», інший предмет або табель з іншої федеральної землі чи країни. Тоді діють особливі правила. Початкова школа проконсультує вас і розрахує Förderprognose. Ця сторінка не може точно розрахувати такі випадки.",
-            footer_privacy: "Захист даних (Datenschutz)"
+            footer_privacy: "Захист даних (Datenschutz)",
+            footer_contact: "Контакт (Kontakt)"
         },
 
         ru: {
@@ -1654,7 +1659,8 @@
             nav_faq: "Вопросы",
             faq_q6: "В табеле нет оценки или написано что-то другое?",
             faq_a6: "Например, промежуточная оценка «2-3», другой предмет или табель из другой федеральной земли или страны. Тогда действуют особые правила. Начальная школа проконсультирует вас и рассчитает Förderprognose. Эта страница не может точно рассчитать такие случаи.",
-            footer_privacy: "Защита данных (Datenschutz)"
+            footer_privacy: "Защита данных (Datenschutz)",
+            footer_contact: "Контакт (Kontakt)"
         }
     };
 

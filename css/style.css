@@ -3421,3 +3421,182 @@ button.land-option.bald .land-marke { background: #f1f1f4; color: #4b5563; }
     .balken-spur { border: 1px solid #ccc; }
     .vgl-karte { break-inside: avoid; }
 }
+
+/* ---------- Kontaktseite (kontakt.html) ---------- */
+
+.kontakt-sprachen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e6edf5;
+    font-size: 0.85rem;
+}
+
+.kontakt-sprachen a[aria-current="true"] {
+    font-weight: 700;
+    color: #5d5296;
+    text-decoration: none;
+}
+
+.kontakt-karte {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #CDF5FD 0%, #FFE6E6 100%);
+}
+
+.kontakt-form {
+    display: grid;
+    gap: 14px;
+}
+
+.kontakt-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-weight: 600;
+}
+
+.kontakt-form input[type="text"],
+.kontakt-form input[type="email"],
+.kontakt-form textarea {
+    font: inherit;
+    font-weight: 400;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--rand);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--text);
+}
+
+.kontakt-form textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.kontakt-form select {
+    font-weight: 400;
+    border-radius: 10px;
+}
+
+.kontakt-form input:focus-visible,
+.kontakt-form textarea:focus-visible {
+    outline: 3px solid #AD88C6;
+    outline-offset: 1px;
+}
+
+.kontakt-form [aria-invalid="true"] {
+    border: 2px solid var(--rot);
+    background: var(--rot-hell);
+}
+
+.kontakt-zeile {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.rechtstext .kontakt-intro,
+.rechtstext .kontakt-tipp,
+.kontakt-form .klein {
+    margin: 0;
+}
+
+.kontakt-tipp {
+    font-size: 0.875rem;
+    color: var(--text-leise);
+}
+
+.kontakt-form .kontakt-einwilligung {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid #E1AFD1;
+    border-radius: 10px;
+    background: #FFE6E6;
+    font-weight: 400;
+}
+
+.kontakt-einwilligung input {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    accent-color: #7469B6;
+}
+
+.kontakt-einwilligung input[aria-invalid="true"] {
+    outline: 2px solid var(--rot);
+}
+
+.kontakt-form button {
+    justify-self: start;
+    padding: 12px 28px;
+    border-color: #7469B6;
+    border-radius: 999px;
+    background: #7469B6;
+}
+
+.kontakt-form button:hover {
+    border-color: #5d5296;
+    background: #5d5296;
+}
+
+.kontakt-form button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+/* Honigtopf: unsichtbar, aber nicht display:none (manche Bots prüfen das) */
+.kontakt-honig {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    opacity: 0;
+}
+
+.rechtstext .kontakt-meldung {
+    margin: 0 0 14px;
+    padding: 12px 14px;
+    border: 1px solid #AD88C6;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.kontakt-danke {
+    padding: 8px 4px;
+    text-align: center;
+}
+
+.rechtstext .kontakt-danke-titel {
+    margin-top: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #5d5296;
+}
+
+.kontakt-fuss {
+    margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+    .kontakt-karte {
+        padding: 16px;
+    }
+
+    .kontakt-zeile {
+        grid-template-columns: 1fr;
+    }
+
+    .kontakt-form button {
+        justify-self: stretch;
+    }
+}

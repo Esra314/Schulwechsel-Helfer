@@ -149,6 +149,9 @@
         // Datenschutz-Link führt direkt zur Kurzfassung in der gewählten Sprache
         var dsLink = document.querySelector('.seitenfuss a[href^="datenschutz.html"]');
         if (dsLink) dsLink.setAttribute("href", "datenschutz.html" + (code === "de" ? "" : "#" + code));
+        // Kontaktseite öffnet sich in derselben Sprache
+        var kontaktLink = document.querySelector('.seitenfuss a[href^="kontakt.html"]');
+        if (kontaktLink) kontaktLink.setAttribute("href", "kontakt.html" + (code === "de" ? "" : "?lang=" + code));
 
         if (letztesErgebnis) {
             zeigeErgebnis(letztesErgebnis);

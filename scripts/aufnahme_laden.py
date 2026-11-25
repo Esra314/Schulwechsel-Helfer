@@ -17,7 +17,7 @@ ZEILE = re.compile(r"^\s*(\d{2}[KYPAG]\d{2})\b.*?\s(\d+|k\.\s?A\.)\s+(\d+|k\.\s?
 def text_aus_pdf(url, ordner):
     pdf = os.path.join(ordner, re.sub(r"[^\w.-]", "_", url.rsplit("/", 1)[-1]))
     if not os.path.exists(pdf):
-        subprocess.run(["curl", "-sS", "--fail", "--max-time", "60", "-o", pdf, url], check=True)
+        subprocess.run(["curl", "-sS", "-A", "Schulwechsel-Helfer/1.0 (Schulinfo-Abruf; +https://esra314.github.io/Schulwechsel-Helfer/kontakt.html)", "--fail", "--max-time", "60", "-o", pdf, url], check=True)
     return subprocess.run(["pdftotext", "-layout", pdf, "-"], capture_output=True, check=True).stdout.decode("utf-8")
 
 

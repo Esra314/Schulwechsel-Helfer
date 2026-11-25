@@ -1,8 +1,52 @@
 # Lädt pro Schule die Startseite und bis zu 15 passende Unterseiten (nur Text) herunter.
 # Aufruf: python3 -I scripts/schulwebsites_laden.py data/schulen.js roh/web/
 # Bereits geladene Schulen werden übersprungen (Abbruch und Neustart möglich).
-import sys, os, re, json, html, subprocess, time
+# Die robots.txt jeder Website wird beachtet (gesperrte Seiten werden nicht geladen,
+# Crawl-delay wird eingehalten). Der User-Agent nennt die Seite und das Kontaktformular.
+# Gespeichert wird nur der Text; ausgewertet und veröffentlicht werden nur einzelne Fakten
+# (Datum, Uhrzeit, Ganztag, Fremdsprachen) mit Quell-URL, keine Texte und keine Bilder.
+import sys, os, re, json, html, subprocess, time, threading
+import urllib.robotparser
 from urllib.parse import urljoin, urlparse
+
+UA = "Schulwechsel-Helfer/1.0 (Schulinfo-Abruf; +https://esra314.github.io/Schulwechsel-Helfer/kontakt.html)"
+_robots = {}
+_robots_lock = threading.Lock()
+
+
+def robots(url):
+    # Liefert den RobotFileParser für den Host der URL (einmal pro Host geladen).
+    p = urlparse(url)
+    basis = "https://" + (p.hostname or "")
+    with _robots_lock:
+        if basis in _robots:
+            return _robots[basis]
+    rp = urllib.robotparser.RobotFileParser()
+    try:
+        r = subprocess.run(["curl", "-sL", "--max-time", "20", "-A", UA, "-w", "\n__CODE__%{http_code}",
+                            basis + "/robots.txt"], capture_output=True, timeout=30)
+        roh = r.stdout.decode("utf-8", "replace")
+        body, _, code = roh.rpartition("\n__CODE__")
+        if code in ("401", "403") or code.startswith("5") or code == "000":
+            rp.disallow_all = True
+        elif code == "200" and "<html" not in body[:500].lower():
+            rp.parse(body.splitlines())
+        else:
+            rp.allow_all = True
+    except Exception:
+        rp.disallow_all = True  # im Zweifel nicht laden
+    with _robots_lock:
+        _robots[basis] = rp
+    return rp
+
+
+def erlaubt(url):
+    return robots(url).can_fetch(UA, url)
+
+
+def pause(url):
+    v = robots(url).crawl_delay(UA)
+    time.sleep(max(0.5, float(v or 0)))
 from concurrent.futures import ThreadPoolExecutor
 
 quelle = open(sys.argv[1], encoding="utf-8").read()
@@ -28,9 +72,11 @@ NICHT = re.compile(r"\.(pdf|jpe?g|png|gif|zip|docx?|xlsx?|pptx?|mp4|mp3|ics)(\?|
 def holen(url, tiefe=0):
     if url.startswith("http://"):
         url = "https://" + url[7:]
+    if not erlaubt(url):
+        return None
     try:
         r = subprocess.run(["curl", "-sL", "--max-time", "25", "--max-filesize", "3000000", "-A",
-                            "Mozilla/5.0 (compatible; Schulwechsel-Helfer; Schulinfo)",
+                            UA,
                             "-w", "\n__URL__%{url_effective}__CODE__%{http_code}__TYPE__%{content_type}", url],
                            capture_output=True, timeout=40)
         roh = r.stdout.decode("utf-8", "replace")
@@ -41,6 +87,8 @@ def holen(url, tiefe=0):
         if m.group(2) != "200" and m.group(1).startswith("http://") and tiefe < 3:
             return holen(m.group(1), tiefe + 1)
         if m.group(2) != "200" or "html" not in m.group(3):
+            return None
+        if m.group(1) != url and not erlaubt(m.group(1)):
             return None
         return m.group(1), body
     except Exception:
@@ -101,7 +149,7 @@ def schule(s):
             if r:
                 seiten.append({"url": r[0], "text": text(r[1])})
                 zweite_runde += links(r[0], r[1])[:4]
-            time.sleep(0.3)
+            pause(u)
         for u in zweite_runde:
             if len(seiten) >= 16 or u in gesehen:
                 continue
@@ -109,11 +157,12 @@ def schule(s):
             r = holen(u)
             if r:
                 seiten.append({"url": r[0], "text": text(r[1])})
+            pause(u)
     json.dump({"id": s["id"], "start": start, "abruf": time.strftime("%Y-%m-%d"), "seiten": seiten},
               open(ziel, "w"), ensure_ascii=False)
     print(s["id"], len(seiten), flush=True)
 
 
-with ThreadPoolExecutor(10) as pool:
+with ThreadPoolExecutor(5) as pool:
     list(pool.map(schule, [s for s in schulen if s.get("w")]))
 print("fertig", flush=True)

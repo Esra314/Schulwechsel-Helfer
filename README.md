@@ -30,7 +30,7 @@ Hervorgegangen aus dem Oberschul-Helfer Berlin.
 - Checkliste für die Schulwahl und 5 Fragen für den Tag der offenen Tür
 - Frage-Helfer: kleines Chat-Fenster („Frage-Assistent“) mit vorbereiteten Antworten in allen 6 Sprachen,
   erkennt auch Begrüßungen und Dank; ohne KI, läuft nur im Browser, nichts wird gesendet
-- Keine Daten werden gesendet oder gespeichert, keine Cookies
+- Eingaben werden nicht gesendet oder gespeichert, keine Cookies; nur anonyme Besucherzählung mit GoatCounter (`js/besucherzaehler.js`)
 - Impressum und Datenschutzerklärung
 
 ## Regeln

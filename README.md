@@ -122,6 +122,14 @@ Lädt die amtlichen Schulstandorte aus den WFS-Diensten der Länder:
 
 Die Lizenz steht jeweils auch im GetCapabilities des Dienstes. Hinter einem Proxy die GML-Dateien
 vorher mit curl laden und mit `--bb` / `--by` übergeben (siehe Kopf des Skripts).
+
+Webseiten bayerischer Schulen: Der amtliche Datensatz enthält keine. `quellen/by-webseiten.json`
+enthält Webseiten, die einzeln gesucht (Schulübersichten von Stadt, Landkreis oder Schulamt, sonst
+Websuche; **nicht** km.bayern.de, dessen Datenbank geschützt ist) und auf der Seite der Schule selbst
+geprüft wurden (Name und Ort oder Straße sichtbar), mit Prüfdatum. Unsichere Treffer, reine
+Wartungsseiten und verdächtige Seiten sind nicht enthalten; dort zeigt die App „Webseite der Schule
+suchen“. Das Skript übernimmt die Einträge nach „Schulname|PLZ“. Wird nur diese Datei geändert, mit
+`--stand <Datum der GML-Dateien>` neu erzeugen, damit das Datum der amtlichen Daten stimmt.
 Sachsen und Thüringen fehlen noch: Für Sachsen ist keine Lizenz angegeben, für Thüringen gibt es
 keinen landesweiten offenen Datensatz.
 

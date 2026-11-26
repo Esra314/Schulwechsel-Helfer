@@ -662,32 +662,32 @@
             links: ["privacy"],
             de: {
                 q: "Was passiert mit meinen Daten?",
-                a: "Ihre Eingaben bleiben auf Ihrem Gerät. 🔒 Noten, Postleitzahl und Ihre Fragen hier werden nur in Ihrem Browser verarbeitet und nicht gesendet.\nKeine Cookies, kein Tracking, keine Werbung. Gemerkte Schulen und Notizen bleiben nur in Ihrem Browser. Nur wenn Sie die Karte öffnen, lädt Ihr Browser Kartenbilder von OpenStreetMap (dabei wird Ihre IP-Adresse übertragen).",
+                a: "Ihre Eingaben bleiben auf Ihrem Gerät. 🔒 Noten, Postleitzahl und Ihre Fragen hier werden nur in Ihrem Browser verarbeitet und nicht gesendet.\nKeine Cookies, keine Werbung. Wir zählen nur anonym, wie oft die Seiten aufgerufen werden (GoatCounter, ohne Cookies). Gemerkte Schulen und Notizen bleiben nur in Ihrem Browser. Nur wenn Sie die Karte öffnen, lädt Ihr Browser Kartenbilder von OpenStreetMap (dabei wird Ihre IP-Adresse übertragen).",
                 w: ["!datenschutz", "!daten", "!privat", "!sicher", "!cookies", "!tracking", "!gespeichert", "!speichern", "!dsgvo", "gesendet", "werbung", "anonym"]
             },
             en: {
                 q: "What happens to my data?",
-                a: "Your entries stay on your device. 🔒 Grades, postcode and your questions here are only processed in your browser and never sent.\nNo cookies, no tracking, no ads. Saved schools and notes stay only in your browser. Only if you open the map does your browser load map images from OpenStreetMap (this sends your IP address).",
+                a: "Your entries stay on your device. 🔒 Grades, postcode and your questions here are only processed in your browser and never sent.\nNo cookies, no ads. We only count anonymously how often pages are visited (GoatCounter, without cookies). Saved schools and notes stay only in your browser. Only if you open the map does your browser load map images from OpenStreetMap (this sends your IP address).",
                 w: ["!privacy", "!data", "!private", "!safe", "!secure", "!cookies", "!tracking", "!stored", "!gdpr", "sent", "ads", "anonymous"]
             },
             tr: {
                 q: "Verilerime ne oluyor?",
-                a: "Girdiğiniz bilgiler cihazınızda kalır. 🔒 Notlar, posta kodu ve buradaki sorularınız yalnızca tarayıcınızda işlenir ve gönderilmez.\nÇerez yok, takip yok, reklam yok. Kaydettiğiniz okullar ve notlar yalnızca tarayıcınızda kalır. Yalnızca haritayı açarsanız tarayıcınız OpenStreetMap'ten harita görüntüleri yükler (bu sırada IP adresiniz iletilir).",
+                a: "Girdiğiniz bilgiler cihazınızda kalır. 🔒 Notlar, posta kodu ve buradaki sorularınız yalnızca tarayıcınızda işlenir ve gönderilmez.\nÇerez yok, reklam yok. Sadece sayfaların kaç kez açıldığını anonim olarak sayıyoruz (GoatCounter, çerezsiz). Kaydettiğiniz okullar ve notlar yalnızca tarayıcınızda kalır. Yalnızca haritayı açarsanız tarayıcınız OpenStreetMap'ten harita görüntüleri yükler (bu sırada IP adresiniz iletilir).",
                 w: ["!veri", "!veriler", "!verilerim", "!gizlilik", "!datenschutz", "!guvenli", "!cerez", "!takip", "!kaydediliyor", "!saklaniyor", "gonderiliyor", "reklam", "kvkk"]
             },
             ar: {
                 q: "ماذا يحدث لبياناتي؟",
-                a: "تبقى بياناتك على جهازك. 🔒 الدرجات والرمز البريدي وأسئلتك هنا تُعالج فقط في متصفحك ولا تُرسل.\nلا ملفات تعريف ارتباط، لا تتبع، لا إعلانات. المدارس المحفوظة والملاحظات تبقى في متصفحك فقط. فقط إذا فتحتم الخريطة يحمّل متصفحكم صور الخريطة من OpenStreetMap (ويُرسل عنوان IP الخاص بكم).",
+                a: "تبقى بياناتك على جهازك. 🔒 الدرجات والرمز البريدي وأسئلتك هنا تُعالج فقط في متصفحك ولا تُرسل.\nلا ملفات تعريف ارتباط ولا إعلانات. نحصي فقط بشكل مجهول عدد مرات فتح الصفحات (GoatCounter، دون ملفات تعريف ارتباط). المدارس المحفوظة والملاحظات تبقى في متصفحك فقط. فقط إذا فتحتم الخريطة يحمّل متصفحكم صور الخريطة من OpenStreetMap (ويُرسل عنوان IP الخاص بكم).",
                 w: ["!البيانات", "!بياناتي", "!الخصوصية", "!حماية البيانات", "!datenschutz", "!امن", "!كوكيز", "!تتبع", "!تخزين", "ارسال", "اعلانات"]
             },
             uk: {
                 q: "Що відбувається з моїми даними?",
-                a: "Ваші дані залишаються на вашому пристрої. 🔒 Оцінки, індекс і ваші питання тут обробляються лише у вашому браузері й не надсилаються.\nБез cookies, без стеження, без реклами. Збережені школи й нотатки залишаються лише у вашому браузері. Лише якщо ви відкриєте карту, браузер завантажить зображення карти з OpenStreetMap (при цьому передається ваша IP-адреса).",
+                a: "Ваші дані залишаються на вашому пристрої. 🔒 Оцінки, індекс і ваші питання тут обробляються лише у вашому браузері й не надсилаються.\nБез cookies, без реклами. Ми лише анонімно рахуємо, скільки разів відкривають сторінки (GoatCounter, без cookies). Збережені школи й нотатки залишаються лише у вашому браузері. Лише якщо ви відкриєте карту, браузер завантажить зображення карти з OpenStreetMap (при цьому передається ваша IP-адреса).",
                 w: ["!дані", "!даними", "!конфіденційн", "!захист даних", "!datenschutz", "!безпечн", "!cookies", "!стеження", "!зберігає", "надсила", "реклам"]
             },
             ru: {
                 q: "Что происходит с моими данными?",
-                a: "Ваши данные остаются на вашем устройстве. 🔒 Оценки, индекс и ваши вопросы здесь обрабатываются только в вашем браузере и не отправляются.\nБез cookies, без слежки, без рекламы. Сохранённые школы и заметки остаются только в вашем браузере. Только если вы откроете карту, браузер загрузит изображения карты с OpenStreetMap (при этом передаётся ваш IP-адрес).",
+                a: "Ваши данные остаются на вашем устройстве. 🔒 Оценки, индекс и ваши вопросы здесь обрабатываются только в вашем браузере и не отправляются.\nБез cookies, без рекламы. Мы только анонимно считаем, сколько раз открывают страницы (GoatCounter, без cookies). Сохранённые школы и заметки остаются только в вашем браузере. Только если вы откроете карту, браузер загрузит изображения карты с OpenStreetMap (при этом передаётся ваш IP-адрес).",
                 w: ["!данные", "!данными", "!конфиденциальн", "!защита данных", "!datenschutz", "!безопасн", "!cookies", "!слежк", "!сохраняет", "отправля", "реклам"]
             }
         },

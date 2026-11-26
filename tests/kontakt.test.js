@@ -52,7 +52,7 @@ test("Formular erst aktiv, wenn der Formdall-Schlüssel eingetragen ist", () => 
 
 test("Kontaktseite: CSP erlaubt nur Formdall, Honigtopf und Einwilligung vorhanden", () => {
     const csp = html.match(/Content-Security-Policy" content="([^"]+)"/)[1];
-    assert.match(csp, /connect-src https:\/\/api\.formdall\.de;/);
+    assert.match(csp, /connect-src https:\/\/api\.formdall\.de https:\/\/oberschulhelferberlin\.goatcounter\.com;/);
     assert.match(csp, /form-action https:\/\/api\.formdall\.de/);
     assert.match(csp, /script-src 'self';/);
     const action = html.match(/id="kontaktForm"[^>]*action="([^"]+)"/)[1];

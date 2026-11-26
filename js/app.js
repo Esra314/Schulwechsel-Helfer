@@ -1647,7 +1647,9 @@
     }
 
     function ansichtAusAdresse(scrollen) {
-        var id = decodeURIComponent(window.location.hash.slice(1));
+        // Kaputte Adressen wie „#%“ dürfen die Seite nicht anhalten
+        var id = "";
+        try { id = decodeURIComponent(window.location.hash.slice(1)); } catch (e) { id = ""; }
         var el = id ? document.getElementById(id) : null;
         var ansicht = el && el.closest ? el.closest(".ansicht") : null;
         if (!ansicht) {

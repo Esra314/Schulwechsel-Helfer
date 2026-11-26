@@ -143,7 +143,8 @@
 
     function link(text, href) {
         var a = el("a", "", text);
-        a.href = href;
+        // Nur echte Webadressen verlinken (Schutz, falls ein Datensatz einmal etwas anderes enthält)
+        a.href = /^https?:\/\//i.test(href) ? href : "https://" + String(href).replace(/^[a-z][a-z0-9+.-]*:\/*/i, "");
         a.target = "_blank";
         a.rel = "noopener";
         return a;

@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+# Nur Lesen: der Testlauf braucht keine Schreibrechte am Repository
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest

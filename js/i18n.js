@@ -298,8 +298,8 @@
             footer_privacy: "Datenschutz",
             footer_contact: "Kontakt",
             // Suchmaschinen: Titel und Beschreibung der Sprachseite
-            seo_title: "Schulwechsel-Helfer – Von der Grundschule zur weiterführenden Schule | Notenrechner Berlin, Brandenburg, Bayern, Sachsen, Thüringen",
-            seo_desc: "Schulwechsel-Helfer: Von der Grundschule zur weiterführenden Schule. Kostenloser Notenrechner für Berlin, Brandenburg, Bayern, Sachsen und Thüringen – Notendurchschnitt berechnen, Gymnasialeignung prüfen, Schularten verstehen und wichtige Termine kennen. Mehrsprachig: Deutsch, Englisch, Türkisch, Arabisch, Ukrainisch und Russisch."
+            seo_title: "Schulwechsel-Helfer – Notenrechner & Schulsuche",
+            seo_desc: "Notendurchschnitt nach der Grundschule berechnen und Schulen in der Nähe suchen. Für Berlin, Brandenburg, Bayern, Sachsen und Thüringen – mit Regeln und Terminen."
         },
 
         en: {
@@ -581,8 +581,8 @@
             footer_privacy: "Privacy policy (Datenschutz)",
             footer_contact: "Contact (Kontakt)",
             // Suchmaschinen: Titel und Beschreibung der Sprachseite
-            seo_title: "Schulwechsel-Helfer – From primary to secondary school | Grade calculator for Berlin, Brandenburg, Bavaria, Saxony, Thuringia",
-            seo_desc: "Free grade calculator for Berlin, Brandenburg, Bavaria, Saxony and Thuringia: calculate the grade average, check Gymnasium eligibility, understand the school types and know the important dates. In English, German, Turkish, Arabic, Ukrainian and Russian."
+            seo_title: "Schulwechsel-Helfer – Grade calculator & school search",
+            seo_desc: "Calculate the grade average after primary school and find schools near you. For Berlin, Brandenburg, Bavaria, Saxony and Thuringia – with rules and dates."
         },
 
         tr: {
@@ -864,8 +864,8 @@
             footer_privacy: "Gizlilik (Datenschutz)",
             footer_contact: "İletişim (Kontakt)",
             // Suchmaschinen: Titel und Beschreibung der Sprachseite
-            seo_title: "Schulwechsel-Helfer – İlkokuldan sonraki okula geçiş | Berlin, Brandenburg, Bavyera, Saksonya, Thüringen için not hesaplama",
-            seo_desc: "Berlin, Brandenburg, Bavyera, Saksonya ve Thüringen için ücretsiz not hesaplayıcı: not ortalamasını hesaplayın, Gymnasium uygunluğunu kontrol edin, okul türlerini anlayın ve önemli tarihleri öğrenin. Türkçe, Almanca, İngilizce, Arapça, Ukraynaca ve Rusça."
+            seo_title: "Schulwechsel-Helfer – Not hesaplama ve okul arama",
+            seo_desc: "İlkokuldan sonra not ortalamasını hesaplayın ve yakındaki okulları arayın. Berlin, Brandenburg, Bavyera, Saksonya ve Thüringen için – kurallar ve tarihlerle."
         },
 
         ar: {
@@ -1147,8 +1147,8 @@
             footer_privacy: "حماية البيانات (Datenschutz)",
             footer_contact: "تواصل معنا (Kontakt)",
             // Suchmaschinen: Titel und Beschreibung der Sprachseite
-            seo_title: "Schulwechsel-Helfer – من المدرسة الابتدائية إلى المدرسة الثانوية | حاسبة درجات لبرلين وبراندنبورغ وبافاريا وساكسونيا وتورينغن",
-            seo_desc: "حاسبة درجات مجانية لبرلين وبراندنبورغ وبافاريا وساكسونيا وتورينغن: احسب معدل الدرجات، وتحقق من الأهلية للـ Gymnasium، وتعرّف على أنواع المدارس والمواعيد المهمة. بالعربية والألمانية والإنجليزية والتركية والأوكرانية والروسية."
+            seo_title: "Schulwechsel-Helfer – حاسبة الدرجات والبحث عن مدرسة",
+            seo_desc: "احسب معدل الدرجات بعد المدرسة الابتدائية وابحث عن مدارس قريبة. لبرلين وبراندنبورغ وبافاريا وساكسونيا وتورينغن، مع القواعد والمواعيد."
         },
 
         uk: {
@@ -1430,8 +1430,8 @@
             footer_privacy: "Захист даних (Datenschutz)",
             footer_contact: "Контакт (Kontakt)",
             // Suchmaschinen: Titel und Beschreibung der Sprachseite
-            seo_title: "Schulwechsel-Helfer – з початкової до середньої школи | Калькулятор оцінок: Берлін, Бранденбург, Баварія, Саксонія, Тюрингія",
-            seo_desc: "Безкоштовний калькулятор оцінок для Берліна, Бранденбурга, Баварії, Саксонії та Тюрингії: обчисліть середній бал, перевірте придатність до Gymnasium, дізнайтеся про типи шкіл і важливі терміни. Українською, німецькою, англійською, турецькою, арабською та російською."
+            seo_title: "Schulwechsel-Helfer – калькулятор оцінок і пошук школи",
+            seo_desc: "Обчисліть середній бал після початкової школи і знайдіть школи поруч. Для Берліна, Бранденбурга, Баварії, Саксонії й Тюрингії – з правилами і термінами."
         },
 
         ru: {
@@ -1713,8 +1713,8 @@
             footer_privacy: "Защита данных (Datenschutz)",
             footer_contact: "Контакт (Kontakt)",
             // Suchmaschinen: Titel und Beschreibung der Sprachseite
-            seo_title: "Schulwechsel-Helfer – из начальной в среднюю школу | Калькулятор оценок: Берлин, Бранденбург, Бавария, Саксония, Тюрингия",
-            seo_desc: "Бесплатный калькулятор оценок для Берлина, Бранденбурга, Баварии, Саксонии и Тюрингии: рассчитайте средний балл, проверьте пригодность для Gymnasium, узнайте о типах школ и важных сроках. На русском, немецком, английском, турецком, арабском и украинском."
+            seo_title: "Schulwechsel-Helfer – калькулятор оценок и поиск школы",
+            seo_desc: "Рассчитайте средний балл после начальной школы и найдите школы рядом. Для Берлина, Бранденбурга, Баварии, Саксонии и Тюрингии – с правилами и сроками."
         }
     };
 

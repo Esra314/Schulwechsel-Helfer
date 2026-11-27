@@ -79,6 +79,24 @@ function seitenangaben(code) {
     return "\n" + zeilen.join("\n") + "\n    ";
 }
 
+// Strukturierte Daten (schema.org WebSite) nur auf der Startseite: so kennt Google
+// den Namen der Seite auch in anderen Schreibweisen (z. B. ohne Bindestrich)
+const SEITENNAME = "Schulwechsel-Helfer";
+const NAMENSVARIANTEN = ["Schulwechsel Helfer", "Schulwechselhelfer"];
+function strukturdaten(code) {
+    if (code !== "de") return "";
+    const daten = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: SEITENNAME,
+        alternateName: NAMENSVARIANTEN,
+        url: sprachUrl("de"),
+        inLanguage: SPRACHEN.map((s) => s.code),
+        description: text("de", "seo_desc")
+    };
+    return '\n    <script type="application/ld+json">' + JSON.stringify(daten).replace(/</g, "\\u003c") + "</script>\n    ";
+}
+
 function sprachChips(code) {
     const zeilen = SPRACHEN.map((s) => '            <li><a href="' + (sprachPfad(s.code) || "./") + '" hreflang="' + s.code +
         '" lang="' + s.code + '" data-lang="' + s.code + '"' + (s.code === code ? ' aria-current="true"' : "") + ">" +
@@ -105,6 +123,7 @@ function seite(vorlage, code) {
     html = setzeMeta(html, "property", "og:url", sprachUrl(code));
     html = setzeMeta(html, "property", "og:locale", OG_LOCALE[code]);
     html = block(html, "SPRACHSEITEN", seitenangaben(code));
+    html = block(html, "STRUKTURDATEN", strukturdaten(code));
     html = block(html, "SPRACHCHIPS", sprachChips(code));
     if (code !== "de") html = pfadeAnpassen(html);
     return html;

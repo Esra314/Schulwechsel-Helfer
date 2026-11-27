@@ -24,6 +24,11 @@ test("Keine Inline-Skripte und keine fremden Skripte in index.html", () => {
     const skripte = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
     assert.ok(skripte.length > 0);
     for (const [, attribute, inhalt] of skripte) {
+        // Strukturierte Daten (JSON-LD) sind kein ausführbares Skript
+        if (/type="application\/ld\+json"/.test(attribute)) {
+            assert.doesNotThrow(() => JSON.parse(inhalt), "JSON-LD ist kein gültiges JSON");
+            continue;
+        }
         assert.equal(inhalt.trim(), "", "Inline-Skript gefunden");
         assert.doesNotMatch(attribute, /src="https?:/, "fremdes Skript gefunden");
     }
